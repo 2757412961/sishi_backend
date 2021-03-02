@@ -1,0 +1,19 @@
+# port
+server:
+  port: 8080
+  servlet:
+    context-path: /v1.0/api/
+    session:
+      timeout: 3600s
+
+# datasource
+spring:
+  datasource:
+#    url: jdbc:postgresql://192.168.2.2:5432/testdb
+#    username: postgres
+#    password: Root123!@$
+#    driver-class-name: org.postgresql.Driver
+    url: jdbc:mysql://localhost:3306/localdb
+    username: root
+    password: root123
+    driver-class-name: com.mysql.jdbc.Driver

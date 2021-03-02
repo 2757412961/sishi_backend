@@ -1,0 +1,63 @@
+<assembly
+        xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+
+    <id>RELEASE</id>
+    <!-- 输出格式 -->
+    <formats>
+        <format>tar.gz</format>
+    </formats>
+    <!-- tar.gz包下是否生成和项目名相同的根目录 -->
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <unpack>false</unpack>
+            <!--将scope为compile的依赖包打包-->
+            <scope>compile</scope>
+            <outputDirectory>lib</outputDirectory>
+            <!-- 是否把本项目添加到依赖文件夹下 -->
+            <useProjectArtifact>false</useProjectArtifact>
+            <!-- 等同于上面设置成false -->
+            <!--<excludes>-->
+            <!--<exclude>${project.groupId}:${project.artifactId}</exclude>-->
+            <!--</excludes>-->
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <!--将scope为runtime的依赖包打包-->
+            <scope>runtime</scope>
+            <outputDirectory>lib</outputDirectory>
+            <!-- 是否把本项目添加到依赖文件夹下 -->
+            <useProjectArtifact>false</useProjectArtifact>
+            <!-- 等同于上面设置成false -->
+            <!--<excludes>-->
+            <!--<exclude>${project.groupId}:${project.artifactId}</exclude>-->
+            <!--</excludes>-->
+        </dependencySet>
+        <!-- 把本项目jar放到指定目录 -->
+        <dependencySet>
+            <!--jar包的输出目录-->
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>${project.groupId}:${project.artifactId}</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <!-- 把所有的配置文件放到conf下 -->
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+    </fileSets>
+    <!-- 把启动脚本放到bin下 -->
+    <files>
+        <file>
+            <source>sishi-manager.sh</source>
+            <outputDirectory>bin</outputDirectory>
+            <fileMode>0700</fileMode>
+            <filtered>true</filtered>
+        </file>
+    </files>
+</assembly>

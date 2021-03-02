@@ -1,0 +1,17 @@
+
+# IntelliJ project files
+target
+.classpath
+.project
+.settings
+.idea
+*.iml
+*~
+*.pyc
+*.iws
+*.ipr
+*.iml
+*.idea/
+*.log
+.*.swp
+.idea/**
