@@ -2,6 +2,7 @@ package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.entity.Tag;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@AuthController
 public class TagController {
 
   private static final String ID = "id";
@@ -58,6 +60,7 @@ public class TagController {
   }
 
   @RequestMapping(value = "tag/{tagName}", method = RequestMethod.DELETE)
+  @ResponseBody
   public Map<String, String> dropTag(
       @PathVariable(value = "tagName")
       @Size(min = 1, max = 50, message = "tagName length should be in 1 and 50") String tagName) {
