@@ -13,6 +13,7 @@
 
     <modules>
         <module>sishi-manager</module>
+        <module>sishi-passport</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

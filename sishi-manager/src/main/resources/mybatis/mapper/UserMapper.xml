@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- create by autoCode,v1.0.0 -->
+<mapper namespace="cn.edu.zju.sishi.dao.UserDao">
+    <resultMap id="userResultMap" type="cn.edu.zju.sishi.entity.User">
+        <id property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="BIGINT"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addUser" parameterType="cn.edu.zju.sishi.entity.User" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO tb_user(user_name, user_id, create_time, update_time, password
+        <if test="mobile!=null and mobile!=''">
+            ,mobile
+        </if>
+        <if test="email!=null and email!=''">
+            ,email
+        </if>
+        )
+        VALUES (#{userName}, #{userId}, #{createTime}, #{updateTime}, #{password}
+        <if test="mobile!=null and mobile!=''">
+            ,#{mobile}
+        </if>
+        <if test="email!=null and email!=''">
+            ,#{email}
+        </if>
+        )
+    </insert>
+
+    <select id="getUserByName" parameterType="map" resultMap="userResultMap">
+        SELECT * FROM tb_user WHERE user_name=#{userName} LIMIT 1
+    </select>
+
+    <select id="getUserByEmail" parameterType="map" resultMap="userResultMap">
+        SELECT * FROM tb_user WHERE email=#{email} LIMIT 1
+    </select>
+
+    <select id="userNameExist" parameterType="Map" resultType="Integer">
+        SELECT COUNT(*) FROM tb_user WHERE user_name = #{userName}
+    </select>
+</mapper>
