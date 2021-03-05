@@ -1,6 +1,6 @@
 # port
 server:
-  port: 8080
+  port: 7666
   servlet:
     context-path: /v1.0/api/
     session:
@@ -8,12 +8,24 @@ server:
 
 # datasource
 spring:
+  redis:
+    host: 192.168.2.2
+    port: 6379
+    password: Root123!@$
+    timeout: 0
+    database: 3
+    jedis:
+      pool:
+        max-active: 3000
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
   datasource:
-#    url: jdbc:postgresql://192.168.2.2:5432/testdb
-#    username: postgres
-#    password: Root123!@$
-#    driver-class-name: org.postgresql.Driver
-    url: jdbc:mysql://localhost:3306/localdb
-    username: root
-    password: root123
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:postgresql://192.168.2.2:5432/sishi
+    username: postgres
+    password: Root123!@$
+    driver-class-name: org.postgresql.Driver
+#    url: jdbc:mysql://localhost:3306/localdb
+#    username: root
+#    password: root123
+#    driver-class-name: com.mysql.jdbc.Driver

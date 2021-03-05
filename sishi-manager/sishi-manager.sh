@@ -1,5 +1,5 @@
 #!/bin/bash
-JVM="-server -Xms512m -Xmx1024m \
+JVM="-server -Xms512m -Xmx512m \
 -XX:MaxNewSize=128m \
 -XX:+UseStringDeduplication \
 -XX:+UseGCOverheadLimit \
