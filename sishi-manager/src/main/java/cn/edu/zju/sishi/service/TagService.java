@@ -5,5 +5,11 @@ import cn.edu.zju.sishi.entity.Tag;
 import java.util.List;
 
 public interface TagService {
-    List<Tag> getTag();
+    List<Tag> selectTags();
+    
+    void addTag(Tag tag);
+    
+    void addTags(List<String> tags);
+    
+    void dropTag(String tagName);
 }

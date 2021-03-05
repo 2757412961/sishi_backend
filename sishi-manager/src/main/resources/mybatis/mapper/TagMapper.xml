@@ -2,9 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zju.sishi.dao.TagDao">
 
-    <select id="getTag" resultType="cn.edu.zju.sishi.entity.Tag">
+    <resultMap id="tagDaoResultMap" type="cn.edu.zju.sishi.entity.Tag">
+        <result property="tagId" column="TAG_ID" jdbcType="VARCHAR"/>
+        <result property="tagName" column="TAG_NAME" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectTags" resultType="cn.edu.zju.sishi.entity.Tag">
         SELECT tag_id, tag_name
-        FROM tb_tag ORDER BY tag_id ASC
+        FROM tb_tag
+        ORDER BY tag_id ASC
     </select>
 
+    <select id="getTagByTagName" resultType="cn.edu.zju.sishi.entity.Tag">
+        SELECT tag_id, tag_name
+        FROM tb_tag
+        WHERE tag_name = #{tagName}
+    </select>
+
+    <delete id="dropTag" flushCache="true">
+        DELETE FROM tb_tag WHERE tag_name = #{tagName};
+    </delete>
+    
+    <insert id="addTag" parameterType="cn.edu.zju.sishi.entity.Tag" flushCache="true">
+        INSERT INTO tb_tag
+          (tag_id, tag_name)
+        VALUES (#{tag.tagId}, #{tag.tagName});
+    </insert>
+    
 </mapper>

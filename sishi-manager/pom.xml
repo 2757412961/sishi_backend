@@ -107,7 +107,11 @@
         </dependency>
         <!-- commons-lang3 end -->
 
-
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        
     </dependencies>
 
     <build>
