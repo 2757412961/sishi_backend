@@ -17,4 +17,5 @@ mybatis:
     # 输出 mybatis SQL 语句，调试时打开，上线关闭
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: cn.edu.zju.sishi.entity
 

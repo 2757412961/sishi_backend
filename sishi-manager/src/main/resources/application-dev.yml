@@ -9,7 +9,7 @@ server:
 # datasource
 spring:
   redis:
-    host: 192.168.2.2
+    host: 192.168.137.1
     port: 6379
     password: Root123!@$
     timeout: 0
@@ -21,9 +21,9 @@ spring:
         max-wait: -1
         min-idle: 0
   datasource:
-    url: jdbc:postgresql://192.168.2.2:5432/sishi
+    url: jdbc:postgresql://192.168.137.1:5432/sishi
     username: postgres
-    password: Root123!@$
+    password: postgres
     driver-class-name: org.postgresql.Driver
 #    url: jdbc:mysql://localhost:3306/localdb
 #    username: root
