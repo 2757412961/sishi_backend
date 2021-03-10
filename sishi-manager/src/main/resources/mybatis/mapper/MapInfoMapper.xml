@@ -61,13 +61,13 @@
     </insert>
 
 
-    <delete id="deleteMapInfoById" parameterType="String">
+    <delete id="deleteMapInfoById" parameterType="String" flushCache="true">
         DELETE FROM tb_mapinfo
         WHERE map_id = #{mapId}
     </delete>
 
 
-    <update id="updateMapInfo" parameterType="MapInfo">
+    <update id="updateMapInfo" parameterType="MapInfo" flushCache="true">
         UPDATE tb_mapinfo
         <set>
             <if test="mapName != null">map_name = #{mapName},</if>
