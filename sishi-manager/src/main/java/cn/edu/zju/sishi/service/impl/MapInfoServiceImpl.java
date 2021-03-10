@@ -2,9 +2,11 @@ package cn.edu.zju.sishi.service.impl;
 
 import cn.edu.zju.sishi.dao.MapInfoDao;
 import cn.edu.zju.sishi.entity.MapInfo;
+import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.MapInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -75,7 +77,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     public int deleteMapInfoById(String mapId) {
         MapInfo mapInfoDelete = mapInfoDao.getMapInfoById(mapId);
         if (mapInfoDelete == null) {
-            throw new ValidationException(String.format("Mapinfo %s is not exist!", mapId));
+            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "Mapinfo is not exist!");
         }
 
         return mapInfoDao.deleteMapInfoById(mapId);
@@ -84,12 +86,12 @@ public class MapInfoServiceImpl implements MapInfoService {
     @Override
     public int updateMapInfo(MapInfo mapInfoEntity) {
         if (StringUtils.isEmpty(mapInfoEntity.getMapId())) {
-            throw new ValidationException(String.format("Mapinfo is not exist!"));
+            throw new ValidationException(String.format("Mapinfo ID is not exist!"));
         }
 
         String mapName = mapInfoEntity.getMapName();
         if (mapInfoDao.getMapInfoByName(mapName) != null) {
-            throw new ValidationException(String.format("Mapinfo %s already exist!", mapName));
+            throw new ValidationException(String.format("Mapinfo Name %s already exist!", mapName));
         }
 
         return mapInfoDao.updateMapInfo(mapInfoEntity);
