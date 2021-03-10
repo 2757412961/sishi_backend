@@ -6,6 +6,7 @@ import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.MapInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,16 +24,19 @@ public class MapInfoServiceImpl implements MapInfoService {
     private MapInfoDao mapInfoDao;
 
     @Override
+//    @Cacheable(value = "GET_ALL_MAPINFO")
     public List<MapInfo> getAllMapInfo() {
         return mapInfoDao.getAllMapInfo();
     }
 
     @Override
+//    @Cacheable(value = "GET_MAPINFO_BY_ID")
     public MapInfo getMapInfoById(String mapId) {
         return mapInfoDao.getMapInfoById(mapId);
     }
 
     @Override
+//    @Cacheable(value = "GET_MAPINFO_BY_IDS")
     public List<MapInfo> getMapInfoByIds(List<String> mapIds) {
         if (mapIds == null || mapIds.isEmpty()) {
             return null;
@@ -52,6 +56,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
+//    @Cacheable(value = "GET_MAPINFO_BY_TAG")
     public List<MapInfo> getMapInfoByTag(String tagName) {
         return mapInfoDao.getMapInfoByTag(tagName);
     }

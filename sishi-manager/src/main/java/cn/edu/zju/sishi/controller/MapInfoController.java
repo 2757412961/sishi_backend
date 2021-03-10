@@ -27,7 +27,7 @@ public class MapInfoController {
     @Autowired
     private MapInfoService mapInfoService;
 
-    @RequestMapping(value = "mapinfos", method = RequestMethod.GET)
+    @RequestMapping(value = "mapinfoAll", method = RequestMethod.GET)
     public List<MapInfo> getAllMapInfo() {
         log.info("Start invoke getAllMapInfo()");
 
@@ -41,8 +41,8 @@ public class MapInfoController {
         return mapInfoService.getMapInfoById(mapId);
     }
 
-    @RequestMapping(value = "mapinfo", method = RequestMethod.GET)
-    public List<MapInfo> getMapInfoByIds(@NotEmpty List<String> mapIds) {
+    @RequestMapping(value = "mapinfoList", method = RequestMethod.POST)
+    public List<MapInfo> getMapInfoByIds(@RequestBody @NotEmpty(message = "mapIds can not be empty") List<String> mapIds) {
         log.info("Start invoke getMapInfos()");
 
         List<MapInfo> mapInfos = new ArrayList<>();

@@ -58,6 +58,14 @@
             </dependency>
             <!-- MyBatis end -->
 
+            <!-- Redis begin -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <!-- Redis end -->
+
             <!-- postgresql begin -->
             <dependency>
                 <groupId>org.postgresql</groupId>

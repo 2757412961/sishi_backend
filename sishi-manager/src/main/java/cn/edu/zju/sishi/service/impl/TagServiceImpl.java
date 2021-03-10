@@ -19,7 +19,8 @@ public class TagServiceImpl implements TagService {
   @Autowired
   private TagDao tagDao;
 
-  @Cacheable(value = "selectTags")
+  @Override
+  @Cacheable(value = "SELECT_TAGS")
   public List<Tag> selectTags() {
     return tagDao.selectTags();
   }
