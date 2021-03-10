@@ -54,7 +54,7 @@ public class MapInfoController {
     }
 
     @RequestMapping(value = "mapinfoTag", method = RequestMethod.GET)
-    public List<MapInfo> getMapInfoByTag(@NotNull(message = "tagName cannot be null") @Size(min = 1, max = 50, message = "tagName length should be between 1 and 50") String tagName) {
+    public List<MapInfo> getMapInfoByTag(@NotNull(message = "tagName cannot be null") @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         log.info("Start invoke getMapInfoByTag()");
 
         return mapInfoService.getMapInfoByTag(tagName);

@@ -15,6 +15,6 @@ public class Tag implements Serializable {
   private String tagId;
   
   @NotNull(message = "tagName cannot be null")
-  @Size(min = 1, max = 50, message = "tagName length should be between 1 and 50")
+  @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200")
   private String tagName;
 }

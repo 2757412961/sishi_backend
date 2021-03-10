@@ -63,7 +63,7 @@ public class TagController {
   @ResponseBody
   public Map<String, String> dropTag(
       @PathVariable(value = "tagName")
-      @Size(min = 1, max = 50, message = "tagName length should be in 1 and 50") String tagName) {
+      @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200") String tagName) {
     logger.info("start invoke dropTag()");
     Map<String, String> result = new HashMap<>();
     tagService.dropTag(tagName);

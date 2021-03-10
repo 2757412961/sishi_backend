@@ -12,7 +12,7 @@ public class User {
   private String userId;
 
   @NotNull(message = "userName cannot be null")
-  @Size(min = 5, max = 50, message = "userName length should be in 3 and 36")
+  @Size(min = 5, max = 50, message = "userName length should be in 5 and 50")
   private String userName;
 
   private Long createTime;
