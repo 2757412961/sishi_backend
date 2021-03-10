@@ -25,7 +25,7 @@ public class UserAnswerController {
 
     @RequestMapping(value="getuseranswer" , method = RequestMethod.GET)
     @ResponseBody
-    public int getUserAnswerStatus(@PathVariable(value = "tag_name")String tag_name, @PathVariable(value = "user_name")String user_name) {
+    public int getUserAnswerStatus(@PathVariable(value = "tag_name")String tag_name, @RequestParam(value = "user_name")String user_name) {
         logger.info("Start invoke getUserAnswerStatus()");
         return userAnswerService.getUserAnswerStatus(tag_name, user_name);
     }
@@ -33,7 +33,7 @@ public class UserAnswerController {
 
     @RequestMapping(value="questionsTag" , method = RequestMethod.GET)
     @ResponseBody
-    public List<Question> getQuesByTag(@PathVariable(value = "tag_name")String tag_name) {
+    public List<Question> getQuesByTag(@RequestParam(value = "tag_name")String tag_name) {
         logger.info("Start invoke getQuesByTag()");
         return userAnswerService.getQuesByTag(tag_name);
     }
@@ -41,7 +41,7 @@ public class UserAnswerController {
 
     @RequestMapping(value="useranswer" , method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, String> updateUserAnswerStatusAndScore (@PathVariable(value = "tag_name")String tag_name, @PathVariable(value = "user_name")String user_name) {
+    public Map<String, String> updateUserAnswerStatusAndScore (@RequestParam(value = "tag_name")String tag_name,@RequestParam(value = "user_name")String user_name) {
         logger.info("Start invoke updateUserAnswerStatusAndScore()");
         List<Integer> count = userAnswerService.insertUserAnswerStatus(tag_name, user_name);
         Map<String, String> result = new HashMap<>();
