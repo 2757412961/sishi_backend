@@ -25,14 +25,18 @@ public interface QuestionDao {
     int deleteQuesByID (String question_id);
 
     //@Options(useGeneratedKeys = true,keyProperty = "question_id")
-    @Insert("insert into tb_question(question_id, question_content, options, answer) values(#{question_id},#{question_content},#{options},#{answer})")
+    @Insert("insert into tb_question(question_id, question_content, optionA, optionB,optionC,optionD,optionE,answer) values(#{question_id},#{question_content},#{optionA},#{optionB},#{optionC},#{optionD},#{optionE},#{answer})")
     int insertQues ( Question question);
 
     @Update({"<script>",
                 "update tb_question",
                 " <set>",
                     " <if test='question_content != null'>question_content=#{question_content},</if>",
-                    " <if test='options != null'>options=#{options},</if>",
+                    " <if test='optionA != null'>optionA=#{optionA},</if>",
+                    " <if test='optionB != null'>optionB=#{optionB},</if>",
+                    " <if test='optionC != null'>optionC=#{optionC},</if>",
+                    " <if test='optionD != null'>optionD=#{optionD},</if>",
+                    " <if test='optionE != null'>optionE=#{optionE},</if>",
                     " <if test='answer != null'>answer=#{answer}</if>",
                 " </set>",
                 "where question_id = #{question_id}",

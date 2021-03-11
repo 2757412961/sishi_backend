@@ -26,7 +26,7 @@ public class QuestionController {
     @RequestMapping(value = "questions/selectques", method = RequestMethod.GET)
     @ResponseBody
     public List<Question> getQues() {
-        logger.info("Start invoke getQuesByID()");
+        logger.info("Start invoke getQues()");
         return questionService.getQues();
     }
 
