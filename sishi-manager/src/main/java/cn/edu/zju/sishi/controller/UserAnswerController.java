@@ -25,7 +25,7 @@ public class UserAnswerController {
 
     @RequestMapping(value="getuseranswer" , method = RequestMethod.GET)
     @ResponseBody
-    public int getUserAnswerStatus(@PathVariable(value = "tag_name")String tag_name, @RequestParam(value = "user_name")String user_name) {
+    public int getUserAnswerStatus(@RequestParam(value = "tag_name")String tag_name,@RequestParam(value = "user_name")String user_name) {
         logger.info("Start invoke getUserAnswerStatus()");
         return userAnswerService.getUserAnswerStatus(tag_name, user_name);
     }
@@ -39,7 +39,7 @@ public class UserAnswerController {
     }
 
 
-    @RequestMapping(value="useranswer" , method = RequestMethod.GET)
+    @RequestMapping(value="useranswer" , method = RequestMethod.PUT)
     @ResponseBody
     public Map<String, String> updateUserAnswerStatusAndScore (@RequestParam(value = "tag_name")String tag_name,@RequestParam(value = "user_name")String user_name) {
         logger.info("Start invoke updateUserAnswerStatusAndScore()");

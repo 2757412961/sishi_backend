@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface UserAnswerService {
 
-    int getUserAnswerStatus(String tag_name, String user_name);
+    Integer getUserAnswerStatus(String tag_name, String user_name);
 
     List<Question> getQuesByTag (String tag_name);
 

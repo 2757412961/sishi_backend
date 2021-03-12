@@ -24,12 +24,14 @@ public class UserAnswerServiceImp implements UserAnswerService {
 
     @Autowired
     private UserAnswerDao userAnswerDao;
+
+    @Autowired
     private UserDao userDao;
 
     @Override
-    public int getUserAnswerStatus(String tag_name, String user_name) {
-        int status = userAnswerDao.getUserAnswerStatus(tag_name, user_name);
-        return status;
+    public Integer getUserAnswerStatus(String tag_name, String user_name) {
+        return  userAnswerDao.getUserAnswerStatus(tag_name, user_name);
+
     }
 
     @Override
@@ -43,7 +45,7 @@ public class UserAnswerServiceImp implements UserAnswerService {
         if(userDao.getUserByName(user_name) == null) {
             throw new ValidationException(String.format("User %s not exist!", user_name));
         }
-        else if (userAnswerDao.getUserAnswerStatus(tag_name, user_name) == 1) {
+        else if (new Integer(1).equals(userAnswerDao.getUserAnswerStatus(tag_name, user_name))) {
             throw new ValidationException(String.format("This user has answered these questions!"));
         }
 
