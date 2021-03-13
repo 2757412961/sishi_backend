@@ -28,7 +28,10 @@ public class QuestionServiceImp implements QuestionService {
 
     @Override
     public Question getQuesByID(String question_id)
-    { return questionDao.getQuesByID(question_id); }
+    {  if (questionDao.getQuesByID(question_id) == null) {
+        throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Question %s does not exist!", question_id));
+    }
+        return questionDao.getQuesByID(question_id); }
 
     @Override
     public int deleteQuesByID(String question_id) {
