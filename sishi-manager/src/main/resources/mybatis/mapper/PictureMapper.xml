@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zju.sishi.dao.PictureDao">
+
+    <cache/>
+
+    <resultMap id="PictureResultMap" type="Picture">
+        <result property="pictureId" column="picture_id"/>
+        <result property="pictureName" column="picture_name"/>
+        <result property="pictureUrl" column="picture_url"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="dynamicKeys">
+        <trim prefix="" prefixOverrides="" suffix="" suffixOverrides=",">
+            <if test="pictureId != null and pictureId != ''">picture_id,</if>
+            <if test="pictureName != null and pictureName != ''">picture_name,</if>
+            <if test="pictureUrl != null and pictureUrl != ''">picture_url,</if>
+            <if test="createTime != null and createTime != ''">create_time,</if>
+        </trim>
+    </sql>
+
+    <sql id="dynamicValues">
+        <trim prefix="" prefixOverrides="" suffix="" suffixOverrides=",">
+            <if test="pictureId != null and pictureId != ''">#{pictureId},</if>
+            <if test="pictureName != null and pictureName != ''">#{pictureName},</if>
+            <if test="pictureUrl != null and pictureUrl != ''">#{pictureUrl},</if>
+            <if test="createTime != null and createTime != ''">#{createTime},</if>
+        </trim>
+    </sql>
+
+
+    <select id="getPictureAll" resultMap="PictureResultMap">
+        SELECT picture_id, picture_name, picture_url, create_time
+        FROM tb_picture
+    </select>
+
+    <select id="getPictureById" resultMap="PictureResultMap">
+        SELECT picture_id, picture_name, picture_url, create_time
+        FROM tb_picture
+        WHERE picture_id = #{pictureId}
+    </select>
+
+    <select id="getPictureByIds" resultMap="PictureResultMap">
+        SELECT picture_id, picture_name, picture_url, create_time
+        FROM tb_picture
+        <where>
+            picture_id in
+            <foreach collection="pictureIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="getPictureByPage" resultMap="PictureResultMap">
+        SELECT picture_id, picture_name, picture_url, create_time
+        FROM tb_picture
+        ORDER BY picture_id ASC
+        LIMIT #{length}
+        OFFSET #{offset}
+    </select>
+
+    <select id="getPictureByTag" resultMap="PictureResultMap">
+        SELECT p.picture_id, p.picture_name, p.picture_url, p.create_time
+        FROM tb_picture p, tb_tag_resource_map t
+        WHERE t.tag_name = #{tagName} AND t.resource_id = p.picture_id AND t.resource_type = 'tb_picture'
+    </select>
+
+
+    <insert id="addPicture" parameterType="Picture" flushCache="true">
+        INSERT INTO tb_picture(
+        <include refid="dynamicKeys"/>
+        ) VALUES (
+        <include refid="dynamicValues"/>
+        )
+    </insert>
+
+
+    <delete id="deletePictureById" parameterType="String" flushCache="true">
+        DELETE FROM tb_picture
+        WHERE picture_id = #{pictureId}
+    </delete>
+
+
+</mapper>

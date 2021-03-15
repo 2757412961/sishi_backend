@@ -11,10 +11,12 @@ import java.util.List;
 @Component
 public interface TagDao {
   List<Tag> selectTags();
+
+  Tag getTagByTagName(@Param("tagName") String tagName);
+
+  List<Tag> getTagsByPrefix(@Param("prefixTagName") String prefixTagName);
   
   void addTag(@Param("tag") Tag tagEntity);
-  
-  Tag getTagByTagName(@Param("tagName") String tagName);
   
   void dropTag(@Param("tagName") String tagName);
 }

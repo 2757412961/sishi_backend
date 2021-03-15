@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Alias("MapInfo")
 public class MapInfo implements Serializable {
 
-    @Size(min = 36, max = 36, message = "id length should be 36")
+    @Size(min = 36, max = 36, message = "mapId length should be 36")
     String mapId;
 
     @NotNull(message = "mapName cannot be null")

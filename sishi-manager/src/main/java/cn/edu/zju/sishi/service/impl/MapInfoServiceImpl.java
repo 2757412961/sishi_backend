@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
@@ -38,7 +39,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     @Override
 //    @Cacheable(value = "GET_MAPINFO_BY_IDS")
     public List<MapInfo> getMapInfoByIds(List<String> mapIds) {
-        if (mapIds == null || mapIds.isEmpty()) {
+        if (CollectionUtils.isEmpty(mapIds)) {
             return null;
         }
 
@@ -48,7 +49,7 @@ public class MapInfoServiceImpl implements MapInfoService {
 //            if (mapInfoEntity != null) {
             mapInfoList.add(mapInfoEntity);
 //            } else {
-//                throw new ValidationException(String.format("Mapinfo %s is not exist!", mapId));
+//                throw new ValidationException(String.format("Mapinfo %s does not exist!", mapId));
 //            }
         }
 
@@ -61,13 +62,6 @@ public class MapInfoServiceImpl implements MapInfoService {
         return mapInfoDao.getMapInfoByTag(tagName);
     }
 
-    public int insertMapInfo(MapInfo mapInfoEntity) {
-        mapInfoEntity.setMapId(UUID.randomUUID().toString());
-        mapInfoEntity.setCreateTime(Instant.now().toEpochMilli());
-
-        return mapInfoDao.addMapInfo(mapInfoEntity);
-    }
-
     @Override
     public int addMapInfo(MapInfo mapInfoEntity) {
         String mapName = mapInfoEntity.getMapName();
@@ -75,14 +69,17 @@ public class MapInfoServiceImpl implements MapInfoService {
             throw new ValidationException(String.format("Mapinfo %s already exist!", mapName));
         }
 
-        return insertMapInfo(mapInfoEntity);
+        mapInfoEntity.setMapId(UUID.randomUUID().toString());
+        mapInfoEntity.setCreateTime(Instant.now().toEpochMilli());
+
+        return mapInfoDao.addMapInfo(mapInfoEntity);
     }
 
     @Override
     public int deleteMapInfoById(String mapId) {
         MapInfo mapInfoDelete = mapInfoDao.getMapInfoById(mapId);
         if (mapInfoDelete == null) {
-            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "Mapinfo is not exist!");
+            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "Mapinfo does not exist!");
         }
 
         return mapInfoDao.deleteMapInfoById(mapId);
@@ -91,7 +88,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     @Override
     public int updateMapInfo(MapInfo mapInfoEntity) {
         if (StringUtils.isEmpty(mapInfoEntity.getMapId())) {
-            throw new ValidationException(String.format("Mapinfo ID is not exist!"));
+            throw new ValidationException(String.format("Mapinfo does not exist!"));
         }
 
         String mapName = mapInfoEntity.getMapName();

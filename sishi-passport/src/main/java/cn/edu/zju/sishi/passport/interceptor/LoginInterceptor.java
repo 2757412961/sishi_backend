@@ -62,9 +62,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
           return false;
         }
       } else {
-//        flushError(response, AuthResponseCode.USER_ID_IS_NULL, AuthResponseCode.USER_ID_IS_NULL_DESC);
-//        return false;
-        return true;
+        flushError(response, AuthResponseCode.USER_ID_IS_NULL, AuthResponseCode.USER_ID_IS_NULL_DESC);
+        return false;
       }
     }
     boolean flag = isPermission(request, response);

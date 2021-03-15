@@ -17,5 +17,7 @@ public class InterceptorConfigurer implements WebMvcConfigurer  {
     // addPathPatterns 用于添加拦截规则
     // excludePathPatterns 用户排除拦截
     registry.addInterceptor(loginInterceptor).addPathPatterns("/tag/**","/tags/**");
+    registry.addInterceptor(loginInterceptor).addPathPatterns("/picture/**","/pictures/**");
+    registry.addInterceptor(loginInterceptor).addPathPatterns("/mapinfo/**","/mapinfos/**");
   }
 }

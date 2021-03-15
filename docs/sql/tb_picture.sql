@@ -12,23 +12,23 @@
  Target Server Version : 110005
  File Encoding         : 65001
 
- Date: 10/03/2021 19:32:37
+ Date: 10/03/2021 19:32:45
 */
 
 
 -- ----------------------------
--- Table structure for tb_mapinfo
+-- Table structure for tb_picture
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."tb_mapinfo";
-CREATE TABLE "public"."tb_mapinfo" (
-  "map_id" varchar(36) COLLATE "pg_catalog"."default" NOT NULL,
-  "map_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "map_json" text COLLATE "pg_catalog"."default" NOT NULL,
+DROP TABLE IF EXISTS "public"."tb_picture";
+CREATE TABLE "public"."tb_picture" (
+  "picture_id" varchar(36) COLLATE "pg_catalog"."default" NOT NULL,
+  "picture_name" varchar(100) COLLATE "pg_catalog"."default" NOT NULL,
+  "picture_url" varchar(200) COLLATE "pg_catalog"."default" NOT NULL,
   "create_time" int8
 )
 ;
 
 -- ----------------------------
--- Primary Key structure for table tb_mapinfo
+-- Primary Key structure for table tb_picture
 -- ----------------------------
-ALTER TABLE "public"."tb_mapinfo" ADD CONSTRAINT "tb_map_pkey" PRIMARY KEY ("map_id");
+ALTER TABLE "public"."tb_picture" ADD CONSTRAINT "tb_picture_pkey" PRIMARY KEY ("picture_id");

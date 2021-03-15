@@ -1,7 +1,6 @@
 package cn.edu.zju.sishi.service;
 
 import cn.edu.zju.sishi.entity.MapInfo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
