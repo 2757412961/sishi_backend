@@ -80,7 +80,7 @@ public class QuestionController {
         Map<String, String> result = new HashMap<>();
 
         if (count >= 1){
-            result.put("question_id", "Update "+question.getQuestion_id());
+            result.put("question_id", "Update "+question.getQuestionId());
             return result;
         }
         else {
