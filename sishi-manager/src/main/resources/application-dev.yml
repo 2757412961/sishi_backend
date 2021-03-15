@@ -1,6 +1,6 @@
 # port
 server:
-  port: 7666
+  port: 8080
   servlet:
     context-path: /v1.0/api/
     session:
@@ -9,7 +9,7 @@ server:
 # datasource
 spring:
   redis:
-    host: 192.168.137.1
+    host: 192.168.2.2
     port: 6379
     password: Root123!@$
     timeout: 0
@@ -21,11 +21,22 @@ spring:
         max-wait: -1
         min-idle: 0
   datasource:
-    url: jdbc:postgresql://192.168.137.1:5432/sishi
+    url: jdbc:postgresql://192.168.2.2:5432/sishi
     username: postgres
-    password: postgres
+    password: Root123!@$
     driver-class-name: org.postgresql.Driver
 #    url: jdbc:mysql://localhost:3306/localdb
 #    username: root
 #    password: root123
 #    driver-class-name: com.mysql.jdbc.Driver
+
+myconfig:
+  nginx:
+    host: 192.168.137.1
+    port: 8088
+    httpHead: http://${myconfig.nginx.host}:${myconfig.nginx.port}
+    winRoot: F:/SSNginx/webresource
+    linuxRoot: /home/webresource
+    picPath: /sishi/picture/
+    audioPath: /sishi/audio/
+    videoPath: /sishi/video/

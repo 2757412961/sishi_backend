@@ -34,6 +34,12 @@
         </dependency>
         <!-- Spring end -->
 
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
         <!-- Spring test begin -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -139,6 +145,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
                 <configuration>
                     <imageName>dde/${project.artifactId}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>

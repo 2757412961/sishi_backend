@@ -18,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @AuthController
+@Validated
 public class TagController {
 
   private static final String ID = "id";

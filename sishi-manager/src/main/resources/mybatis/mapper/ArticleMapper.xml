@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zju.sishi.dao.ArticleDao">
+
+    <resultMap id="articleDaoResultMap" type="cn.edu.zju.sishi.entity.Article">
+        <result property="articleId" column="ARTICLE_ID" jdbcType="VARCHAR"/>
+        <result property="articleTitle" column="ARTICLE_TITLE" jdbcType="VARCHAR"/>
+        <result property="articleAuthor" column="ARTICLE_AUTHOR" jdbcType="VARCHAR"/>
+        <result property="articleContent" column="ARTICLE_CONTENT" jdbcType="VARCHAR"/>
+        <result property="articlePublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
+        <result property="articleCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="listArticles" resultMap="articleDaoResultMap">
+        SELECT article_id, article_title, article_content, article_author,
+        publish_time, create_time
+        FROM tb_article
+        LIMIT #{length}
+        OFFSET #{offset}
+    </select>
+
+    <select id="getArticle" resultMap="articleDaoResultMap">
+        SELECT article_id, article_title, article_content, article_author,
+        publish_time, create_time
+        FROM tb_article
+        WHERE article_id = #{articleId}
+    </select>
+
+
+
+
+    <select id="getArticlesByTagName" resultType="cn.edu.zju.sishi.entity.Article">
+        SELECT article_id, article_title, article_content, article_author,publish_time, create_time
+        FROM tb_article a, tb_tag_resource_map m
+        WHERE m.tag_name = #{tagName}
+        AND m.resource_id=a.article_id
+        AND m.resource_type= 'tb_article'
+    </select>
+
+    <delete id="dropArticle" flushCache="true">
+        DELETE FROM tb_article WHERE article_id = #{articleId};
+    </delete>
+
+    <insert id="addArticle" parameterType="cn.edu.zju.sishi.entity.Article" flushCache="true">
+        INSERT INTO tb_article
+          (article_id, article_title, article_content, article_author,
+          publish_time, create_time)
+        VALUES
+        (#{article.articleId},
+        #{article.articleTitle},
+        #{article.articleContent},
+        #{article.articleAuthor},
+        #{article.articlePublishTime},
+        #{article.articleCreateTime});
+    </insert>
+
+    <select id="getArticleByTitle" resultMap="articleDaoResultMap">
+        SELECT article_id, article_title, article_content, article_author,
+        publish_time, create_time
+        FROM tb_article
+        WHERE article_title = #{title}
+
+    </select>
+</mapper>

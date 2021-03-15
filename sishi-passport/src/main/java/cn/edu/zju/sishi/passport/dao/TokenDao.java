@@ -2,7 +2,6 @@ package cn.edu.zju.sishi.passport.dao;
 
 import org.apache.ibatis.annotations.Param;
 
-
 public interface TokenDao {
   String getToken(String userId);
 

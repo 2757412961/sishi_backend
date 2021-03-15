@@ -29,6 +29,7 @@
         <postgresql.version>42.2.2</postgresql.version>
         <lombok.version>1.18.10</lombok.version>
         <jackson.version>2.9.5</jackson.version>
+        <fastjson.version>1.2.62</fastjson.version>
     </properties>
 
     <dependencyManagement>
@@ -48,15 +49,14 @@
                 <scope>test</scope>
                 <version>${spring-boot.version}</version>
             </dependency>
-            <!-- Spring end -->
 
-            <!-- MyBatis begin -->
             <dependency>
-                <groupId>org.mybatis.spring.boot</groupId>
-                <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <optional>true</optional>
+                <version>${spring-boot.version}</version>
             </dependency>
-            <!-- MyBatis end -->
+            <!-- Spring end -->
 
             <!-- Redis begin -->
             <dependency>
@@ -65,6 +65,14 @@
                 <version>${spring-boot.version}</version>
             </dependency>
             <!-- Redis end -->
+
+            <!-- MyBatis begin -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!-- MyBatis end -->
 
             <!-- postgresql begin -->
             <dependency>
@@ -110,12 +118,14 @@
             </dependency>
             <!-- Log End -->
 
+            <!-- junit -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <scope>test</scope>
                 <version>4.12</version>
             </dependency>
+            <!-- junit -->
 
             <!-- jdk -->
             <dependency>

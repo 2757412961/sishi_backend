@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zju.sishi.dao.AudioDao">
+
+    <resultMap id="audioDaoResultMap" type="cn.edu.zju.sishi.entity.Audio">
+        <result property="audioId" column="AUDIO_ID" jdbcType="VARCHAR"/>
+        <result property="audioTitle" column="AUDIO_TITLE" jdbcType="VARCHAR"/>
+        <result property="audioSource" column="AUDIO_AUTHOR" jdbcType="VARCHAR"/>
+        <result property="audioContent" column="AUDIO_CONTENT" jdbcType="VARCHAR"/>
+        <result property="audioPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
+        <result property="audioCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="listAudios" resultMap="audioDaoResultMap">
+        SELECT audio_id, audio_title, audio_content, audio_source,
+        publish_time, create_time
+        FROM tb_audio
+        LIMIT #{length}
+        OFFSET #{offset}
+    </select>
+
+    <select id="getAudio" resultMap="audioDaoResultMap">
+        SELECT audio_id, audio_title, audio_content, audio_source,
+        publish_time, create_time
+        FROM tb_audio
+        WHERE audio_id = #{audioId}
+    </select>
+
+    <select id="countAudiosByTagName" resultType="java.lang.Integer">
+        SELECT COUNT(RESOURCE_ID)
+        FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName} AND resource_type = 'tb_audio'
+    </select>
+
+    <select id="countAudios" resultType="java.lang.Integer">
+        SELECT COUNT(AUDIO_ID)
+        FROM tb_audio
+
+    </select>
+
+    <select id="getVideoByTitle" resultMap="audioDaoResultMap">
+        SELECT audio_id, audio_title, audio_content, audio_source,
+        publish_time, create_time
+        FROM tb_audio
+        WHERE video_title = #{title}
+    </select>
+
+    <select id="getAudiosByTagName" resultType="cn.edu.zju.sishi.entity.Audio">
+        SELECT audio_id, audio_title, audio_content, audio_source,
+          publish_time, create_time
+        FROM tb_audio a, tb_tag_resource_map m
+        WHERE tag_name = #{tagName}
+        AND m.resource_id=a.audio_id
+        AND m.resource_type= 'tb_audio'
+    </select>
+
+    <delete id="dropAudio" flushCache="true">
+        DELETE FROM tb_audio WHERE audio_id = #{audioId};
+    </delete>
+
+    <insert id="addAudio" parameterType="cn.edu.zju.sishi.entity.Audio" flushCache="true">
+        INSERT INTO tb_audio
+          (audio_id, audio_title, audio_content, audio_source,
+          publish_time, create_time)
+        VALUES
+        (#{audio.audioId},
+        #{audio.audioTitle},
+        #{audio.audioContent},
+        #{audio.audioSource},
+        #{audio.audioPublishTime},
+        #{audio.audioCreateTime});
+    </insert>
+
+    <select id="getAudioByTitle" resultMap="audioDaoResultMap">
+        SELECT audio_id, audio_title, audio_content, audio_source,
+          publish_time, create_time
+        FROM tb_audio
+        WHERE audio_title = #{title}
+
+    </select>
+
+</mapper>
