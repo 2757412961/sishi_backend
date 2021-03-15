@@ -1,0 +1,101 @@
+package cn.edu.zju.sishi.service.impl;
+
+import cn.edu.zju.sishi.dao.MapInfoDao;
+import cn.edu.zju.sishi.entity.MapInfo;
+import cn.edu.zju.sishi.exception.ResourceNotFoundException;
+import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.service.MapInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class MapInfoServiceImpl implements MapInfoService {
+
+    @Autowired
+    private MapInfoDao mapInfoDao;
+
+    @Override
+//    @Cacheable(value = "GET_ALL_MAPINFO")
+    public List<MapInfo> getAllMapInfo() {
+        return mapInfoDao.getAllMapInfo();
+    }
+
+    @Override
+//    @Cacheable(value = "GET_MAPINFO_BY_ID")
+    public MapInfo getMapInfoById(String mapId) {
+        return mapInfoDao.getMapInfoById(mapId);
+    }
+
+    @Override
+//    @Cacheable(value = "GET_MAPINFO_BY_IDS")
+    public List<MapInfo> getMapInfoByIds(List<String> mapIds) {
+        if (CollectionUtils.isEmpty(mapIds)) {
+            return null;
+        }
+
+        List<MapInfo> mapInfoList = new ArrayList<>();
+        for (String mapId : mapIds) {
+            MapInfo mapInfoEntity = mapInfoDao.getMapInfoById(mapId);
+//            if (mapInfoEntity != null) {
+            mapInfoList.add(mapInfoEntity);
+//            } else {
+//                throw new ValidationException(String.format("Mapinfo %s does not exist!", mapId));
+//            }
+        }
+
+        return mapInfoList;
+    }
+
+    @Override
+//    @Cacheable(value = "GET_MAPINFO_BY_TAG")
+    public List<MapInfo> getMapInfoByTag(String tagName) {
+        return mapInfoDao.getMapInfoByTag(tagName);
+    }
+
+    @Override
+    public int addMapInfo(MapInfo mapInfoEntity) {
+        String mapName = mapInfoEntity.getMapName();
+        if (mapInfoDao.getMapInfoByName(mapName) != null) {
+            throw new ValidationException(String.format("Mapinfo %s already exist!", mapName));
+        }
+
+        mapInfoEntity.setMapId(UUID.randomUUID().toString());
+        mapInfoEntity.setCreateTime(Instant.now().toEpochMilli());
+
+        return mapInfoDao.addMapInfo(mapInfoEntity);
+    }
+
+    @Override
+    public int deleteMapInfoById(String mapId) {
+        MapInfo mapInfoDelete = mapInfoDao.getMapInfoById(mapId);
+        if (mapInfoDelete == null) {
+            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "Mapinfo does not exist!");
+        }
+
+        return mapInfoDao.deleteMapInfoById(mapId);
+    }
+
+    @Override
+    public int updateMapInfo(MapInfo mapInfoEntity) {
+        if (StringUtils.isEmpty(mapInfoEntity.getMapId())) {
+            throw new ValidationException(String.format("Mapinfo does not exist!"));
+        }
+
+        String mapName = mapInfoEntity.getMapName();
+        if (mapInfoDao.getMapInfoByName(mapName) != null) {
+            throw new ValidationException(String.format("Mapinfo Name %s already exist!", mapName));
+        }
+
+        return mapInfoDao.updateMapInfo(mapInfoEntity);
+    }
+}

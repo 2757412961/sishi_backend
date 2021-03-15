@@ -34,6 +34,12 @@
         </dependency>
         <!-- Spring end -->
 
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
         <!-- Spring test begin -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,6 +54,13 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
         <!-- MyBatis end -->
+
+        <!-- Redis begin -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <!-- Redis end -->
 
         <!-- log begin -->
         <dependency>
@@ -113,11 +126,17 @@
         </dependency>
 
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>cn.edu.zju</groupId>
             <artifactId>sishi-passport</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        
+
     </dependencies>
 
     <build>
@@ -126,6 +145,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
                 <configuration>
                     <imageName>dde/${project.artifactId}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>

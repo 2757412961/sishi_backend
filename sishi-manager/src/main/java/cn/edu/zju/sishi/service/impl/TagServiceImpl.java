@@ -2,59 +2,146 @@ package cn.edu.zju.sishi.service.impl;
 
 import cn.edu.zju.sishi.dao.TagDao;
 import cn.edu.zju.sishi.entity.Tag;
+import cn.edu.zju.sishi.entity.vo.TagTree;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.service.TagResourceService;
 import cn.edu.zju.sishi.service.TagService;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class TagServiceImpl implements TagService {
 
-  @Autowired
-  private TagDao tagDao;
+    @Autowired
+    private TagDao tagDao;
 
-  @Cacheable(value = "selectTags")
-  public List<Tag> selectTags() {
-    return tagDao.selectTags();
-  }
+    @Autowired
+    private TagResourceService tagResourceService;
 
-  @Override
-  public void addTag(Tag tagEntity) {
-    if (tagDao.getTagByTagName(tagEntity.getTagName()) != null) {
-      throw new ValidationException(String.format("Tag %s already exist!", tagEntity.getTagName()));
+    @Override
+    @Cacheable(value = "SELECT_TAGS")
+    public List<Tag> selectTags() {
+        return tagDao.selectTags();
     }
-    insertTag(tagEntity);
-  }
 
-  @Override
-  public void addTags(List<String> tags) {
-    for (String tagName : tags) {
-      if (tagDao.getTagByTagName(tagName) != null) {
-        throw new ValidationException(String.format("Tag %s already exist!", tagName));
-      }
-      Tag tagEntity = new Tag();
-      tagEntity.setTagName(tagName);
-      insertTag(tagEntity);
+    @Override
+    @Cacheable(value = "GET_TAG_BY_TAG_NAME")
+    public Tag getTagByTagName(String tagName) {
+        return tagDao.getTagByTagName(tagName);
     }
-  }
-  
-  private void insertTag(Tag tag) {
-    final String uuid = UUID.randomUUID().toString();
-    tag.setTagId(uuid);
-    tagDao.addTag(tag);
-  }
 
-  @Override
-  public void dropTag(String tagName) {
-    if (tagDao.getTagByTagName(tagName) == null) {
-      throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Tag %s does not exist!", tagName));
+    /**
+     * 按照 value 找到集合中的对象，返回 Index
+     *
+     * @param tagTrees
+     * @param value
+     * @return
+     */
+    public int getTagTreeIndexByValue(List<TagTree> tagTrees, String value) {
+        int res = -1;
+
+        for (int i = 0; i < tagTrees.size(); i++) {
+            if (tagTrees.get(i).getValue().equals(value)) {
+                return i;
+            }
+        }
+
+        return res;
     }
-    tagDao.dropTag(tagName);
-  }
+
+    @Override
+    @Cacheable(value = "GET_TAG_TREE")
+    public List<TagTree> getTagTree() {
+        List<Tag> tags = tagDao.selectTags();
+
+        List<TagTree> results = new ArrayList<>();
+        for (Tag tag : tags) {
+            List<TagTree> root = results;
+            String[] ts = tag.getTagName().split("@");
+            for (int i = 0; i < ts.length; i++) {
+                String t = ts[i];
+                int index = getTagTreeIndexByValue(root, t);
+                if (index >= 0) {
+                    root = root.get(index).getChildren();
+                } else {
+                    TagTree newTagTree = new TagTree();
+                    newTagTree.setValue(t);
+                    newTagTree.setLabel(t);
+                    root.add(newTagTree);
+
+                    root = root.get(root.size() - 1).getChildren();
+                }
+            }
+        }
+
+        return results;
+    }
+
+    @Override
+    @Cacheable(value = "GET_CHILD_TAG")
+    public Set<String> getChildTag(String tagName) {
+        if (tagDao.getTagByTagName(tagName) == null) {
+            throw new ValidationException(String.format("Tag %s does not exist!", tagName));
+        }
+
+        Set<String> results = new HashSet<>();
+
+        List<Tag> tagList = tagDao.getTagsByPrefix(tagName);
+        for (Tag tag : tagList) {
+            String[] split = tag.getTagName().substring(tagName.length()).split("@");
+            if (split.length >= 2) {
+                results.add(split[1]);
+            }
+        }
+
+        return results;
+    }
+
+    @Override
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    public void addTag(Tag tagEntity) {
+        if (tagDao.getTagByTagName(tagEntity.getTagName()) != null) {
+            throw new ValidationException(String.format("Tag %s already exist!", tagEntity.getTagName()));
+        }
+        insertTag(tagEntity);
+    }
+
+    @Override
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    public void addTags(List<String> tags) {
+        for (String tagName : tags) {
+            if (tagDao.getTagByTagName(tagName) != null) {
+                throw new ValidationException(String.format("Tag %s already exist!", tagName));
+            }
+            Tag tagEntity = new Tag();
+            tagEntity.setTagName(tagName);
+            insertTag(tagEntity);
+        }
+    }
+
+    private void insertTag(Tag tag) {
+        final String uuid = UUID.randomUUID().toString();
+        tag.setTagId(uuid);
+        tagDao.addTag(tag);
+    }
+
+    @Override
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    public void dropTag(String tagName) {
+        if (tagDao.getTagByTagName(tagName) == null) {
+            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Tag %s does not exist!", tagName));
+        }
+        tagDao.dropTag(tagName);
+        tagResourceService.deleteByTagName(tagName);
+    }
 }

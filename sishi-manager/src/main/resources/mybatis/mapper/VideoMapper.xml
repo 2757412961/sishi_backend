@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zju.sishi.dao.VideoDao">
+
+    <resultMap id="videoDaoResultMap" type="cn.edu.zju.sishi.entity.Video">
+        <result property="videoId" column="VIDEO_ID" jdbcType="VARCHAR"/>
+        <result property="videoTitle" column="VIDEO_TITLE" jdbcType="VARCHAR"/>
+        <result property="videoSource" column="VIDEO_SOURCE" jdbcType="VARCHAR"/>
+        <result property="videoContent" column="VIDEO_CONTENT" jdbcType="VARCHAR"/>
+        <result property="videoPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
+        <result property="videoCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="listVideos" resultMap="videoDaoResultMap">
+        SELECT video_id, video_title, video_content, video_source,
+        publish_time, create_time
+        FROM tb_video
+        LIMIT #{length}
+        OFFSET #{offset}
+    </select>
+
+    <select id="getVideo" resultMap="videoDaoResultMap">
+        SELECT video_id, video_title, video_content, video_source,
+        publish_time, create_time
+        FROM tb_video
+        WHERE video_id = #{videoId}
+    </select>
+
+    <select id="getVideoByTitle" resultMap="videoDaoResultMap">
+        SELECT video_id, video_title, video_content, video_source,
+        publish_time, create_time
+        FROM tb_video
+        WHERE video_title = #{title}
+    </select>
+
+    <select id="countVideosByTagName" resultType="java.lang.Integer">
+        SELECT COUNT(RESOURCE_ID)
+        FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName} AND resource_type = 'tb_video'
+    </select>
+
+    <select id="countVideos" resultType="java.lang.Integer">
+        SELECT COUNT(VIDEO_ID)
+        FROM tb_video
+    </select>
+
+    <select id="getVideosByTagName" resultType="cn.edu.zju.sishi.entity.Video">
+        SELECT video_id, video_title, video_content, video_source,
+        publish_time, create_time
+        FROM tb_video v, tb_tag_resource_map m
+        WHERE tag_name = #{tagName}
+        AND m.resource_id=v.video_id
+        AND m.resource_type = 'tb_video'
+    </select>
+
+    <delete id="dropVideo" flushCache="true">
+        DELETE FROM tb_video WHERE video_id = #{videoId};
+    </delete>
+
+    <insert id="addVideo" parameterType="cn.edu.zju.sishi.entity.Video" flushCache="true">
+        INSERT INTO tb_video
+          (video_id, video_title, video_content, video_source,
+          publish_time, create_time)
+        VALUES
+        (#{video.videoId},
+        #{video.videoTitle},
+        #{video.videoContent},
+        #{video.videoSource},
+        #{video.videoPublishTime},
+        #{video.videoCreateTime});
+    </insert>
+
+</mapper>

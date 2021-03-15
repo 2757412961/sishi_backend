@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zju.sishi.dao.TagResourceDao">
+
+    <cache/>
+
+    <select id="getTagResourceType" resultType="String">
+        SELECT resource_type
+        FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName} AND resource_id = #{resourceId}
+        LIMIT 1
+    </select>
+
+    <select id="getTagResourceIds" resultType="String">
+        SELECT resource_id
+        FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName}
+    </select>
+
+
+    <insert id="addTagResource" parameterType="TagResource" flushCache="true">
+        INSERT INTO tb_tag_resource_map(tag_id, tag_name, resource_id, resource_type)
+        VALUES (#{tagId}, #{tagName}, #{resourceId}, #{resourceType})
+    </insert>
+
+
+    <delete id="deleteTagResource" flushCache="true">
+        DELETE FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName} AND resource_id = #{resourceId}
+    </delete>
+
+    <delete id="deleteByTagName" flushCache="true">
+        DELETE FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName}
+    </delete>
+
+</mapper>

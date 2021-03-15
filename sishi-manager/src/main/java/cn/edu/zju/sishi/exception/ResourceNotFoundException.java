@@ -18,6 +18,10 @@ public class ResourceNotFoundException extends BaseException {
     this.fieldName = fieldName;
     this.fieldValue = fieldValue;
   }
+  //lemon not sure
+  public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
+    this(HttpStatus.NOT_FOUND.value(), resourceName, fieldName, fieldValue);
+  }
 
   public ResourceNotFoundException(String resourceName, Map<String, String> conditions) {
     StringBuffer logStringBuffer = new StringBuffer();

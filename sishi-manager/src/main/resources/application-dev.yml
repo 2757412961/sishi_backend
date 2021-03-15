@@ -8,6 +8,10 @@ server:
 
 # datasource
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
   redis:
     host: 192.168.2.2
     port: 6379
@@ -29,3 +33,14 @@ spring:
 #    username: root
 #    password: root123
 #    driver-class-name: com.mysql.jdbc.Driver
+
+myconfig:
+  nginx:
+    host: 192.168.2.2
+    port: 8088
+    httpHead: http://${myconfig.nginx.host}:${myconfig.nginx.port}
+    winRoot: F:/SSNginx/webresource
+    linuxRoot: /home/webresource
+    picPath: /sishi/picture/
+    audioPath: /sishi/audio/
+    videoPath: /sishi/video/

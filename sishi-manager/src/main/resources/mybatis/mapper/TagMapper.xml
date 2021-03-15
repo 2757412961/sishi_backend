@@ -17,16 +17,25 @@
         SELECT tag_id, tag_name
         FROM tb_tag
         WHERE tag_name = #{tagName}
+        LIMIT 1
     </select>
 
-    <delete id="dropTag" flushCache="true">
-        DELETE FROM tb_tag WHERE tag_name = #{tagName};
-    </delete>
-    
+    <select id="getTagsByPrefix" resultType="cn.edu.zju.sishi.entity.Tag">
+        SELECT tag_id, tag_name
+        FROM tb_tag
+        WHERE tag_name LIKE #{prefixTagName} || '%'
+    </select>
+
+
     <insert id="addTag" parameterType="cn.edu.zju.sishi.entity.Tag" flushCache="true">
         INSERT INTO tb_tag
           (tag_id, tag_name)
         VALUES (#{tag.tagId}, #{tag.tagName});
     </insert>
+
+
+    <delete id="dropTag" flushCache="true">
+        DELETE FROM tb_tag WHERE tag_name = #{tagName};
+    </delete>
     
 </mapper>

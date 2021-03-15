@@ -1,0 +1,64 @@
+package cn.edu.zju.sishi.service.impl;
+
+import cn.edu.zju.sishi.dao.ArticleDao;
+import cn.edu.zju.sishi.entity.Article;
+import cn.edu.zju.sishi.exception.ResourceNotFoundException;
+import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * @author lemon
+ * @date 2021/3/5
+ */
+@Service
+public class ArticleServiceImpl implements ArticleService {
+  private static final String ARTICLE_ALREADY_EXISTS_ERROR_MSG
+          = "Article with title %s already exists in the article list!";
+  @Autowired
+  private ArticleDao articleDao;
+
+  public void addArticle(Article articleEntity) {
+    String title = articleEntity.getArticleTitle();
+    Article existArticle = articleDao.getArticleByTitle(title);
+    if (existArticle != null) {
+      throw new ValidationException(String.format(ARTICLE_ALREADY_EXISTS_ERROR_MSG, title));
+    }
+    articleEntity.setArticleId(UUID.randomUUID().toString());
+    long publishTime = Instant.now().toEpochMilli();
+    long createTime = Instant.now().toEpochMilli();
+    articleEntity.setArticleCreateTime(createTime);
+    articleEntity.setArticlePublishTime(publishTime);
+    articleDao.addArticle(articleEntity);
+  }
+
+  @Override
+  public List<Article> listArticles(int start, int length) {
+    return articleDao.listArticles(length, length * start);
+  }
+
+  @Override
+  public Article getArticle(String articleId) {
+    return articleDao.getArticle(articleId);
+  }
+
+  @Override
+  public List<Article> getArticlesByTagName(String tagName, int start, int length) {
+    return articleDao.getArticlesByTagName(tagName, length, length * start);
+  }
+
+  public void dropArticle(String articleId) {
+    Article articleEntity = articleDao.getArticle(articleId);
+    if (articleEntity == null) {
+      throw new ResourceNotFoundException("article", "id", articleId);
+    }
+    articleDao.dropArticle(articleId);
+  }
+
+}
+

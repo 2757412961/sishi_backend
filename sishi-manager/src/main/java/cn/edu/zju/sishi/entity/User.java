@@ -4,15 +4,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class User {
+public class User implements Serializable {
   
   @Size(min = 36, max = 36, message = "id length should be 36")
   private String userId;
 
   @NotNull(message = "userName cannot be null")
-  @Size(min = 5, max = 50, message = "userName length should be in 3 and 36")
+  @Size(min = 5, max = 50, message = "userName length should be in 5 and 50")
   private String userName;
 
   private Long createTime;
