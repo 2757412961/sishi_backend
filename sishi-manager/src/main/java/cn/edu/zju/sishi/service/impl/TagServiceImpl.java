@@ -1,10 +1,12 @@
 package cn.edu.zju.sishi.service.impl;
 
 import cn.edu.zju.sishi.dao.TagDao;
+import cn.edu.zju.sishi.entity.MapInfo;
 import cn.edu.zju.sishi.entity.Tag;
 import cn.edu.zju.sishi.entity.vo.TagTree;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.service.MapInfoService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import cn.edu.zju.sishi.service.TagService;
 import com.alibaba.fastjson.JSONArray;
@@ -27,6 +29,9 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     private TagResourceService tagResourceService;
+
+    @Autowired
+    private MapInfoService mapInfoService;
 
     @Override
     @Cacheable(value = "SELECT_TAGS")
@@ -77,8 +82,20 @@ public class TagServiceImpl implements TagService {
                     TagTree newTagTree = new TagTree();
                     newTagTree.setValue(t);
                     newTagTree.setLabel(t);
-                    root.add(newTagTree);
+                    // 添加标签路径、添加地理属性
+                    if (i == ts.length - 1) {
+                        newTagTree.setTagName(tag.getTagName());
 
+                        List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName());
+                        if (!mapInfos.isEmpty()) {
+                            newTagTree.setGeoCoordinates(
+                                    new ArrayList<>(Arrays.asList
+                                            (mapInfos.get(0).getMapLon(), mapInfos.get(0).getMapLat())));
+
+                        }
+                    }
+
+                    root.add(newTagTree);
                     root = root.get(root.size() - 1).getChildren();
                 }
             }

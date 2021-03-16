@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "a2d6106b-63e6-410a-9d8c-b1e794abd0c0",
+		"name": "sishi/picture",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:7666/v1.0/api/pictures",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7666/v1.0/api/pictures",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"pictures"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/picture/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7666/v1.0/api/picture/497e30c5-da2a-421c-b593-7b8cdae576e67",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"picture",
+						"497e30c5-da2a-421c-b593-7b8cdae576e67"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/pictures/ids",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    \"1b08dfe4-6eb6-49b4-af7a-d803bf8bdd70\",\r\n    \"dcd750e9-1176-4253-836b-328429a33a5b\"\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7666/v1.0/api/pictures/ids",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"pictures",
+						"ids"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/pictures/tagName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7666/v1.0/api/pictures/tagName?tagName=党史新学@中共一大",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"pictures",
+						"tagName"
+					],
+					"query": [
+						{
+							"key": "tagName",
+							"value": "党史新学@中共一大"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/picture",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pictureTitle\": \"dasd.jpeg\",\r\n    \"pictureSource\": \"http:8088/ad/dasddadasd.jpeg\",\r\n    \"pictureContent\": \"dasd.jpeg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7666/v1.0/api/picture",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"picture"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/picture/tagName/{tagName}",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pictureTitle\": \"北京.jpeg\",\r\n    \"pictureSource\": \"http:8088/ad/helloKity.jpeg\",\r\n    \"pictureContent\": \"helloKity.jpeg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7666/v1.0/api/picture/tagName/改革开放@改革复兴@北京",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"picture",
+						"tagName",
+						"改革开放@改革复兴@北京"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/pictureFile",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "pictureFile",
+							"type": "file",
+							"src": "/F:/SS测试数据/捕获.JPG"
+						},
+						{
+							"key": "pictureTitle",
+							"value": "你好西溪",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "tagName",
+							"value": "党史新学@中共一大@杭州@西溪",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:7666/v1.0/api/pictureFile",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"pictureFile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/picture/{pictureId}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:7666/v1.0/api/picture/65e1ce06-ba13-4d5f-b8a3-5d20b91f38c8",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"picture",
+						"65e1ce06-ba13-4d5f-b8a3-5d20b91f38c8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/picture/{pictureId}/tagName/{tagName}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:7666/v1.0/api/picture/197d9ead-f4d8-47fc-9165-bc3fe0115fb5e/tagName/党史新学@中共一大@杭州@西溪",
+					"host": [
+						"localhost"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"picture",
+						"197d9ead-f4d8-47fc-9165-bc3fe0115fb5e",
+						"tagName",
+						"党史新学@中共一大@杭州@西溪"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

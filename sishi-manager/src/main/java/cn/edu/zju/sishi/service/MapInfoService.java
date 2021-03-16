@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface MapInfoService {
 
-    List<MapInfo> getAllMapInfo();
+    List<MapInfo> getAllMapInfos();
 
     MapInfo getMapInfoById(String mapId);
 
-    List<MapInfo> getMapInfoByIds(List<String> mapIds);
+    List<MapInfo> getMapInfosByIds(List<String> mapIds);
 
-    List<MapInfo> getMapInfoByTag(String tagName);
+    List<MapInfo> getMapInfosByTag(String tagName);
 
     int addMapInfo(MapInfo mapInfoEntity);
 

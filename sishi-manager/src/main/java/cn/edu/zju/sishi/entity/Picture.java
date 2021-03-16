@@ -20,12 +20,17 @@ public class Picture implements Serializable {
     @Size(min = 36, max = 36, message = "pictureId length should be 36")
     String pictureId;
 
-    @NotNull(message = "pictureName can not be null")
-    @Size(min = 1, max = 100, message = "pictureName length should be between 1 and 100")
-    String pictureName;
+    @NotNull(message = "pictureTitle can not be null")
+    @Size(min = 1, max = 500, message = "pictureTitle length should be between 1 and 500")
+    String pictureTitle;
 
-    @Size(min = 1, max = 200, message = "pictureUrl length should be between 1 and 200")
-    String pictureUrl;
+    @NotNull(message = "pictureSource can not be null")
+    @Size(min = 1, max = 200, message = "pictureSource length should be between 1 and 200")
+    String pictureSource;
 
-    long createTime;
+    String pictureContent;
+
+    long picturePublishTime;
+
+    long pictureCreateTime;
 }

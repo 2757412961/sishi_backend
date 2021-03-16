@@ -20,44 +20,43 @@ public class PictureDaoTest {
 
     @Test
     public void getPictureAll() {
-        System.out.println(pictureDao.getPictureAll());
+        System.out.println(pictureDao.getPicturesAll());
     }
 
     @Test
     public void getPictureById() {
-        System.out.println(pictureDao.getPictureById("9bdd91b3-661c-4f82-9951-6102d32d47a2"));
-        System.out.println(pictureDao.getPictureById("9bdd91b3-661c-4f82-9951-6102d32d47a2"));
+        System.out.println(pictureDao.getPictureById("7fe00224-8a0d-4857-badb-8d7b03843b33"));
     }
 
     @Test
     public void getPictureByIds() {
         List<String> ids = new ArrayList<>();
-        ids.add("9bdd91b3-661c-4f82-9951-6102d32d47a2");
-        ids.add("1b08dfe4-6eb6-49b4-af7a-d803bf8bdd70");
+        ids.add("7fe00224-8a0d-4857-badb-8d7b03843b33");
+        ids.add("497e30c5-da2a-421c-b593-7b8cdae576e6");
         ids.add("1b08dfe4-6eb6-49b4-af7a-d803bf8bdd70");
 
-        System.out.println(pictureDao.getPictureByIds(ids));
+        System.out.println(pictureDao.getPicturesByIds(ids));
     }
 
     @Test
     public void getPictureByPage() {
-        System.out.println(pictureDao.getPictureByPage(3, 2));
+        System.out.println(pictureDao.getPicturesByPage(3, 1));
     }
 
     @Test
     public void getPictureByTag() {
-        System.out.println(pictureDao.getPictureByTag("党史新学@中共一大"));
+        System.out.println(pictureDao.getPicturesByTag("党史新学@中共一大"));
     }
 
     @Test
     public void addPicture() {
         System.out.println(
                 pictureDao.addPicture(
-                        new Picture(UUID.randomUUID().toString(), "ct.png", "https:126/adfss.png", 78)));
+                        new Picture(UUID.randomUUID().toString(), "ct.png", "https:126/adf/ss.png", "content", 78, 456)));
     }
 
     @Test
     public void deletePictureById() {
-        System.out.println(pictureDao.deletePictureById("ad4-89486-dfs-sfa6f-adfs"));
+        System.out.println(pictureDao.deletePictureById("1f606233-b6f2-48e1-9e62-a154e6189993"));
     }
 }

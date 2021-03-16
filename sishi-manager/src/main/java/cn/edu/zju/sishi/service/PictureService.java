@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface PictureService {
 
-    List<Picture> getPictureAll();
+    List<Picture> getPicturesAll();
 
     Picture getPictureById(@Param("pictureId") String pictureId);
 
-    List<Picture> getPictureByIds(@Param("pictureIds") List<String> pictureIds);
+    List<Picture> getPicturesByIds(@Param("pictureIds") List<String> pictureIds);
 
-//    List<Picture> getPictureByPage(@Param("length") int length, @Param("offset") int offset);
+//    List<Picture> getPicturesByPage(@Param("length") int length, @Param("offset") int offset);
 
-    List<Picture> getPictureByTag(@Param("tagName") String tagName);
+    List<Picture> getPicturesByTag(@Param("tagName") String tagName);
 
     int addPicture(Picture picture);
 

@@ -5,8 +5,10 @@ import cn.edu.zju.sishi.service.QuestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +59,7 @@ public class QuestionController {
 
     @RequestMapping(value = "questions/insertques", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> insertQues(@RequestBody Question question) {
+    public Map<String, String> insertQues(@Validated @RequestBody Question question) {
         logger.info("Start invoke insertQues()");
         Map<String, String> result = new HashMap<>();
         int count = questionService.insertQues(question);
@@ -74,7 +76,7 @@ public class QuestionController {
 
     @RequestMapping(value = "questions/updateques", method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, String> updateQues(@RequestBody Question question) {
+    public Map<String, String> updateQues(@Validated @RequestBody Question question) {
         logger.info("Start invoke updateQues()");
         int count = questionService.updateQues(question);
         Map<String, String> result = new HashMap<>();

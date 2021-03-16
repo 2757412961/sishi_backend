@@ -12,13 +12,13 @@ import java.util.Map;
 @Component
 public interface MapInfoDao {
 
-    List<MapInfo> getAllMapInfo();
+    List<MapInfo> getAllMapInfos();
 
     MapInfo getMapInfoById(@Param("mapId") String mapId);
 
-    MapInfo getMapInfoByName(@Param("mapName") String mapName);
+    MapInfo getMapInfoByTitle(@Param("mapTitle") String mapTitle);
 
-    List<MapInfo> getMapInfoByTag(@Param("tagName") String tagName);
+    List<MapInfo> getMapInfosByTag(@Param("tagName") String tagName);
 
     int addMapInfo(MapInfo mapInfoEntity);
 

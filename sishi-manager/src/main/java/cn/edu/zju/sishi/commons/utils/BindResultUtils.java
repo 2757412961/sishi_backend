@@ -1,9 +1,7 @@
 package cn.edu.zju.sishi.commons.utils;
 
 import cn.edu.zju.sishi.exception.ValidationException;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 
 public class BindResultUtils {
 

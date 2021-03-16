@@ -76,10 +76,9 @@ public class TagServiceTest {
 
     @Test
     public void getTagTree() {
-
         TagTree tagTree = new TagTree();
 
-        System.out.println(tagService.getTagTree());
+//        System.out.println(tagService.getTagTree());
         System.out.println(JSON.toJSON(tagService.getTagTree()));
     }
 
