@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class Question implements Serializable {
 
     @Size(min = 36, max = 36, message = "id length should be 36")
-    private  String question_id;
-    private  String question_content;
+    private  String questionId;
+    private  String questionContent;
     private  String optionA;
     private  String optionB;
     private  String optionC;
