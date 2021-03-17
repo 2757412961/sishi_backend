@@ -11,15 +11,42 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/tags",
+					"raw": "192.168.137.116:7666/v1.0/api/tags",
 					"host": [
-						"localhost"
+						"192",
+						"168",
+						"137",
+						"116"
 					],
 					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
 						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "192.168.137.116:7666/v1.0/api/tag/{tagName}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "192.168.137.116:7666/v1.0/api/tag/改革开放@改革复兴@上海",
+					"host": [
+						"192",
+						"168",
+						"137",
+						"116"
+					],
+					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"tag",
+						"改革开放@改革复兴@上海"
 					]
 				}
 			},
@@ -75,7 +102,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"tagName\": \"天下大事@中国@基金@大跌234\"\r\n}",
+					"raw": "{\r\n    \"tagName\": \"天下大事@中国@基金@大跌12\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

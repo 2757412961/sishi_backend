@@ -31,7 +31,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/picture/497e30c5-da2a-421c-b593-7b8cdae576e67",
+					"raw": "localhost:7666/v1.0/api/picture/e731942a-d0de-4c7a-b3c3-e2818da50fe7",
 					"host": [
 						"localhost"
 					],
@@ -40,7 +40,7 @@
 						"v1.0",
 						"api",
 						"picture",
-						"497e30c5-da2a-421c-b593-7b8cdae576e67"
+						"e731942a-d0de-4c7a-b3c3-e2818da50fe7"
 					]
 				}
 			},
@@ -77,12 +77,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:7666/v1.0/api/pictures/tagName",
+			"name": "localhost:7666/v1.0/api/pictures/tagName/{tagName}",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/pictures/tagName?tagName=党史新学@中共一大",
+					"raw": "localhost:7666/v1.0/api/pictures/tagName/改革开放@改革复兴@北京",
 					"host": [
 						"localhost"
 					],
@@ -91,13 +91,8 @@
 						"v1.0",
 						"api",
 						"pictures",
-						"tagName"
-					],
-					"query": [
-						{
-							"key": "tagName",
-							"value": "党史新学@中共一大"
-						}
+						"tagName",
+						"改革开放@改革复兴@北京"
 					]
 				}
 			},
@@ -139,7 +134,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"pictureTitle\": \"北京.jpeg\",\r\n    \"pictureSource\": \"http:8088/ad/helloKity.jpeg\",\r\n    \"pictureContent\": \"helloKity.jpeg\"\r\n}",
+					"raw": "{\r\n    \"pictureTitle\": \"北京.jpeg\",\r\n    \"pictureSource\": \"helloKity.jpeg\",\r\n    \"pictureContent\": \"http:8088/ad/helloKity.jpeg\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -164,7 +159,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:7666/v1.0/api/pictureFile",
+			"name": "localhost:7666/v1.0/api/picture/form",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -172,25 +167,29 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "pictureFile",
-							"type": "file",
-							"src": "/F:/SS测试数据/捕获.JPG"
+							"key": "tagName",
+							"value": "党史新学@中共一大@杭州@西溪",
+							"type": "text"
 						},
 						{
 							"key": "pictureTitle",
 							"value": "你好西溪",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
-							"key": "tagName",
-							"value": "党史新学@中共一大@杭州@西溪",
+							"key": "pictureSource",
+							"value": "kukuku",
 							"type": "text"
+						},
+						{
+							"key": "pictureFile",
+							"type": "file",
+							"src": "/C:/Users/Z/Pictures/幻灯片壁纸放映/2b55fe0f9e9e72b12f2ebbb8b4a1e4f5.png"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:7666/v1.0/api/pictureFile",
+					"raw": "localhost:7666/v1.0/api/picture/form",
 					"host": [
 						"localhost"
 					],
@@ -198,7 +197,8 @@
 					"path": [
 						"v1.0",
 						"api",
-						"pictureFile"
+						"picture",
+						"form"
 					]
 				}
 			},
@@ -231,7 +231,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/picture/197d9ead-f4d8-47fc-9165-bc3fe0115fb5e/tagName/党史新学@中共一大@杭州@西溪",
+					"raw": "localhost:7666/v1.0/api/picture/5b708419-c202-4237-a988-c4f4885c8c37/tagName/党史新学@中共一大@杭州@西溪",
 					"host": [
 						"localhost"
 					],
@@ -240,7 +240,7 @@
 						"v1.0",
 						"api",
 						"picture",
-						"197d9ead-f4d8-47fc-9165-bc3fe0115fb5e",
+						"5b708419-c202-4237-a988-c4f4885c8c37",
 						"tagName",
 						"党史新学@中共一大@杭州@西溪"
 					]

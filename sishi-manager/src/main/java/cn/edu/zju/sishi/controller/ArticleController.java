@@ -1,9 +1,13 @@
 package cn.edu.zju.sishi.controller;
 
+import cn.edu.zju.sishi.commons.utils.BindResultUtils;
 import cn.edu.zju.sishi.entity.Article;
+import cn.edu.zju.sishi.entity.TagResource;
+import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.ArticleService;
+import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +38,9 @@ public class ArticleController {
   @Autowired
   ArticleService articleService;
 
+  @Autowired
+  private TagResourceService tagResourceService;
+
   @ResponseBody
   @RequestMapping(value = "article", method = RequestMethod.POST)
   public Map<String, String> addArticle(@RequestBody @Validated Article article, BindingResult bindingResult) {
@@ -43,6 +52,26 @@ public class ArticleController {
     articleService.addArticle(article);
     result.put(ID, article.getArticleId());
     return result;
+  }
+
+  @ResponseBody
+  @RequestMapping(value = "/article/tagName/{tagName}", method = RequestMethod.POST)
+  public Article addArticleByTagName(@RequestBody
+                                     @Validated  Article article,
+                                     BindingResult bindingResult,
+                                     @PathVariable("tagName")
+                                     @NotNull(message = "tagName cannot be null")
+                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+    BindResultUtils.validData(bindingResult);
+
+    logger.info("Start invoke addArticleByTagName()");
+    // 先添加资源表的记录
+    articleService.addArticle(article);
+    // 再添加资源关联表中的记录
+    TagResource tagResource = new TagResource("", tagName, article.getArticleId(), ResourceTypeEnum.ARTICLE.getResourceType());
+    tagResourceService.addTagResource(tagResource);
+
+    return article;
   }
 
   @RequestMapping(value = "articles", method = RequestMethod.GET)
@@ -104,4 +133,23 @@ public class ArticleController {
     result.put(ID, articleId);
     return result;
   }
+
+  @RequestMapping(value = "/article/{articleId}/tagName/{tagName}", method = RequestMethod.DELETE)
+  public Map<String, String> deleteArticleByTagName(@PathVariable("articleId")
+                                                    @Size(min = 36, max = 36, message = "articleId length should be 36") String articleId,
+                                                    @PathVariable("tagName")
+                                                    @NotNull(message = "tagName cannot be null")
+                                                    @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+    logger.info("Start invoke deleteArticleByTagName()");
+    // 先删除资源关联表中的记录
+    tagResourceService.deleteTagResource(tagName, articleId);
+    // 再删除资源表的记录
+    articleService.dropArticle(articleId);
+
+    Map<String, String> result = new HashMap<>();
+    result.put(ID, articleId);
+
+    return result;
+  }
+
 }

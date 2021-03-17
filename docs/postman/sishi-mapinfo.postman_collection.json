@@ -31,7 +31,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfo/3dc0cc03-5ba0-4ef5-b40f-2750d7296932",
+					"raw": "localhost:7666/v1.0/api/mapinfo/c671c5ac-c7a7-485f-8129-82c09b7fe132",
 					"host": [
 						"localhost"
 					],
@@ -40,7 +40,7 @@
 						"v1.0",
 						"api",
 						"mapinfo",
-						"3dc0cc03-5ba0-4ef5-b40f-2750d7296932"
+						"c671c5ac-c7a7-485f-8129-82c09b7fe132"
 					]
 				}
 			},
@@ -53,7 +53,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n    \"70ec86d1-bddd-4a1e-befd-580d17977b46\",\r\n    \"1f554ae6-c683-42f8-9dec-215873bec0a0\",\r\n    \"bd01478d-510f-4f98-9cc2-0ebaf30a1da1\"\r\n]",
+					"raw": "[\r\n    \"c671c5ac-c7a7-485f-8129-82c09b7fe132\",\r\n    \"1f554ae6-c683-42f8-9dec-215873bec0a0\",\r\n    \"bd01478d-510f-4f98-9cc2-0ebaf30a1da1\"\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,12 +77,12 @@
 			"response": []
 		},
 		{
-			"name": "localhost:7666/v1.0/api/mapinfos/tagName",
+			"name": "localhost:7666/v1.0/api/mapinfos/tagName/{tagName}",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfos/tagName?tagName=党史新学@中共一大",
+					"raw": "localhost:7666/v1.0/api/mapinfos/tagName/党史新学@中共一大",
 					"host": [
 						"localhost"
 					],
@@ -91,13 +91,8 @@
 						"v1.0",
 						"api",
 						"mapinfos",
-						"tagName"
-					],
-					"query": [
-						{
-							"key": "tagName",
-							"value": "党史新学@中共一大"
-						}
+						"tagName",
+						"党史新学@中共一大"
 					]
 				}
 			},

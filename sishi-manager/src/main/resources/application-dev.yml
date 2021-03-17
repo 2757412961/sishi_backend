@@ -37,10 +37,10 @@ spring:
 myconfig:
   nginx:
     host: 192.168.2.2
-    port: 8088
-    httpHead: http://${myconfig.nginx.host}:${myconfig.nginx.port}
-    winRoot: F:/SSNginx/webresource
-    linuxRoot: /home/webresource
-    picPath: /sishi/picture/
-    audioPath: /sishi/audio/
-    videoPath: /sishi/video/
+    port: 89
+    httpHead: http://${myconfig.nginx.host}:${myconfig.nginx.port}/media/
+    winRoot: F:/SSNginx/webresource/
+    linuxRoot: /home/sishi/static/
+    picPath: picture/
+    audioPath: audio/
+    videoPath: video/

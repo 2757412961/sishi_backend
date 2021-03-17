@@ -42,7 +42,12 @@ public class TagServiceImpl implements TagService {
     @Override
     @Cacheable(value = "GET_TAG_BY_TAG_NAME")
     public Tag getTagByTagName(String tagName) {
-        return tagDao.getTagByTagName(tagName);
+        Tag tag = tagDao.getTagByTagName(tagName);
+        if (tag == null) {
+            throw new ValidationException(String.format("Tag %s does not exist!", tagName));
+        }
+
+        return tag;
     }
 
     /**
