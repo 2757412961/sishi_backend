@@ -8,6 +8,7 @@ import cn.edu.zju.sishi.entity.Video;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.TagResourceService;
 import cn.edu.zju.sishi.service.VideoService;
 import com.alibaba.fastjson.JSONObject;
@@ -37,53 +38,54 @@ import java.util.Map;
  */
 @RestController
 @Validated
+//@AuthController
 public class VideoController {
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  private static final String ID = "id";
-  private static final String VIDEO_FILE = "videoFile";
+    private static final String ID = "id";
+    private static final String VIDEO_FILE = "videoFile";
 
-  @Autowired
-  private NginxConfig nginxConfig;
+    @Autowired
+    private NginxConfig nginxConfig;
 
-  @Autowired
-  VideoService videoService;
+    @Autowired
+    VideoService videoService;
 
-  @Autowired
-  TagResourceService tagResourceService;
+    @Autowired
+    TagResourceService tagResourceService;
 
-  @ResponseBody
-  @RequestMapping(value = "video",method = RequestMethod.POST)
-  public Map<String, String> addVideo(@RequestBody @Validated Video video, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()){
-      throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+    @ResponseBody
+    @RequestMapping(value = "video", method = RequestMethod.POST)
+    public Map<String, String> addVideo(@RequestBody @Validated Video video, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        logger.info("start invoke addVideo()");
+        Map<String, String> result = new HashMap<>();
+        videoService.addVideo(video);
+        result.put(ID, video.getVideoId());
+        return result;
     }
-    logger.info("start invoke addVideo()");
-    Map<String, String> result = new HashMap<>();
-    videoService.addVideo(video);
-    result.put(ID, video.getVideoId());
-    return result;
-  }
 
-  @RequestMapping(value = "/video/tagName/{tagName}", method = RequestMethod.POST)
-  public Video addVideoByTagName(@RequestBody
-                                     @Validated Video video,
-                                     BindingResult bindingResult,
-                                     @PathVariable("tagName")
-                                     @NotNull(message = "tagName cannot be null")
-                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
-    BindResultUtils.validData(bindingResult);
+    @RequestMapping(value = "/video/tagName/{tagName}", method = RequestMethod.POST)
+    public Video addVideoByTagName(@RequestBody
+                                   @Validated Video video,
+                                   BindingResult bindingResult,
+                                   @PathVariable("tagName")
+                                   @NotNull(message = "tagName cannot be null")
+                                   @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+        BindResultUtils.validData(bindingResult);
 
-    logger.info("Start invoke addVideoByTagName()");
-    // 先添加资源表的记录
-    videoService.addVideo(video);
-    // 再添加资源关联表中的记录
-    TagResource tagResource = new TagResource("", tagName, video.getVideoId(), ResourceTypeEnum.VIDEO.getResourceType());
-    tagResourceService.addTagResource(tagResource);
+        logger.info("Start invoke addVideoByTagName()");
+        // 先添加资源表的记录
+        videoService.addVideo(video);
+        // 再添加资源关联表中的记录
+        TagResource tagResource = new TagResource("", tagName, video.getVideoId(), ResourceTypeEnum.VIDEO.getResourceType());
+        tagResourceService.addTagResource(tagResource);
 
-    return video;
-  }
+        return video;
+    }
 
 
     /**
@@ -125,8 +127,7 @@ public class VideoController {
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存到本地
-            // TODO 需要将 windows 的路径改为 linux 的路径
-            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getVideoPath() + fileName);
+            File localFile = new File(nginxConfig.getVideoPath() + fileName);
             if (localFile.exists()) {
                 throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
             }
@@ -148,84 +149,84 @@ public class VideoController {
         return video;
     }
 
-  @RequestMapping(value = "videos", method = RequestMethod.GET)
-  @ResponseBody
-  public JSONObject listVideos(
-    @RequestParam(value = "start", required = false, defaultValue = "0")
-    @Min(value = 0, message = "start must not be negative") int start,
-    @RequestParam(value = "length", required = false, defaultValue = "10")
-    @Min(value = 1, message = "length must be larger than 0")
-    @Max(value = 1000, message = "the number of return size should be no more than 1000") int length) {
-    logger.info("start invoke listVideos()");
-    JSONObject result = new JSONObject();
-    List<Video> videos = videoService.listVideos(start, length);
-    result.put("videos", videos);
-    int totalCount = videos.size();
-    result.put("total", totalCount);
-    return result;
-  }
-
-  @ResponseBody
-  @RequestMapping(value = "video/{videoId}", method = RequestMethod.GET)
-  public Video getVideo(
-    @Size(min = 36, max = 36, message = "videoId's length must be 36")
-    @PathVariable(value = "videoId") String videoId) {
-    logger.info("start invoke getVideo()");
-    Video video = videoService.getVideo(videoId);
-    if (video != null) {
-      return video;
-    } else {
-      throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(),"video", "id", videoId);
+    @RequestMapping(value = "videos", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject listVideos(
+            @RequestParam(value = "start", required = false, defaultValue = "0")
+            @Min(value = 0, message = "start must not be negative") int start,
+            @RequestParam(value = "length", required = false, defaultValue = "10")
+            @Min(value = 1, message = "length must be larger than 0")
+            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length) {
+        logger.info("start invoke listVideos()");
+        JSONObject result = new JSONObject();
+        List<Video> videos = videoService.listVideos(start, length);
+        result.put("videos", videos);
+        int totalCount = videos.size();
+        result.put("total", totalCount);
+        return result;
     }
-  }
+
+    @ResponseBody
+    @RequestMapping(value = "video/{videoId}", method = RequestMethod.GET)
+    public Video getVideo(
+            @Size(min = 36, max = 36, message = "videoId's length must be 36")
+            @PathVariable(value = "videoId") String videoId) {
+        logger.info("start invoke getVideo()");
+        Video video = videoService.getVideo(videoId);
+        if (video != null) {
+            return video;
+        } else {
+            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "video", "id", videoId);
+        }
+    }
 
 
-  @RequestMapping(value = "videos/tagName/{tagName}", method = RequestMethod.GET)
-  @ResponseBody
-  public JSONObject getVideosByTagName(
-    @PathVariable(value = "tagName") String tagName,
-    @RequestParam(value = "start", required = false, defaultValue = "0")
-    @Min(value = 0, message = "start must not be negative") int start,
-    @RequestParam(value = "length", required = false, defaultValue = "10")
-    @Min(value = 1, message = "length must be larger than 0")
-    @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
-  ) {
-    logger.info("start invoke getVideoIdsByTagName()");
-    JSONObject result = new JSONObject();
-    List<Video> videosByTagName = videoService.getVideosByTagName(tagName,start, length);
-    int totalCount = videosByTagName.size();
-    result.put("totalCount", totalCount);
-    result.put("videos", videosByTagName );
-    return result;
-  }
+    @RequestMapping(value = "videos/tagName/{tagName}", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject getVideosByTagName(
+            @PathVariable(value = "tagName") String tagName,
+            @RequestParam(value = "start", required = false, defaultValue = "0")
+            @Min(value = 0, message = "start must not be negative") int start,
+            @RequestParam(value = "length", required = false, defaultValue = "10")
+            @Min(value = 1, message = "length must be larger than 0")
+            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
+    ) {
+        logger.info("start invoke getVideoIdsByTagName()");
+        JSONObject result = new JSONObject();
+        List<Video> videosByTagName = videoService.getVideosByTagName(tagName, start, length);
+        int totalCount = videosByTagName.size();
+        result.put("totalCount", totalCount);
+        result.put("videos", videosByTagName);
+        return result;
+    }
 
-  @RequestMapping(value = "video/{videoId}", method = RequestMethod.DELETE)
-  public Map<String, String> dropVideo (
-    @Size(min = 36, max = 36, message = "videoId's length must be 36")
-    @PathVariable(value = "videoId") String videoId) {
-    logger.info("start invoke dropVideo()");
-    Map<String, String> result = new HashMap<>();
-    videoService.dropVideo(videoId);
-    result.put(ID, videoId);
-    return result;
-  }
+    @RequestMapping(value = "video/{videoId}", method = RequestMethod.DELETE)
+    public Map<String, String> dropVideo(
+            @Size(min = 36, max = 36, message = "videoId's length must be 36")
+            @PathVariable(value = "videoId") String videoId) {
+        logger.info("start invoke dropVideo()");
+        Map<String, String> result = new HashMap<>();
+        videoService.dropVideo(videoId);
+        result.put(ID, videoId);
+        return result;
+    }
 
-  @RequestMapping(value = "/video/{videoId}/tagName/{tagName}", method = RequestMethod.DELETE)
-  public Map<String, String> deleteVideoByTagName(@PathVariable("videoId")
+    @RequestMapping(value = "/video/{videoId}/tagName/{tagName}", method = RequestMethod.DELETE)
+    public Map<String, String> deleteVideoByTagName(@PathVariable("videoId")
                                                     @Size(min = 36, max = 36, message = "videoId length should be 36") String videoId,
                                                     @PathVariable("tagName")
                                                     @NotNull(message = "tagName cannot be null")
                                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
-    logger.info("Start invoke deleteVideoByTagName()");
-    // 先删除资源关联表中的记录
-    tagResourceService.deleteTagResource(tagName, videoId);
-    // 再删除资源表的记录
-    videoService.dropVideo(videoId);
+        logger.info("Start invoke deleteVideoByTagName()");
+        // 先删除资源关联表中的记录
+        tagResourceService.deleteTagResource(tagName, videoId);
+        // 再删除资源表的记录
+        videoService.dropVideo(videoId);
 
-    Map<String, String> result = new HashMap<>();
-    result.put(ID, videoId);
+        Map<String, String> result = new HashMap<>();
+        result.put(ID, videoId);
 
-    return result;
-  }
+        return result;
+    }
 
 }

@@ -89,10 +89,12 @@ public class TagServiceImpl implements TagService {
                     newTagTree.setLabel(t);
                     // 添加标签路径、添加地理属性
                     if (i == ts.length - 1) {
+                        newTagTree.setTagId(tag.getTagId());
                         newTagTree.setTagName(tag.getTagName());
 
                         List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName());
                         if (!mapInfos.isEmpty()) {
+                            newTagTree.setTime(mapInfos.get(0).getMapTime());
                             newTagTree.setGeoCoordinates(
                                     new ArrayList<>(Arrays.asList
                                             (mapInfos.get(0).getMapLon(), mapInfos.get(0).getMapLat())));

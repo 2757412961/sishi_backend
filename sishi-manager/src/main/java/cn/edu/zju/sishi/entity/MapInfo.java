@@ -34,5 +34,6 @@ public class MapInfo implements Serializable {
 
     Long mapCreateTime;
 
+    String mapTime;
 
 }

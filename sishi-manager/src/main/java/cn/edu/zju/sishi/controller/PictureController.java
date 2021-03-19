@@ -6,6 +6,7 @@ import cn.edu.zju.sishi.entity.Picture;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.PictureService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
@@ -158,8 +159,7 @@ public class PictureController {
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存到本地
-            // TODO 需要将 windows 的路径改为 linux 的路径
-            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getPicPath() + fileName);
+            File localFile = new File(nginxConfig.getPicPath() + fileName);
             if (localFile.exists()) {
                 throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
             }

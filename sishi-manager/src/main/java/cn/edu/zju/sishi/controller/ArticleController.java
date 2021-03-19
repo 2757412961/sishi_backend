@@ -6,6 +6,7 @@ import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.ArticleService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
@@ -31,6 +32,7 @@ import java.util.Map;
  */
 @RestController
 @Validated
+//@AuthController
 public class ArticleController {
   private static final String ID = "id";
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
