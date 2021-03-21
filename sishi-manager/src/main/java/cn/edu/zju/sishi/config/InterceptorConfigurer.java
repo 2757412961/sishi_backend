@@ -19,5 +19,6 @@ public class InterceptorConfigurer implements WebMvcConfigurer  {
     registry.addInterceptor(loginInterceptor).addPathPatterns("/tag/**","/tags/**");
     registry.addInterceptor(loginInterceptor).addPathPatterns("/picture/**","/pictures/**");
     registry.addInterceptor(loginInterceptor).addPathPatterns("/mapinfo/**","/mapinfos/**");
+    registry.addInterceptor(loginInterceptor).addPathPatterns("/user/**");
   }
 }
