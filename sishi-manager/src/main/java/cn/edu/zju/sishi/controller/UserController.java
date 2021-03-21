@@ -34,7 +34,7 @@ public class UserController {
   @Autowired
   UserService userService;
 
-  // todo
+
   @ResponseBody
   @ResponseStatus(HttpStatus.OK)
   @RequestMapping(value = "user", method = RequestMethod.PUT)
@@ -50,7 +50,7 @@ public class UserController {
     }
   }
 
-    // todo
+
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "user/password", method = RequestMethod.PUT)
     public void updatePassword (HttpServletRequest request,
