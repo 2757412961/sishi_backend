@@ -28,6 +28,8 @@ public class Picture implements Serializable {
     @Size(min = 1, max = 200, message = "pictureSource length should be between 1 and 200")
     String pictureSource;
 
+    @NotNull(message = "pictureSource can not be null")
+    @Size(min = 1, max = 200, message = "pictureSource length should be between 1 and 200")
     String pictureContent;
 
     long picturePublishTime;

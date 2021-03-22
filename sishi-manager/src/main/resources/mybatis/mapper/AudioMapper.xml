@@ -5,7 +5,7 @@
     <resultMap id="audioDaoResultMap" type="cn.edu.zju.sishi.entity.Audio">
         <result property="audioId" column="AUDIO_ID" jdbcType="VARCHAR"/>
         <result property="audioTitle" column="AUDIO_TITLE" jdbcType="VARCHAR"/>
-        <result property="audioSource" column="AUDIO_AUTHOR" jdbcType="VARCHAR"/>
+        <result property="audioSource" column="AUDIO_SOURCE" jdbcType="VARCHAR"/>
         <result property="audioContent" column="AUDIO_CONTENT" jdbcType="VARCHAR"/>
         <result property="audioPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="audioCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>

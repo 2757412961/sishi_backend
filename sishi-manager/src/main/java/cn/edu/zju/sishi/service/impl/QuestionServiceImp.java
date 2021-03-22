@@ -49,13 +49,13 @@ public class QuestionServiceImp implements QuestionService {
 
     private void setID(Question question) {
         final String uuid = UUID.randomUUID().toString();
-        question.setQuestion_id(uuid);
+        question.setQuestionId(uuid);
            }
 
     @Override
     public int updateQues(Question question) {
-        if (questionDao.getQuesByID(question.getQuestion_id()) == null) {
-            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Question %s does not exist!", question.getQuestion_id()));
+        if (questionDao.getQuesByID(question.getQuestionId()) == null) {
+            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Question %s does not exist!", question.getQuestionId()));
         }
         return questionDao.updateQues(question);
     }

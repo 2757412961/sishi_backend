@@ -25,13 +25,13 @@ public interface QuestionDao {
     int deleteQuesByID (String question_id);
 
     //@Options(useGeneratedKeys = true,keyProperty = "question_id")
-    @Insert("insert into tb_question(question_id, question_content, \"optionA\", \"optionB\",\"optionC\",\"optionD\",\"optionE\",answer) values(#{question_id},#{question_content},#{optionA},#{optionB},#{optionC},#{optionD},#{optionE},#{answer})")
+    @Insert("insert into tb_question(question_id, question_content, \"optionA\", \"optionB\",\"optionC\",\"optionD\",\"optionE\",answer) values(#{questionId},#{questionContent},#{optionA},#{optionB},#{optionC},#{optionD},#{optionE},#{answer})")
     int insertQues ( Question question);
 
     @Update({"<script>",
                 "update tb_question",
                 " <set>",
-                    " <if test='question_content != null'>question_content=#{question_content},</if>",
+                    " <if test='questionContent != null'>question_content=#{questionContent},</if>",
                     " <if test='optionA != null'>\"optionA\"=#{optionA},</if>",
                     " <if test='optionB != null'>\"optionB\"=#{optionB},</if>",
                     " <if test='optionC != null'>\"optionC\"=#{optionC},</if>",
@@ -39,9 +39,9 @@ public interface QuestionDao {
                     " <if test='optionE != null'>\"optionE\"=#{optionE},</if>",
                     " <if test='answer != null'>answer=#{answer}</if>",
                 " </set>",
-                "where question_id = #{question_id}",
+                "where question_id = #{questionId}",
                 "</script>"})
-    int updateQues ( Question question);
+    int updateQues (Question question);
 
 
 }

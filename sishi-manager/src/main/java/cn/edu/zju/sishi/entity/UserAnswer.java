@@ -15,8 +15,8 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserAnswer implements Serializable {
 
-    private String user_name;
-    private String tag_name;
-    private Integer user_answer_status;
+    private String userName;
+    private String tagName;
+    private Integer userAnswerStatus;
 
 }

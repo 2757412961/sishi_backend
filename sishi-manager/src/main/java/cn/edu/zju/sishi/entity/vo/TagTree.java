@@ -19,6 +19,10 @@ public class TagTree implements Serializable {
 
     private String tagName;
 
+    private String tagId;
+
+    private String time;
+
     private List<TagTree> children;
 
     private List<Double> geoCoordinates;

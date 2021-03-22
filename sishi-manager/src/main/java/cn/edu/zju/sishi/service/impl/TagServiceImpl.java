@@ -42,7 +42,12 @@ public class TagServiceImpl implements TagService {
     @Override
     @Cacheable(value = "GET_TAG_BY_TAG_NAME")
     public Tag getTagByTagName(String tagName) {
-        return tagDao.getTagByTagName(tagName);
+        Tag tag = tagDao.getTagByTagName(tagName);
+        if (tag == null) {
+            throw new ValidationException(String.format("Tag %s does not exist!", tagName));
+        }
+
+        return tag;
     }
 
     /**
@@ -84,10 +89,12 @@ public class TagServiceImpl implements TagService {
                     newTagTree.setLabel(t);
                     // 添加标签路径、添加地理属性
                     if (i == ts.length - 1) {
+                        newTagTree.setTagId(tag.getTagId());
                         newTagTree.setTagName(tag.getTagName());
 
                         List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName());
                         if (!mapInfos.isEmpty()) {
+                            newTagTree.setTime(mapInfos.get(0).getMapTime());
                             newTagTree.setGeoCoordinates(
                                     new ArrayList<>(Arrays.asList
                                             (mapInfos.get(0).getMapLon(), mapInfos.get(0).getMapLat())));

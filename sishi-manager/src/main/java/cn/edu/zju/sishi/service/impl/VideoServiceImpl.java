@@ -41,13 +41,13 @@ public class VideoServiceImpl implements VideoService {
   }
 
   @Override
-  @Cacheable(value = "LIST_VIDEOS")
+//  @Cacheable(value = "LIST_VIDEOS")
   public List<Video> listVideos(int start, int length) {
     return videoDao.listVideos(length, length*start);
   }
 
   @Override
-  @Cacheable(value = "GET_VIDEOS_BY_NAME")
+//  @Cacheable(value = "GET_VIDEOS_BY_NAME")
   public List<Video> getVideosByTagName(String tagName, int start, int length) {
     return videoDao.getVideosByTagName(tagName, length, length*start);
   }

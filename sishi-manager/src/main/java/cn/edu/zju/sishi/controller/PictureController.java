@@ -6,8 +6,10 @@ import cn.edu.zju.sishi.entity.Picture;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.PictureService;
 import cn.edu.zju.sishi.service.TagResourceService;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -43,41 +45,69 @@ public class PictureController {
     private TagResourceService tagResourceService;
 
     @RequestMapping(value = "/pictures", method = RequestMethod.GET)
-    public List<Picture> getPicturesAll() {
+    public JSONObject getPicturesAll() {
         log.info("Start invoke getPicturesAll()");
-        return pictureService.getPicturesAll();
+        List<Picture> pictures = pictureService.getPicturesAll();
+
+        JSONObject result = new JSONObject();
+        result.put("totalCount", pictures.size());
+        result.put("pictures", pictures);
+
+        return result;
     }
 
     @RequestMapping(value = "/picture/{pictureId}", method = RequestMethod.GET)
     public Picture getPictureById(@PathVariable("pictureId")
-        @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId) {
+                                  @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId) {
         log.info("Start invoke getPictureById()");
         return pictureService.getPictureById(pictureId);
     }
 
     @RequestMapping(value = "/pictures/ids", method = RequestMethod.POST)
-    public List<Picture> getPicturesByIds(@RequestBody
-        @NotEmpty List<@Size(min = 36, max = 36, message = "pictureId length should be 36") String> pictureIds) {
+    public JSONObject getPicturesByIds(@RequestBody
+                                       @NotEmpty List<@Size(min = 36, max = 36, message = "pictureId length should be 36") String> pictureIds) {
         log.info("Start invoke getPicturesByIds()");
-        return pictureService.getPicturesByIds(pictureIds);
+        List<Picture> pictures = pictureService.getPicturesByIds(pictureIds);
+
+        JSONObject result = new JSONObject();
+        result.put("totalCount", pictures.size());
+        result.put("pictures", pictures);
+
+        return result;
     }
 
-    @RequestMapping(value = "/pictures/tagName", method = RequestMethod.GET)
-    public List<Picture> getPicturesByTag(@RequestParam("tagName")
-        @NotNull(message = "tagName cannot be null")
-        @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+    @RequestMapping(value = "/pictures/tagName/{tagName}", method = RequestMethod.GET)
+    public JSONObject getPicturesByTag(@PathVariable("tagName")
+                                       @NotNull(message = "tagName cannot be null")
+                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         log.info("Start invoke getPicturesByTag()");
-        return pictureService.getPicturesByTag(tagName);
+        List<Picture> pictures = pictureService.getPicturesByTag(tagName);
+
+        JSONObject result = new JSONObject();
+        result.put("totalCount", pictures.size());
+        result.put("pictures", pictures);
+
+        return result;
     }
 
+
+    @RequestMapping(value = "/picture", method = RequestMethod.POST)
+    public Picture addPicture(@RequestBody @Validated Picture picture, BindingResult bindingResult) {
+        BindResultUtils.validData(bindingResult);
+
+        log.info("Start invoke addPicture()");
+        pictureService.addPicture(picture);
+
+        return picture;
+    }
 
     @RequestMapping(value = "/picture/tagName/{tagName}", method = RequestMethod.POST)
     public Picture addPictureByTagName(@RequestBody
-        @Validated Picture picture,
-        BindingResult bindingResult,
-        @PathVariable("tagName")
-        @NotNull(message = "tagName cannot be null")
-        @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                       @Validated Picture picture,
+                                       BindingResult bindingResult,
+                                       @PathVariable("tagName")
+                                       @NotNull(message = "tagName cannot be null")
+                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         BindResultUtils.validData(bindingResult);
 
         log.info("Start invoke addPictureByTagName()");
@@ -90,61 +120,61 @@ public class PictureController {
         return picture;
     }
 
-    @RequestMapping(value = "/picture", method = RequestMethod.POST)
-    public Picture addPicture(@RequestBody @Validated Picture picture, BindingResult bindingResult) {
-        BindResultUtils.validData(bindingResult);
-
-        log.info("Start invoke addPicture()");
-        pictureService.addPicture(picture);
-
-        return picture;
-    }
-
     /**
      * 通过 form 表单上传图片文件，并保存至数据库
      *
      * @param request
      * @return
      */
-    @RequestMapping(value = "/pictureFile", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
-    public Picture addPictureFileByTagName(HttpServletRequest request) {
-        log.info("Start invoke addPictureFileByTagName()");
+    @RequestMapping(value = "/picture/form", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    public Picture addPictureFileByForm(HttpServletRequest request) {
+        log.info("Start invoke addPictureFileByForm()");
         Picture picture = new Picture();
 
         try {
-            // 判断标签是否存在
-//            String pictureTitle = request.getParameter("pictureTitle");
+            // 判断属性是否存在
+            String pictureTitle = request.getParameter("pictureTitle");
+            if (pictureTitle == null) {
+                throw new ValidationException("未提交标题");
+            }
+            String pictureSource = request.getParameter("pictureSource");
+            if (pictureSource == null) {
+                throw new ValidationException("未提交来源");
+            }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
             }
-
+            // 判断文件是否存在
             MultipartHttpServletRequest multipartHttpServletRequest = ((MultipartHttpServletRequest) request);
             MultipartFile multipartFile = multipartHttpServletRequest.getFile(PICTURE_FILE);
-
             // 判断空指针的情况
             if (multipartFile == null || multipartFile.isEmpty()) {
                 throw new ValidationException("请求不是表单格式，或者未上传文件对象");
             }
 
             // 文件名称
-            picture.setPictureTitle(multipartFile.getOriginalFilename());
+            picture.setPictureTitle(pictureTitle);
+            picture.setPictureSource(pictureSource);
+            String fileName = multipartFile.getOriginalFilename();
 
             // 保存到本地
-            // TODO 需要将 windows 的路径改为 linux 的路径
-            File localFile = new File(nginxConfig.getWinRoot() + nginxConfig.getPicPath() + picture.getPictureTitle());
+            File localFile = new File(nginxConfig.getPicPath() + fileName);
+            if (localFile.exists()) {
+                throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
+            }
             multipartFile.transferTo(localFile);
 
             // 保存资源记录
             log.info("Start invoke save record in db");
-            picture.setPictureSource(nginxConfig.getHttpHead() + nginxConfig.getPicPath() + picture.getPictureTitle());
+            picture.setPictureContent(nginxConfig.getHttpHead() + nginxConfig.getPicPath() + fileName);
             pictureService.addPicture(picture);
 
             // 保存 标签、资源 关联记录
             TagResource tagResource = new TagResource("", tagName, picture.getPictureId(), ResourceTypeEnum.PICTURE.getResourceType());
             tagResourceService.addTagResource(tagResource);
         } catch (Exception e) {
-            log.error("addPicture Error", e);
+            log.error("addPictureFileByForm Error", e);
             throw new ValidationException(e.toString());
         }
 
@@ -154,7 +184,7 @@ public class PictureController {
 
     @RequestMapping(value = "/picture/{pictureId}", method = RequestMethod.DELETE)
     public Map<String, String> deletePictureById(@PathVariable("pictureId")
-        @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId) {
+                                                 @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId) {
         log.info("Start invoke deletePictureById()");
         pictureService.deletePictureById(pictureId);
         Map<String, String> result = new HashMap<>();
@@ -164,10 +194,10 @@ public class PictureController {
 
     @RequestMapping(value = "/picture/{pictureId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deletePictureByTagName(@PathVariable("pictureId")
-        @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId,
-        @PathVariable("tagName")
-        @NotNull(message = "tagName cannot be null")
-        @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                                      @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId,
+                                                      @PathVariable("tagName")
+                                                      @NotNull(message = "tagName cannot be null")
+                                                      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         log.info("Start invoke deletePictureByTagName()");
         // 先删除资源关联表中的记录
         tagResourceService.deleteTagResource(tagName, pictureId);

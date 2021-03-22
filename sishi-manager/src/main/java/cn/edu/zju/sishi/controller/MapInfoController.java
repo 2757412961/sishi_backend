@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.entity.Article;
 import cn.edu.zju.sishi.entity.MapInfo;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
@@ -8,6 +9,7 @@ import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.MapInfoService;
 import cn.edu.zju.sishi.service.TagResourceService;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -37,9 +39,15 @@ public class MapInfoController {
     private TagResourceService tagResourceService;
 
     @RequestMapping(value = "mapinfos", method = RequestMethod.GET)
-    public List<MapInfo> getAllMapInfo() {
+    public JSONObject getAllMapInfo() {
         log.info("Start invoke getAllMapInfo()");
-        return mapInfoService.getAllMapInfos();
+        List<MapInfo> mapInfos = mapInfoService.getAllMapInfos();
+
+        JSONObject result = new JSONObject();
+        result.put("totalCount", mapInfos.size());
+        result.put("mapInfos", mapInfos);
+
+        return result;
     }
 
     @RequestMapping(value = "mapinfo/{mapId}", method = RequestMethod.GET)
@@ -50,18 +58,30 @@ public class MapInfoController {
     }
 
     @RequestMapping(value = "mapinfos/ids", method = RequestMethod.POST)
-    public List<MapInfo> getMapInfoByIds(@RequestBody
+    public JSONObject getMapInfoByIds(@RequestBody
         @NotEmpty(message = "mapIds can not be empty")
         List<@Size(min = 36, max = 36, message = "mapId length should be 36") String> mapIds) {
         log.info("Start invoke getMapInfoByIds()");
-        return mapInfoService.getMapInfosByIds(mapIds);
+        List<MapInfo> mapInfos = mapInfoService.getMapInfosByIds(mapIds);
+
+        JSONObject result = new JSONObject();
+        result.put("totalCount", mapInfos.size());
+        result.put("mapInfos", mapInfos);
+
+        return result;
     }
 
-    @RequestMapping(value = "mapinfos/tagName", method = RequestMethod.GET)
-    public List<MapInfo> getMapInfoByTag(@RequestParam("tagName") @NotNull(message = "tagName cannot be null")
+    @RequestMapping(value = "mapinfos/tagName/{tagName}", method = RequestMethod.GET)
+    public JSONObject getMapInfoByTag(@PathVariable("tagName") @NotNull(message = "tagName cannot be null")
         @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         log.info("Start invoke getMapInfoByTag()");
-        return mapInfoService.getMapInfosByTag(tagName);
+        List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tagName);
+
+        JSONObject result = new JSONObject();
+        result.put("totalCount", mapInfos.size());
+        result.put("mapInfos", mapInfos);
+
+        return result;
     }
 
 
