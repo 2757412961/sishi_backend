@@ -24,7 +24,7 @@
 
     <insert id="addUser" parameterType="cn.edu.zju.sishi.entity.User" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO tb_user(user_name, user_id, create_time, update_time, password
+        INSERT INTO tb_user(user_name, user_id, create_time, update_time, password, salt
         <if test="mobile!=null and mobile!=''">
             ,mobile
         </if>
@@ -32,7 +32,7 @@
             ,email
         </if>
         )
-        VALUES (#{userName}, #{userId}, #{createTime}, #{updateTime}, #{password}
+        VALUES (#{userName}, #{userId}, #{createTime}, #{updateTime}, #{password}, #{salt}
         <if test="mobile!=null and mobile!=''">
             ,#{mobile}
         </if>

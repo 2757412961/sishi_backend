@@ -121,11 +121,7 @@ public class UserServiceImpl implements UserService {
   }
 
 
-  private String generateSalt() {
-    SecureRandom random = new SecureRandom();
-    int salt = Math.abs(random.nextInt());
-    return String.valueOf(salt);
-  }
+
 
   public String encrypt(String password, String salt) {
     String newPassword = DigestUtils.md5DigestAsHex((password + salt).getBytes());

@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -38,7 +40,11 @@ public class LoginServiceImpl implements LoginService {
       logger.info("This user exists! username={}", user.getUserName());
       throw new ValidationException(AuthResponseCode.USER_REPEAT_DESC);
     } else {
-      String encodedPassword = MD5Utils.md5(user.getPassword()).toLowerCase();
+      //set salt
+      String salt = generateSalt();
+      user.setSalt(salt);
+
+      String encodedPassword = encrypt(user.getPassword(), salt).toLowerCase();
       user.setPassword(encodedPassword);
       boolean setSuccess = setUsername(user.getUserName(), user);
       int insertedCount = 0;
@@ -101,5 +107,14 @@ public class LoginServiceImpl implements LoginService {
   private boolean setUsername(String username, User user) {
     user.setUserName(username);
     return true;
+  }
+  private String generateSalt() {
+    SecureRandom random = new SecureRandom();
+    int salt = Math.abs(random.nextInt());
+    return String.valueOf(salt);
+  }
+  public String encrypt(String password, String salt) {
+    String encodedPassword = DigestUtils.md5DigestAsHex((password + salt).getBytes());
+    return encodedPassword;
   }
 }
