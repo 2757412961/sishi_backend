@@ -159,7 +159,7 @@ public class PictureController {
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存到本地
-            File localFile = new File(nginxConfig.getPicPath() + fileName);
+            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getPicPath() + fileName);
             if (localFile.exists()) {
                 throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
             }

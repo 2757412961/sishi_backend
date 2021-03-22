@@ -15,6 +15,8 @@ public interface TagResourceDao {
 
     List<String> getTagResourceIds(@Param("tagName") String tagName, @Param("resourceType") String resourceType);
 
+    List<TagResource> getTagResourceByResourceType(@Param("resourceType") String resourceType);
+
     int addTagResource(TagResource tagResource);
 
     int deleteTagResource(@Param("tagName") String tagName, @Param("resourceId") String resourceId);

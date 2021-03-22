@@ -17,6 +17,12 @@
         WHERE tag_name = #{tagName}
     </select>
 
+    <select id="getTagResourceByResourceType" resultType="TagResource">
+        SELECT tag_id, tag_name, resource_id, resource_type
+        FROM tb_tag_resource_map
+        WHERE resource_type = '${resourceType}'
+    </select>
+
 
     <insert id="addTagResource" parameterType="TagResource" flushCache="true">
         INSERT INTO tb_tag_resource_map(tag_id, tag_name, resource_id, resource_type)

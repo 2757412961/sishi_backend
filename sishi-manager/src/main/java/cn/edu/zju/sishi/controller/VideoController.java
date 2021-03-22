@@ -127,7 +127,7 @@ public class VideoController {
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存到本地
-            File localFile = new File(nginxConfig.getVideoPath() + fileName);
+            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getVideoPath() + fileName);
             if (localFile.exists()) {
                 throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
             }

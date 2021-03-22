@@ -1,7 +1,9 @@
 package cn.edu.zju.sishi.service.impl;
 
 import cn.edu.zju.sishi.entity.TagResource;
+import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.service.TagResourceService;
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +43,12 @@ public class TagResourceServiceImplTest {
     @Test
     public void deleteByTagName() {
         System.out.println(tagResourceService.deleteByTagName("da"));
+    }
+
+    @Test
+    public void testGetMediaItemByResourceType() {
+
+        System.out.println(JSON.toJSONString(tagResourceService.getMediaItemsByResourceType(ResourceTypeEnum.VIDEO.getResourceType())));
+
     }
 }

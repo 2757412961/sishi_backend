@@ -8,13 +8,14 @@ import org.apache.ibatis.type.Alias;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Alias("TagResource")
-public class TagResource {
+public class TagResource implements Serializable {
 
     @Size(min = 36, max = 36, message = "tagId length should be 36")
     private String tagId;

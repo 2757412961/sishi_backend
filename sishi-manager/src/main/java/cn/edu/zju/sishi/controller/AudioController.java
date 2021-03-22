@@ -126,7 +126,7 @@ public class AudioController {
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存到本地
-            File localFile = new File(nginxConfig.getAudioPath() + fileName);
+            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getAudioPath() + fileName);
             if (localFile.exists()) {
                 throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
             }

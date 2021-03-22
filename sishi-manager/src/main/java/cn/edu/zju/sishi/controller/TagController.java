@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.entity.Tag;
+import cn.edu.zju.sishi.entity.vo.TagCompareTime;
 import cn.edu.zju.sishi.entity.vo.TagTree;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
@@ -59,6 +60,12 @@ public class TagController {
     public Set<String> getChildTag(@PathVariable(value = "tagName")
                                    @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200") String tagName) {
         return tagService.getChildTag(tagName);
+    }
+
+    @RequestMapping(value = "tag/compareTime/{tagName}", method = RequestMethod.GET)
+    public List<TagCompareTime> getTagCompareTime(@PathVariable(value = "tagName")
+                                   @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200") String tagName) {
+        return tagService.getTagCompareTime(tagName);
     }
 
 
