@@ -31,6 +31,15 @@
         <if test="email!=null and email!=''">
             ,email
         </if>
+        <if test="partyBranch!=null and partyBranch!=''">
+            ,party_branch
+        </if>
+        <if test="avatar!=null and avatar!=''">
+            ,avatar
+        </if>
+        <if test="roleType!=null and roleType!=''">
+            ,role_type
+        </if>
         )
         VALUES (#{userName}, #{userId}, #{createTime}, #{updateTime}, #{password}, #{salt}
         <if test="mobile!=null and mobile!=''">
@@ -38,6 +47,15 @@
         </if>
         <if test="email!=null and email!=''">
             ,#{email}
+        </if>
+        <if test="partyBranch!=null and partyBranch!=''">
+            ,#{partyBranch}
+        </if>
+        <if test="avatar!=null and avatar!=''">
+            ,#{avatar}
+        </if>
+        <if test="roleType!=null and roleType!=''">
+            ,#{roleType}
         </if>
         )
     </insert>
@@ -73,7 +91,7 @@
     </update>
 
     <select id="getUserList" resultMap="userInfoMap">
-    SELECT user_id, email, user_name,create_time, update_timegetTopTenByScore, score, party_branch
+    SELECT user_id, email, user_name,create_time, update_time, score, party_branch
     FROM tb_user
     LIMIT #{length}
     OFFSET #{offset}

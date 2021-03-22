@@ -25,7 +25,6 @@ public class User implements Serializable {
 
   private String salt;
 
-
   private String mobile;
 
   private String email;

@@ -24,6 +24,7 @@ public class LoginServiceImpl implements LoginService {
 
   private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
   public static final Long tokenExpire = 1000000000L;
+  public static final String DEFAULT_ROLE_TYPE = "general";
 
   @Autowired
   private UserDao userDao;
@@ -43,7 +44,7 @@ public class LoginServiceImpl implements LoginService {
       //set salt
       String salt = generateSalt();
       user.setSalt(salt);
-
+      user.setRoleType(DEFAULT_ROLE_TYPE);
       String encodedPassword = encrypt(user.getPassword(), salt).toLowerCase();
       user.setPassword(encodedPassword);
       boolean setSuccess = setUsername(user.getUserName(), user);
