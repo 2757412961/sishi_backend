@@ -6,6 +6,7 @@ import cn.edu.zju.sishi.dao.UserDao;
 import cn.edu.zju.sishi.entity.User;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.message.LoginMessage.LoginResponse;
+import cn.edu.zju.sishi.message.LoginMessage.RegisterResponse;
 import cn.edu.zju.sishi.passport.constant.AuthResponseCode;
 import cn.edu.zju.sishi.passport.service.TokenService;
 import cn.edu.zju.sishi.service.LoginService;
@@ -33,8 +34,8 @@ public class LoginServiceImpl implements LoginService {
   private TokenService tokenService;
 
   @Override
-  public LoginResponse register(User user) {
-    LoginResponse loginResponse = new LoginResponse();
+  public RegisterResponse register(User user) {
+    RegisterResponse registerResponse = new RegisterResponse();
     boolean exist = existUsername(user.getUserName());
     boolean registerSuccess = false;
     if (exist) {
@@ -60,9 +61,9 @@ public class LoginServiceImpl implements LoginService {
           String token = MD5Utils.md5(DateTool.getTime() + user.getPassword()).toLowerCase();
           Integer count = tokenService.insert(userId, token, tokenExpire, user.getCreateTime(), user.getUpdateTime());
           if (count > 0) {
-            loginResponse.setUserId(userId);
-            loginResponse.setToken(token);
-            loginResponse.setUserName(user.getUserName());
+            registerResponse.setUserId(userId);
+            registerResponse.setToken(token);
+            registerResponse.setUserName(user.getUserName());
             registerSuccess = true;
           }
         }
@@ -72,17 +73,18 @@ public class LoginServiceImpl implements LoginService {
       }
     }
 
-    return loginResponse;
+    return registerResponse;
   }
 
   @Override
   public LoginResponse login(String userName, String password) {
-    String encodedPassword = MD5Utils.md5(password).toLowerCase();
-    String passwordInDatabase = "";
     User user = userDao.getUserByName(userName);
     if (null == user) {
       throw new ValidationException(String.format("用户名：%s不存在", userName));
     }
+    String salt = user.getSalt();
+    String encodedPassword = encrypt(password, salt).toLowerCase();
+    String passwordInDatabase = "";
     passwordInDatabase = user.getPassword();
     String userId = user.getUserId();
     String token = "";
@@ -90,8 +92,15 @@ public class LoginServiceImpl implements LoginService {
       token = tokenService.copyTokenToCache(userId);
       LoginResponse loginResult = new LoginResponse();
       loginResult.setUserId(userId);
-      loginResult.setToken(token);
       loginResult.setUserName(userName);
+      loginResult.setToken(token);
+      loginResult.setAvatar(user.getAvatar());
+      loginResult.setEmail(user.getEmail());
+      loginResult.setHonor(user.getHonor());
+      loginResult.setMobile(user.getMobile());
+      loginResult.setPartyBranch(user.getPartyBranch());
+      loginResult.setScore(user.getScore());
+      loginResult.setRoleType(user.getRoleType());
       return loginResult;
     } else {
       throw new ValidationException("Login Error: Password error!");
