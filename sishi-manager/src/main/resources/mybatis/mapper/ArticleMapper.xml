@@ -29,6 +29,7 @@
 
 
 
+
     <select id="getArticlesByTagName" resultType="cn.edu.zju.sishi.entity.Article">
         SELECT article_id, article_title, article_content, article_author,publish_time, create_time
         FROM tb_article a, tb_tag_resource_map m

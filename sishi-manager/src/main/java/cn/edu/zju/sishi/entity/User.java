@@ -23,9 +23,47 @@ public class User implements Serializable {
   @NotNull(message = "password cannot be null")
   private String password;
 
+  private String salt;
+
   private String mobile;
 
   private String email;
+
+  private int score;
+
+  private  String partyBranch;
+
+  private String avatar;
+
+  private String honor;
+
+  private String roleType;
+
+  public String getSalt() { return salt; }
+
+  public void setSalt(String salt) { this.salt = salt; }
+
+  public String getRoleType() { return roleType; }
+
+  public void setRoleType(String roleType) { this.roleType = roleType; }
+
+
+
+  public int getScore() { return score; }
+
+  public void setScore(int score) { this.score = score; }
+
+  public String getPartyBranch() { return partyBranch; }
+
+  public void setPartyBranch(String partyBranch) { this.partyBranch = partyBranch; }
+
+  public String getAvatar() { return avatar; }
+
+  public void setAvatar(String avatar) { this.avatar = avatar; }
+
+  public String getHonor() { return honor; }
+
+  public void setHonor(String honor) { this.honor = honor; }
 
   public String getUserId() {
     return userId;

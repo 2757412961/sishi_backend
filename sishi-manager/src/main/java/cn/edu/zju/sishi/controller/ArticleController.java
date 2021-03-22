@@ -79,7 +79,6 @@ public class ArticleController {
   @RequestMapping(value = "articles", method = RequestMethod.GET)
   @ResponseBody
   public JSONObject listArticles(
-          @Min(value = 0, message = "start must not be negative")
           @RequestParam(value = "start", required = false, defaultValue = "0")
           @Min(value = 0, message = "start must not be negative") int start,
           @RequestParam(value = "length", required = false, defaultValue = "10")
