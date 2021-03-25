@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +68,8 @@ public class AudioController {
         return result;
     }
 
-    @RequestMapping(value = "/audio/tagName/{tagName}", method = RequestMethod.POST)
+    @Transactional
+    @RequestMapping(value = "audio/tagName/{tagName}", method = RequestMethod.POST)
     public Audio addAudioByTagName(@RequestBody
                                    @Validated Audio audio,
                                    BindingResult bindingResult,
@@ -93,7 +95,8 @@ public class AudioController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/audio/form", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @Transactional
+    @RequestMapping(value = "audio/form", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public Audio addAudioFileByForm(HttpServletRequest request) {
         logger.info("Start invoke addAudioFileByForm()");
         Audio audio = new Audio();
@@ -125,13 +128,6 @@ public class AudioController {
             audio.setAudioSource(audioSource);
             String fileName = multipartFile.getOriginalFilename();
 
-            // 保存到本地
-            File localFile = new File(nginxConfig.getAudioPath() + fileName);
-            if (localFile.exists()) {
-                throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
-            }
-            multipartFile.transferTo(localFile);
-
             // 保存资源记录
             logger.info("Start invoke save record in db");
             audio.setAudioContent(nginxConfig.getHttpHead() + nginxConfig.getAudioPath() + fileName);
@@ -140,6 +136,13 @@ public class AudioController {
             // 保存 标签、资源 关联记录
             TagResource tagResource = new TagResource("", tagName, audio.getAudioId(), ResourceTypeEnum.AUDIO.getResourceType());
             tagResourceService.addTagResource(tagResource);
+
+            // 保存到本地
+            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getAudioPath() + fileName);
+            if (localFile.exists()) {
+                throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
+            }
+            multipartFile.transferTo(localFile);
         } catch (Exception e) {
             logger.error("addAudioFileByForm Error", e);
             throw new ValidationException(e.toString());
@@ -212,17 +215,26 @@ public class AudioController {
         return result;
     }
 
-    @RequestMapping(value = "/audio/{audioId}/tagName/{tagName}", method = RequestMethod.DELETE)
+    @Transactional
+    @RequestMapping(value = "audio/{audioId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deleteAudioByTagName(@PathVariable("audioId")
                                                     @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
                                                     @PathVariable("tagName")
                                                     @NotNull(message = "tagName cannot be null")
                                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         logger.info("Start invoke deleteAudioByTagName()");
-        // 先删除资源关联表中的记录
+        // 1. 找到资源
+        Audio audio = audioService.getAudio(audioId);
+        // 2. 删除资源关联表中的记录
         tagResourceService.deleteTagResource(tagName, audioId);
-        // 再删除资源表的记录
+        // 3. 再删除资源表的记录
         audioService.dropAudio(audioId);
+        // 4. 删除本地资源
+        File localFile = new File(nginxConfig.getLinuxRoot() + audio.getAudioContent().substring(nginxConfig.getHttpHead().length()));
+        if (localFile.exists()) {
+            localFile.delete();
+        }
+
 
         Map<String, String> result = new HashMap<>();
         result.put(ID, audioId);

@@ -1,9 +1,8 @@
 package cn.edu.zju.sishi.service.impl;
 
-import cn.edu.zju.sishi.dao.TagDao;
-import cn.edu.zju.sishi.dao.TagResourceDao;
-import cn.edu.zju.sishi.entity.Tag;
-import cn.edu.zju.sishi.entity.TagResource;
+import cn.edu.zju.sishi.dao.*;
+import cn.edu.zju.sishi.entity.*;
+import cn.edu.zju.sishi.entity.vo.MediaItem;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
@@ -13,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static cn.edu.zju.sishi.enums.ResourceTypeEnum.*;
 
 @Service
 public class TagResourceServiceImpl implements TagResourceService {
@@ -23,6 +25,13 @@ public class TagResourceServiceImpl implements TagResourceService {
 
     @Autowired
     private TagDao tagDao;
+
+    @Autowired
+    private VideoDao videoDao;
+    @Autowired
+    private AudioDao audioDao;
+    @Autowired
+    private PictureDao pictureDao;
 
     public void checkTagNameEmpty(String tagName) {
         if (StringUtils.isEmpty(tagName)) {
@@ -39,12 +48,27 @@ public class TagResourceServiceImpl implements TagResourceService {
     }
 
     public void checkResourceType(String resourceType) {
-        if (!ResourceTypeEnum.hasResource(resourceType)) {
+        if (!hasResource(resourceType)) {
             throw new ValidationException(String.format("resourceType '%s' is empty!", resourceType));
 //            throw new javax.validation.ValidationException(String.format("resourceType '%s' is empty!", resourceType));
         }
     }
 
+
+    @Override
+    public List<TagResource> getTagResourcesAll() {
+        return tagResourceDao.getTagResourcesAll();
+    }
+
+    @Override
+    public List<TagResource> getTagResourcesByResourceId(String resourceId) {
+        return tagResourceDao.getTagResourcesByResourceId(resourceId);
+    }
+
+    @Override
+    public List<TagResource> getTagResourcesByTagName(String tagName) {
+        return tagResourceDao.getTagResourcesByTagName(tagName);
+    }
 
     @Override
     public String getTagResourceType(String tagName, String resourceId) {
@@ -60,6 +84,58 @@ public class TagResourceServiceImpl implements TagResourceService {
         checkResourceType(resourceType);
 
         return tagResourceDao.getTagResourceIds(tagName, resourceType);
+    }
+
+    @Override
+    public List<MediaItem> getMediaItemsByResourceType(String resourceType) {
+        List<MediaItem> results = new ArrayList<>();
+
+        List<TagResource> tagResources = tagResourceDao.getTagResourceByResourceType(resourceType);
+
+        ResourceTypeEnum typeByValue = getTypeByValue(resourceType);
+        for (TagResource tagResource : tagResources) {
+            String resourceId = tagResource.getResourceId();
+            String name = "";
+            String type = "";
+            String url = "";
+
+            switch (typeByValue) {
+                default:
+                    break;
+                case VIDEO:
+                    Video video = videoDao.getVideo(resourceId);
+                    if (video == null) break;
+
+                    name = video.getVideoTitle();
+                    type = "VIDEO";
+                    url = video.getVideoContent();
+                    break;
+                case AUDIO:
+                    Audio audio = audioDao.getAudio(resourceId);
+                    if (audio == null) break;
+
+                    name = audio.getAudioTitle();
+                    type = "AUDIO";
+                    url = audio.getAudioContent();
+                    break;
+                case PICTURE:
+                    Picture picture = pictureDao.getPictureById(resourceId);
+                    if (picture == null) break;
+
+                    name = picture.getPictureTitle();
+                    type = "IMAGE";
+                    url = picture.getPictureContent();
+                    break;
+            }
+
+            if (StringUtils.isEmpty(url)) {
+                continue;
+            }
+
+            results.add(new MediaItem(resourceId, name, type, url));
+        }
+
+        return results;
     }
 
     @Override

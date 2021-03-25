@@ -3,6 +3,7 @@ package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
 import cn.edu.zju.sishi.config.NginxConfig;
+import cn.edu.zju.sishi.entity.Audio;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.entity.Video;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +70,8 @@ public class VideoController {
         return result;
     }
 
-    @RequestMapping(value = "/video/tagName/{tagName}", method = RequestMethod.POST)
+    @Transactional
+    @RequestMapping(value = "video/tagName/{tagName}", method = RequestMethod.POST)
     public Video addVideoByTagName(@RequestBody
                                    @Validated Video video,
                                    BindingResult bindingResult,
@@ -94,7 +97,8 @@ public class VideoController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/video/form", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @Transactional
+    @RequestMapping(value = "video/form", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public Video addVideoFileByForm(HttpServletRequest request) {
         logger.info("Start invoke addVideoFileByForm()");
         Video video = new Video();
@@ -126,13 +130,6 @@ public class VideoController {
             video.setVideoSource(videoSource);
             String fileName = multipartFile.getOriginalFilename();
 
-            // 保存到本地
-            File localFile = new File(nginxConfig.getVideoPath() + fileName);
-            if (localFile.exists()) {
-                throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
-            }
-            multipartFile.transferTo(localFile);
-
             // 保存资源记录
             logger.info("Start invoke save record in db");
             video.setVideoContent(nginxConfig.getHttpHead() + nginxConfig.getVideoPath() + fileName);
@@ -141,6 +138,13 @@ public class VideoController {
             // 保存 标签、资源 关联记录
             TagResource tagResource = new TagResource("", tagName, video.getVideoId(), ResourceTypeEnum.VIDEO.getResourceType());
             tagResourceService.addTagResource(tagResource);
+
+            // 保存到本地
+            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getVideoPath() + fileName);
+            if (localFile.exists()) {
+                throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
+            }
+            multipartFile.transferTo(localFile);
         } catch (Exception e) {
             logger.error("addVideoFileByForm Error", e);
             throw new ValidationException(e.toString());
@@ -211,17 +215,25 @@ public class VideoController {
         return result;
     }
 
-    @RequestMapping(value = "/video/{videoId}/tagName/{tagName}", method = RequestMethod.DELETE)
+    @Transactional
+    @RequestMapping(value = "video/{videoId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deleteVideoByTagName(@PathVariable("videoId")
                                                     @Size(min = 36, max = 36, message = "videoId length should be 36") String videoId,
                                                     @PathVariable("tagName")
                                                     @NotNull(message = "tagName cannot be null")
                                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         logger.info("Start invoke deleteVideoByTagName()");
-        // 先删除资源关联表中的记录
+        // 1. 找到资源
+        Video video = videoService.getVideo(videoId);
+        // 2. 删除资源关联表中的记录
         tagResourceService.deleteTagResource(tagName, videoId);
-        // 再删除资源表的记录
+        // 3. 再删除资源表的记录
         videoService.dropVideo(videoId);
+        // 4. 删除本地资源
+        File localFile = new File(nginxConfig.getLinuxRoot() + video.getVideoContent().substring(nginxConfig.getHttpHead().length()));
+        if (localFile.exists()) {
+            localFile.delete();
+        }
 
         Map<String, String> result = new HashMap<>();
         result.put(ID, videoId);

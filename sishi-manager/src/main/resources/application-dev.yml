@@ -41,6 +41,6 @@ myconfig:
     httpHead: http://${myconfig.nginx.host}:${myconfig.nginx.port}/media/
     winRoot: F:/SSNginx/webresource/
     linuxRoot: /home/sishi/static/
-    picPath: ${myconfig.nginx.linuxRoot}picture/
-    audioPath: ${myconfig.nginx.linuxRoot}audio/
-    videoPath: ${myconfig.nginx.linuxRoot}video/
+    picPath: picture/
+    audioPath: audio/
+    videoPath: video/

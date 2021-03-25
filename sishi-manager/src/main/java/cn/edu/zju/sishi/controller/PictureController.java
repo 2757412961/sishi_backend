@@ -1,17 +1,20 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.commons.utils.HttpServletRequestUtil;
 import cn.edu.zju.sishi.config.NginxConfig;
 import cn.edu.zju.sishi.entity.Picture;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.PictureService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +32,7 @@ import java.util.*;
 @Slf4j
 //@Validated
 @RestController
-//@AuthController
+@AuthController
 public class PictureController {
 
     private static final String PICTURE_ID = "pictureId";
@@ -44,7 +47,10 @@ public class PictureController {
     @Autowired
     private TagResourceService tagResourceService;
 
-    @RequestMapping(value = "/pictures", method = RequestMethod.GET)
+    @Autowired
+    private AuthorityService authorityService;
+
+    @RequestMapping(value = "pictures", method = RequestMethod.GET)
     public JSONObject getPicturesAll() {
         log.info("Start invoke getPicturesAll()");
         List<Picture> pictures = pictureService.getPicturesAll();
@@ -56,14 +62,14 @@ public class PictureController {
         return result;
     }
 
-    @RequestMapping(value = "/picture/{pictureId}", method = RequestMethod.GET)
+    @RequestMapping(value = "picture/{pictureId}", method = RequestMethod.GET)
     public Picture getPictureById(@PathVariable("pictureId")
                                   @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId) {
         log.info("Start invoke getPictureById()");
         return pictureService.getPictureById(pictureId);
     }
 
-    @RequestMapping(value = "/pictures/ids", method = RequestMethod.POST)
+    @RequestMapping(value = "pictures/ids", method = RequestMethod.POST)
     public JSONObject getPicturesByIds(@RequestBody
                                        @NotEmpty List<@Size(min = 36, max = 36, message = "pictureId length should be 36") String> pictureIds) {
         log.info("Start invoke getPicturesByIds()");
@@ -76,7 +82,7 @@ public class PictureController {
         return result;
     }
 
-    @RequestMapping(value = "/pictures/tagName/{tagName}", method = RequestMethod.GET)
+    @RequestMapping(value = "pictures/tagName/{tagName}", method = RequestMethod.GET)
     public JSONObject getPicturesByTag(@PathVariable("tagName")
                                        @NotNull(message = "tagName cannot be null")
                                        @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
@@ -91,7 +97,7 @@ public class PictureController {
     }
 
 
-    @RequestMapping(value = "/picture", method = RequestMethod.POST)
+    @RequestMapping(value = "picture", method = RequestMethod.POST)
     public Picture addPicture(@RequestBody @Validated Picture picture, BindingResult bindingResult) {
         BindResultUtils.validData(bindingResult);
 
@@ -101,7 +107,8 @@ public class PictureController {
         return picture;
     }
 
-    @RequestMapping(value = "/picture/tagName/{tagName}", method = RequestMethod.POST)
+    @Transactional
+    @RequestMapping(value = "picture/tagName/{tagName}", method = RequestMethod.POST)
     public Picture addPictureByTagName(@RequestBody
                                        @Validated Picture picture,
                                        BindingResult bindingResult,
@@ -126,7 +133,8 @@ public class PictureController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/picture/form", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @Transactional
+    @RequestMapping(value = "picture/form", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public Picture addPictureFileByForm(HttpServletRequest request) {
         log.info("Start invoke addPictureFileByForm()");
         Picture picture = new Picture();
@@ -158,13 +166,6 @@ public class PictureController {
             picture.setPictureSource(pictureSource);
             String fileName = multipartFile.getOriginalFilename();
 
-            // 保存到本地
-            File localFile = new File(nginxConfig.getPicPath() + fileName);
-            if (localFile.exists()) {
-                throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
-            }
-            multipartFile.transferTo(localFile);
-
             // 保存资源记录
             log.info("Start invoke save record in db");
             picture.setPictureContent(nginxConfig.getHttpHead() + nginxConfig.getPicPath() + fileName);
@@ -173,6 +174,13 @@ public class PictureController {
             // 保存 标签、资源 关联记录
             TagResource tagResource = new TagResource("", tagName, picture.getPictureId(), ResourceTypeEnum.PICTURE.getResourceType());
             tagResourceService.addTagResource(tagResource);
+
+            // 保存到本地
+            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getPicPath() + fileName);
+            if (localFile.exists()) {
+                throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
+            }
+            multipartFile.transferTo(localFile);
         } catch (Exception e) {
             log.error("addPictureFileByForm Error", e);
             throw new ValidationException(e.toString());
@@ -182,7 +190,7 @@ public class PictureController {
     }
 
 
-    @RequestMapping(value = "/picture/{pictureId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "picture/{pictureId}", method = RequestMethod.DELETE)
     public Map<String, String> deletePictureById(@PathVariable("pictureId")
                                                  @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId) {
         log.info("Start invoke deletePictureById()");
@@ -192,17 +200,43 @@ public class PictureController {
         return result;
     }
 
-    @RequestMapping(value = "/picture/{pictureId}/tagName/{tagName}", method = RequestMethod.DELETE)
+    @Transactional
+    @RequestMapping(value = "picture/{pictureId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deletePictureByTagName(@PathVariable("pictureId")
                                                       @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId,
                                                       @PathVariable("tagName")
                                                       @NotNull(message = "tagName cannot be null")
                                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         log.info("Start invoke deletePictureByTagName()");
-        // 先删除资源关联表中的记录
+        // 1. 找到资源
+        Picture picture = pictureService.getPictureById(pictureId);
+        // 2. 删除资源关联表中的记录
         tagResourceService.deleteTagResource(tagName, pictureId);
-        // 再删除资源表的记录
+        // 3. 再删除资源表的记录
         pictureService.deletePictureById(pictureId);
+        // 4. 删除本地资源
+        File localFile = new File(nginxConfig.getLinuxRoot() + picture.getPictureContent().substring(nginxConfig.getHttpHead().length()));
+        if (localFile.exists()) {
+            localFile.delete();
+        }
+
+        Map<String, String> result = new HashMap<>();
+        result.put(PICTURE_ID, pictureId);
+
+        return result;
+    }
+
+    @Transactional
+    @RequestMapping(value = "picture/public/{pictureId}", method = RequestMethod.PUT)
+    public Map<String, String> updateIsPublicById(@PathVariable("pictureId")
+                                                  @Size(min = 36, max = 36, message = "pictureId length should be 36") String pictureId,
+                                                  HttpServletRequest request) {
+        log.info("Start invoke updateIsPublicById()");
+        if (!authorityService.isAdamin(request)) {
+            throw new ValidationException("No permission to perform this operation");
+        }
+
+        pictureService.updateIsPublicById(pictureId);
 
         Map<String, String> result = new HashMap<>();
         result.put(PICTURE_ID, pictureId);

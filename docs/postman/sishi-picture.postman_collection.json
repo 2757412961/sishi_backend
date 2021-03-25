@@ -11,11 +11,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/pictures",
+					"raw": "{{sishiServer}}/v1.0/api/pictures",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -82,7 +81,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/pictures/tagName/改革开放@改革复兴@北京",
+					"raw": "localhost:7666/v1.0/api/pictures/tagName/党史新学@中共一大@杭州@西溪",
 					"host": [
 						"localhost"
 					],
@@ -92,7 +91,7 @@
 						"api",
 						"pictures",
 						"tagName",
-						"改革开放@改革复兴@北京"
+						"党史新学@中共一大@杭州@西溪"
 					]
 				}
 			},
@@ -173,7 +172,7 @@
 						},
 						{
 							"key": "pictureTitle",
-							"value": "你好西溪",
+							"value": "你好西溪2",
 							"type": "text"
 						},
 						{
@@ -184,7 +183,7 @@
 						{
 							"key": "pictureFile",
 							"type": "file",
-							"src": "/C:/Users/Z/Pictures/幻灯片壁纸放映/2b55fe0f9e9e72b12f2ebbb8b4a1e4f5.png"
+							"src": "/F:/SS测试数据/tb_mapinfo.sql"
 						}
 					]
 				},
@@ -231,7 +230,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/picture/5b708419-c202-4237-a988-c4f4885c8c37/tagName/党史新学@中共一大@杭州@西溪",
+					"raw": "localhost:7666/v1.0/api/picture/b80bf7b0-bb0c-4566-9059-153678be9090/tagName/党史新学@中共一大@杭州@西溪",
 					"host": [
 						"localhost"
 					],
@@ -240,7 +239,7 @@
 						"v1.0",
 						"api",
 						"picture",
-						"5b708419-c202-4237-a988-c4f4885c8c37",
+						"b80bf7b0-bb0c-4566-9059-153678be9090",
 						"tagName",
 						"党史新学@中共一大@杭州@西溪"
 					]

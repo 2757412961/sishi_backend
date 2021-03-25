@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.service;
 
 import cn.edu.zju.sishi.entity.Tag;
+import cn.edu.zju.sishi.entity.vo.TagCompareTime;
 import cn.edu.zju.sishi.entity.vo.TagTree;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -18,6 +19,8 @@ public interface TagService {
     List<TagTree> getTagTree();
 
     Set<String> getChildTag(String tagName);
+
+    List<TagCompareTime> getTagCompareTime(String tagName);
 
     void addTag(Tag tag);
 

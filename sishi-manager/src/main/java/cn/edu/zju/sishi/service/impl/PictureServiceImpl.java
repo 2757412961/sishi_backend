@@ -43,6 +43,11 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    public Picture getPictureByTitle(String pictureTitle) {
+        return pictureDao.getPictureByTitle(pictureTitle);
+    }
+
+    @Override
     public List<Picture> getPicturesByTag(String tagName) {
         if (tagDao.getTagByTagName(tagName) == null) {
             throw new ValidationException(String.format("TagName %s does not exist!", tagName));
@@ -72,5 +77,10 @@ public class PictureServiceImpl implements PictureService {
         }
 
         return pictureDao.deletePictureById(pictureId);
+    }
+
+    @Override
+    public int updateIsPublicById(String pictureId) {
+        return pictureDao.updateIsPublicById(pictureId);
     }
 }

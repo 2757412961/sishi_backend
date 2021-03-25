@@ -39,8 +39,8 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   @RequestMapping(value = "user", method = RequestMethod.PUT)
   public void updateUserInfo(HttpServletRequest request,
-    @Validated @RequestBody UpdateUserRequest updateUserRequest,
-    BindingResult bindingResult) {
+                             @Validated @RequestBody UpdateUserRequest updateUserRequest,
+                             BindingResult bindingResult) {
     logger.info("start invoke updateUserInfo()");
     if (bindingResult.hasErrors()) {
       throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
@@ -51,29 +51,29 @@ public class UserController {
   }
 
 
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "user/password", method = RequestMethod.PUT)
-    public void updatePassword (HttpServletRequest request,
-      @Validated @RequestBody UpdatePasswordRequest updatePasswordRequest,
-      BindingResult bindingResult) {
-      logger.info("start invoke updatePassword()");
-      if (bindingResult.hasErrors()) {
-        throw new javax.validation.ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
-      } else {
-        //get id from request
-        String id = HttpServletRequestUtil.getAndCheckIdFromRequest(request).getUserId();
-        if (!updatePasswordRequest.getNewPassword().equals(updatePasswordRequest.getConfirmPassword())) {
-          throw new javax.validation.ValidationException("The new password and confirm password are inconsistent");
-        }
-        //check if the new password is the same as old password
-        if (updatePasswordRequest.getNewPassword().equals(updatePasswordRequest.getOldPassword())) {
-          throw new javax.validation.ValidationException("The new password cannot be the same as the old password");
-        } else {
-          userService.updatePassword(id, updatePasswordRequest);
-        }
-
+  @ResponseStatus(HttpStatus.OK)
+  @RequestMapping(value = "user/password", method = RequestMethod.PUT)
+  public void updatePassword(HttpServletRequest request,
+                             @Validated @RequestBody UpdatePasswordRequest updatePasswordRequest,
+                             BindingResult bindingResult) {
+    logger.info("start invoke updatePassword()");
+    if (bindingResult.hasErrors()) {
+      throw new javax.validation.ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+    } else {
+      //get id from request
+      String id = HttpServletRequestUtil.getAndCheckIdFromRequest(request).getUserId();
+      if (!updatePasswordRequest.getNewPassword().equals(updatePasswordRequest.getConfirmPassword())) {
+        throw new javax.validation.ValidationException("The new password and confirm password are inconsistent");
       }
+      //check if the new password is the same as old password
+      if (updatePasswordRequest.getNewPassword().equals(updatePasswordRequest.getOldPassword())) {
+        throw new javax.validation.ValidationException("The new password cannot be the same as the old password");
+      } else {
+        userService.updatePassword(id, updatePasswordRequest);
+      }
+
     }
+  }
 
 
   @ResponseBody
@@ -100,7 +100,7 @@ public class UserController {
 
 
   @ResponseBody
-  @RequestMapping(value = "user",method = RequestMethod.GET)
+  @RequestMapping(value = "user", method = RequestMethod.GET)
   public UserInfoResponse getUserInfo(HttpServletRequest request) {
     logger.info("start invoke getUserInfo()");
     String id = HttpServletRequestUtil.getAndCheckIdFromRequest(request).getUserId();

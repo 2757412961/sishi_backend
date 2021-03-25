@@ -28,4 +28,6 @@ public interface PictureDao {
 
     int deletePictureById(@Param("pictureId") String pictureId);
 
+    int updateIsPublicById(@Param("pictureId") String pictureId);
+
 }

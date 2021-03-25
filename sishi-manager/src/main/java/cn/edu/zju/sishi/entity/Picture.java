@@ -35,4 +35,6 @@ public class Picture implements Serializable {
     long picturePublishTime;
 
     long pictureCreateTime;
+
+    Boolean isPublic;
 }

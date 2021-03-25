@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -92,7 +93,8 @@ public class QuestionController {
         }
     }
 
-    @RequestMapping(value = "/question/{questionId}/tagName/{tagName}", method = RequestMethod.DELETE)
+    @Transactional
+    @RequestMapping(value = "question/{questionId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deleteQuestionByTagName(@PathVariable("questionId")
                                                       @Size(min = 36, max = 36, message = "questionId length should be 36") String questionId,
                                                       @PathVariable("tagName")
@@ -128,7 +130,8 @@ public class QuestionController {
         }
     }
 
-    @RequestMapping(value = "/question/tagName/{tagName}", method = RequestMethod.POST)
+    @Transactional
+    @RequestMapping(value = "question/tagName/{tagName}", method = RequestMethod.POST)
     public Question addQuestionByTagName(@RequestBody
                                        @Validated Question question,
                                        BindingResult bindingResult,

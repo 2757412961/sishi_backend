@@ -9,16 +9,23 @@
 			"name": "localhost:7666/v1.0/api/tags",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "e79c9271-9cd5-4790-b0b6-cabae2d0cbb8",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "171dade117b73095337daed135718dd6",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "192.168.137.116:7666/v1.0/api/tags",
+					"raw": "{{sishiServer}}/v1.0/api/tags",
 					"host": [
-						"192",
-						"168",
-						"137",
-						"116"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -34,14 +41,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "192.168.137.116:7666/v1.0/api/tag/改革开放@改革复兴@上海",
+					"raw": "{{sishiServer}}/v1.0/api/tag/改革开放@改革复兴@上海",
 					"host": [
-						"192",
-						"168",
-						"137",
-						"116"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -58,11 +61,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/tag/tree",
+					"raw": "{{sishiServer}}/v1.0/api/tag/tree",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -79,11 +81,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/tag/children/天下大事@中国@基金",
+					"raw": "{{sishiServer}}/v1.0/api/tag/children/天下大事@中国@基金",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -96,13 +97,16 @@
 			"response": []
 		},
 		{
-			"name": "localhost:7666/v1.0/api/tag",
+			"name": "{{sishiServer}}/v1.0/api/tag/compareTime/{tagName}",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"tagName\": \"天下大事@中国@基金@大跌12\"\r\n}",
+					"raw": "[\r\n    {\r\n        \"geoCoordinates\": [\r\n            121.47069346816863,\r\n            31.22206084685108\r\n        ],\r\n        \"label\": \"中共一大@上海\",\r\n        \"tagId\": \"8e77f22e-b104-4a36-8b7a-7533e75fc160\",\r\n        \"tagName\": \"党史新学@中共一大@上海\",\r\n        \"time\": \"1921年7月23日至30日\",\r\n        \"value\": \"中共一大@上海\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            120.75580305351667,\r\n            30.75747193181725\r\n        ],\r\n        \"label\": \"中共一大@嘉兴\",\r\n        \"tagId\": \"b2637ab5-2a2b-4bd8-8ea0-7e3c930bd099\",\r\n        \"tagName\": \"党史新学@中共一大@嘉兴\",\r\n        \"time\": \"1921年7月23日至30日\",\r\n        \"value\": \"中共一大@嘉兴\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            121.46214132313253,\r\n            31.22206084685108\r\n        ],\r\n        \"label\": \"中共二大\",\r\n        \"tagId\": \"71632cfd-9c87-4680-8aee-f49ba4d15745\",\r\n        \"tagName\": \"党史新学@中共二大\",\r\n        \"time\": \"1922年7月16日至23日\",\r\n        \"value\": \"中共二大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            113.29062697510238,\r\n            23.121680862715294\r\n        ],\r\n        \"label\": \"中共三大\",\r\n        \"tagId\": \"a6b21c9f-8bb5-41ca-9981-28025121203f\",\r\n        \"tagName\": \"党史新学@中共三大\",\r\n        \"time\": \"1923年6月12日至20日\",\r\n        \"value\": \"中共三大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            121.48020351895462,\r\n            31.25728522799882\r\n        ],\r\n        \"label\": \"中共四大\",\r\n        \"tagId\": \"c684d839-6057-4a2b-b845-d044f534cd79\",\r\n        \"tagName\": \"党史新学@中共四大\",\r\n        \"time\": \"1925年1月11日至22日\",\r\n        \"value\": \"中共四大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            114.29318634011975,\r\n            30.553569642526185\r\n        ],\r\n        \"label\": \"中共五大\",\r\n        \"tagId\": \"fb0cca19-6c32-418f-9412-a18ff8a20225\",\r\n        \"tagName\": \"党史新学@中共五大\",\r\n        \"time\": \"1927年4月27日至5月9日\",\r\n        \"value\": \"中共五大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            37.153974181328664,\r\n            55.535728582753336\r\n        ],\r\n        \"label\": \"中共六大\",\r\n        \"tagId\": \"e0d20b1c-514d-4e48-8871-f77d75084437\",\r\n        \"tagName\": \"党史新学@中共六大\",\r\n        \"time\": \"1928年6月18日至7月11日\",\r\n        \"value\": \"中共六大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            109.46267096678156,\r\n            36.618757084621336\r\n        ],\r\n        \"label\": \"中共七大\",\r\n        \"tagId\": \"9ee5dd49-b660-4cf8-abaa-d0b8e254b3d1\",\r\n        \"tagName\": \"党史新学@中共七大\",\r\n        \"time\": \"1945年4月23日至6月11日\",\r\n        \"value\": \"中共七大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            116.35780179933835,\r\n            39.9183391913575\r\n        ],\r\n        \"label\": \"中共八大\",\r\n        \"tagId\": \"124770b3-88c2-41be-a167-517cea42c1eb\",\r\n        \"tagName\": \"党史新学@中共八大\",\r\n        \"time\": \"1956年9月15日至27日\",\r\n        \"value\": \"中共八大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            116.38748691963224,\r\n            39.90337460887406\r\n        ],\r\n        \"label\": \"中共九大\",\r\n        \"tagId\": \"33313190-e868-47fc-b422-5b2bc48fb06b\",\r\n        \"tagName\": \"党史新学@中共九大\",\r\n        \"time\": \"1969年４月１至24日\",\r\n        \"value\": \"中共九大\"\r\n    },\r\n    {\r\n        \"geoCoordinates\": [\r\n            116.38748691963224,\r\n            39.90337460887406\r\n        ],\r\n        \"label\": \"中共十大\",\r\n        \"tagId\": \"e93a22be-1c9f-45e9-9947-55dfa92b4e58\",\r\n        \"tagName\": \"党史新学@中共十大\",\r\n        \"time\": \"1973年8月24日至28日\",\r\n        \"value\": \"中共十大\"\r\n    }\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -110,11 +114,40 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:7666/v1.0/api/tag",
+					"raw": "{{sishiServer}}/v1.0/api/tag/compareTime/党史新学",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
+					"path": [
+						"v1.0",
+						"api",
+						"tag",
+						"compareTime",
+						"党史新学"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/tag",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tagName\": \"天下大事@中国@物价2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tag",
+					"host": [
+						"{{sishiServer}}"
+					],
 					"path": [
 						"v1.0",
 						"api",
@@ -130,16 +163,47 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/tag/天下大事@中国@基金@大跌234",
+					"raw": "{{sishiServer}}/v1.0/api/tag/天下大事@中国@基金@大跌12",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
 						"tag",
-						"天下大事@中国@基金@大跌234"
+						"天下大事@中国@基金@大跌12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/tagResource/mediaItems",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"id\": \"17c396ac-dc26-44b2-8caa-c9ef8760842e\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"www.baidu.com\"\r\n    },\r\n    {\r\n        \"id\": \"1b5a8260-d012-4a39-bf08-efe38da2bf68\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"www.baidu.com\"\r\n    },\r\n    {\r\n        \"id\": \"d63de485-f7f0-4944-84a6-9f981917946b\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"http://192.168.2.2:89/media/video/Skylar Grey,Eminem,Dr. Dre - I Need a Doctor.mp4\"\r\n    },\r\n    {\r\n        \"id\": \"87d6860e-a1fe-4fc4-a293-c8b5a91e237f\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"https://msy-geo.obs.myhuaweicloud.com/%E9%99%95%E5%8C%97%E5%BB%B6%E5%AE%89demo/28%E9%99%95%E5%8C%97%E5%BB%B6%E5%AE%89-%E6%8A%97%E6%97%A5%E6%B0%91%E6%97%8F%E7%BB%9F%E4%B8%80%E6%88%98%E7%BA%BF%E7%9A%84%E5%BB%BA%E7%AB%8B-%E7%93%A6%E7%AA%91%E5%A0%A1%E4%BC%9A%E8%AE%AE-%5B%E4%B8%9C%E6%96%B9%E4%B8%BB%E6%88%98%E5%9C%BA%5D%E7%93%A6%E7%AA%91%E5%A0%A1%E4%BC%9A%E8%AE%AE%E7%A1%AE%E7%AB%8B%E4%BA%86%E4%B8%AD%E5%85%B1%E6%8A%97%E6%97%A5%E6%B0%91%E6%97%8F%E7%BB%9F%E4%B8%80%E6%88%98%E7%BA%BF%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%94%BF%E7%AD%96.mp4\"\r\n    },\r\n    {\r\n        \"id\": \"67b9157a-a6f5-4644-a0c2-b53a68110ca7\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"http://192.168.2.2:89/media/video/Bishop Briggs - River.mp4\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tagResource/mediaItems",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tagResource",
+						"mediaItems"
 					]
 				}
 			},

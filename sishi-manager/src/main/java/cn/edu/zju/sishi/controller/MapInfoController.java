@@ -12,6 +12,7 @@ import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +95,7 @@ public class MapInfoController {
         return mapInfo;
     }
 
+    @Transactional
     @RequestMapping(value = "mapinfo/tagName/{tagName}", method = RequestMethod.POST)
     public MapInfo addMapInfoByTagName(@RequestBody
         @Validated MapInfo mapInfo,
@@ -123,6 +125,7 @@ public class MapInfoController {
         return result;
     }
 
+    @Transactional
     @RequestMapping(value = "mapinfo/{mapId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deleteMapInfoByTagName(@PathVariable(value = "mapId")
         @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId,

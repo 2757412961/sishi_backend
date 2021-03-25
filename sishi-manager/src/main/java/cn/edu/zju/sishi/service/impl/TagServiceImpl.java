@@ -3,6 +3,7 @@ package cn.edu.zju.sishi.service.impl;
 import cn.edu.zju.sishi.dao.TagDao;
 import cn.edu.zju.sishi.entity.MapInfo;
 import cn.edu.zju.sishi.entity.Tag;
+import cn.edu.zju.sishi.entity.vo.TagCompareTime;
 import cn.edu.zju.sishi.entity.vo.TagTree;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
@@ -132,7 +133,46 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    @Cacheable(value = "GET_TAG_COMPARE_TIME")
+    public List<TagCompareTime> getTagCompareTime(String tagName) {
+//        if (tagDao.getTagByTagName(tagName) == null) {
+//            throw new ValidationException(String.format("Tag %s does not exist!", tagName));
+//        }
+
+        List<TagCompareTime> results = new ArrayList<>();
+        List<Tag> tagList = tagDao.getTagsByPrefix(tagName);
+        for (Tag tag : tagList) {
+            List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName());
+            if (!mapInfos.isEmpty()) {
+                MapInfo mapInfo = mapInfos.get(0);
+
+                if (mapInfo.getMapTime() != null && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
+                    TagCompareTime tagCompareTime = new TagCompareTime();
+
+                    String[] split = tag.getTagName().substring(tagName.length()).split("@", 2);
+                    if (split.length >= 2) {
+                        tagCompareTime.setLabel(split[1]);
+                        tagCompareTime.setValue(split[1]);
+                    }
+                    tagCompareTime.setTagId(tag.getTagId());
+                    tagCompareTime.setTagName(tag.getTagName());
+                    tagCompareTime.setTime(mapInfo.getMapTime());
+                    tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
+                    tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
+
+                    results.add(tagCompareTime);
+                }
+            }
+        }
+
+        // 按照时间排顺序
+        Collections.sort(results);
+
+        return results;
+    }
+
+    @Override
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public void addTag(Tag tagEntity) {
         if (tagDao.getTagByTagName(tagEntity.getTagName()) != null) {
             throw new ValidationException(String.format("Tag %s already exist!", tagEntity.getTagName()));
@@ -141,7 +181,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public void addTags(List<String> tags) {
         for (String tagName : tags) {
             if (tagDao.getTagByTagName(tagName) != null) {
@@ -160,7 +200,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public void dropTag(String tagName) {
         if (tagDao.getTagByTagName(tagName) == null) {
             throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Tag %s does not exist!", tagName));

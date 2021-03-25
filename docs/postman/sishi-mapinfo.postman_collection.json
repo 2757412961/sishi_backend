@@ -82,17 +82,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfos/tagName/党史新学@中共一大",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfos/tagName/党史新学@中共一大@上海",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
 						"mapinfos",
 						"tagName",
-						"党史新学@中共一大"
+						"党史新学@中共一大@上海"
 					]
 				}
 			},
@@ -113,11 +112,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfo",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -134,7 +132,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mapTitle\": \"上海\",\r\n    \"mapLon\": 120.2,\r\n    \"mapLat\": 39.8\r\n}",
+					"raw": "{\r\n    \"mapTitle\": \"天下大事@中国@房价\",\r\n    \"mapLon\": 116.38748691963224,\r\n    \"mapLat\": 39.90337460887406,\r\n    \"mapTime\": \"1973年8月24日至28日\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -142,17 +140,16 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfo/tagName/改革开放@改革复兴@上海",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/tagName/天下大事@中国@房价",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
 						"mapinfo",
 						"tagName",
-						"改革开放@改革复兴@上海"
+						"天下大事@中国@房价"
 					]
 				}
 			},
@@ -164,11 +161,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfo/024ad43f-36c5-4ee7-b06e-47ccd48f4390",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/024ad43f-36c5-4ee7-b06e-47ccd48f4390",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -185,18 +181,17 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfo/96e62707-1083-4756-a93a-9a04d7c067ac/tagName/改革开放@改革复兴@上海",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/74f95e94-ac46-48b4-808b-fe252cfd60ac/tagName/党史新学@中共一大@嘉兴",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
 						"mapinfo",
-						"96e62707-1083-4756-a93a-9a04d7c067ac",
+						"74f95e94-ac46-48b4-808b-fe252cfd60ac",
 						"tagName",
-						"改革开放@改革复兴@上海"
+						"党史新学@中共一大@嘉兴"
 					]
 				}
 			},

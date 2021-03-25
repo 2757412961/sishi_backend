@@ -13,6 +13,8 @@ public interface AudioService {
 
   List<Audio> listAudios(int start, int length);
 
+  Audio getAudioByTitle(String audioTitle);
+
   List<Audio> getAudiosByTagName(String tagName, int start, int length);
 
   int countAudios();
