@@ -9,19 +9,27 @@
         <result property="articleContent" column="ARTICLE_CONTENT" jdbcType="VARCHAR"/>
         <result property="articlePublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="articleCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
+        <result property="eventTime" column="EVENT_TIME" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="listArticles" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time
+        publish_time, create_time, event_time
         FROM tb_article
+        <if test="startTime != null">
+            AND START_TIME >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND START_TIME <![CDATA[ < ]]> #{endTime}
+        </if>
+        ORDER BY START_TIME DESC
         LIMIT #{length}
         OFFSET #{offset}
     </select>
 
     <select id="getArticle" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time
+        publish_time, create_time, event_time
         FROM tb_article
         WHERE article_id = #{articleId}
     </select>
@@ -31,7 +39,7 @@
 
 
     <select id="getArticlesByTagName" resultType="cn.edu.zju.sishi.entity.Article">
-        SELECT article_id, article_title, article_content, article_author,publish_time, create_time
+        SELECT article_id, article_title, article_content, article_author,publish_time, create_time, event_time
         FROM tb_article a, tb_tag_resource_map m
         WHERE m.tag_name = #{tagName}
         AND m.resource_id=a.article_id
@@ -45,7 +53,7 @@
     <insert id="addArticle" parameterType="cn.edu.zju.sishi.entity.Article" flushCache="true">
         INSERT INTO tb_article
           (article_id, article_title, article_content, article_author,
-          publish_time, create_time)
+          publish_time, create_time, event_time)
         VALUES
         (#{article.articleId},
         #{article.articleTitle},
@@ -57,7 +65,7 @@
 
     <select id="getArticleByTitle" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time
+        publish_time, create_time, event_time
         FROM tb_article
         WHERE article_title = #{title}
 

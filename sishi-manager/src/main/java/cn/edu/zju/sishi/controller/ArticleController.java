@@ -79,18 +79,40 @@ public class ArticleController {
   @RequestMapping(value = "articles", method = RequestMethod.GET)
   @ResponseBody
   public JSONObject listArticles(
-          @RequestParam(value = "start", required = false, defaultValue = "0")
-          @Min(value = 0, message = "start must not be negative") int start,
-          @RequestParam(value = "length", required = false, defaultValue = "10")
-          @Min(value = 1, message = "length must be larger than 0")
-          @Max(value = 1000, message = "the number of return size should be no more than 1000") int length) {
+    @RequestParam(value = "start", required = false, defaultValue = "0")
+    @Min(value = 0, message = "start must not be negative") int start,
+    @RequestParam(value = "length", required = false, defaultValue = "10")
+    @Min(value = 1, message = "length must be larger than 0")
+    @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+    @RequestParam(value = "startTime", required = false) String startTime,
+    @RequestParam(value = "endTime", required = false) String endTime) {
     logger.info("start invoke listArticles()");
     JSONObject result = new JSONObject();
-    List<Article> articles = articleService.listArticles(start, length);
+    List<Article> articles = articleService.listArticles(start, length, startTime, endTime);
+
+    long startTime1 = getLongFromString(startTime, "startTime");
+    long endTime1 = getLongFromString(endTime, "endTime");
+
+
+
     int count = articles.size();
     result.put("totalCount", count);
     result.put("articles", articles);
     return result;
+  }
+
+  private long getLongFromString(String arg, String argName) {
+    long longArg = 0;
+    if (arg != null) {
+      try {
+        longArg = Long.parseLong(arg);
+      } catch (NumberFormatException e) {
+        throw new javax.validation.ValidationException(String.format("%s must be an integer", argName));
+      }
+      if (longArg < 1)
+        throw new javax.validation.ValidationException(String.format("%s must be larger than 0", argName));
+    }
+    return longArg;
   }
 
   @ResponseBody
