@@ -44,6 +44,11 @@ public class AudioServiceImpl implements AudioService {
   }
 
   @Override
+  public Audio getAudioByTitle(String audioTitle) {
+    return audioDao.getAudioByTitle(audioTitle);
+  }
+
+  @Override
   public List<Audio> getAudiosByTagName(String tagName, int start, int length) {
     return audioDao.getAudiosByTagName(tagName, length, length * start);
   }

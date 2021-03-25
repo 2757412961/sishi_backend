@@ -133,6 +133,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Cacheable(value = "GET_TAG_COMPARE_TIME")
     public List<TagCompareTime> getTagCompareTime(String tagName) {
 //        if (tagDao.getTagByTagName(tagName) == null) {
 //            throw new ValidationException(String.format("Tag %s does not exist!", tagName));
@@ -171,7 +172,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public void addTag(Tag tagEntity) {
         if (tagDao.getTagByTagName(tagEntity.getTagName()) != null) {
             throw new ValidationException(String.format("Tag %s already exist!", tagEntity.getTagName()));
@@ -180,7 +181,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public void addTags(List<String> tags) {
         for (String tagName : tags) {
             if (tagDao.getTagByTagName(tagName) != null) {
@@ -199,7 +200,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG"}, allEntries = true)
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public void dropTag(String tagName) {
         if (tagDao.getTagByTagName(tagName) == null) {
             throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Tag %s does not exist!", tagName));

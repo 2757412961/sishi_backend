@@ -48,15 +48,14 @@ public class PictureDaoTest {
         System.out.println(pictureDao.getPicturesByTag("党史新学@中共一大"));
     }
 
-    @Test
-    public void addPicture() {
-        System.out.println(
-                pictureDao.addPicture(
-                        new Picture(UUID.randomUUID().toString(), "ct.png", "https:126/adf/ss.png", "content", 78, 456)));
-    }
 
     @Test
     public void deletePictureById() {
         System.out.println(pictureDao.deletePictureById("1f606233-b6f2-48e1-9e62-a154e6189993"));
+    }
+
+    @Test
+    public void testUpdateIsPublicById() {
+        System.out.println(pictureDao.updateIsPublicById("a5256cb1-96ef-46a1-874b-2198e20c09d0"));
     }
 }

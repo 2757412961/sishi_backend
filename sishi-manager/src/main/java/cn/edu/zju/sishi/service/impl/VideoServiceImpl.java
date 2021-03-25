@@ -47,6 +47,11 @@ public class VideoServiceImpl implements VideoService {
   }
 
   @Override
+  public Video getVideoByTitle(String videoTitle) {
+    return videoDao.getVideoByTitle(videoTitle);
+  }
+
+  @Override
 //  @Cacheable(value = "GET_VIDEOS_BY_NAME")
   public List<Video> getVideosByTagName(String tagName, int start, int length) {
     return videoDao.getVideosByTagName(tagName, length, length*start);

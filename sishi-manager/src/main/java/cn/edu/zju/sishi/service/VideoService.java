@@ -13,6 +13,8 @@ public interface VideoService {
 
   List<Video> listVideos(int start, int length);
 
+  Video getVideoByTitle(String videoTitle);
+
   List<Video> getVideosByTagName(String tagName, int start, int length);
 
   int countVideos();

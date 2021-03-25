@@ -30,7 +30,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/articles/tagName/天下大事@中国@基金",
+					"raw": "{{sishiServer}}/v1.0/api/articles/tagName/党史新学@抗日战争@陕北延安",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -39,7 +39,7 @@
 						"api",
 						"articles",
 						"tagName",
-						"天下大事@中国@基金"
+						"党史新学@抗日战争@陕北延安"
 					]
 				}
 			},
@@ -60,11 +60,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:7666/v1.0/api/article/tagName/天下大事@中国@房价",
+					"raw": "{{sishiServer}}/v1.0/api/article/tagName/天下大事@中国@房价",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -82,11 +81,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/article/518aad4f-408e-4365-8b91-63039ab45a12/tagName/天下大事@中国@房价",
+					"raw": "{{sishiServer}}/v1.0/api/article/518aad4f-408e-4365-8b91-63039ab45a12/tagName/天下大事@中国@房价",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",

@@ -4,11 +4,28 @@
 
     <cache/>
 
+    <select id="getTagResourcesAll" resultType="TagResource">
+        SELECT tag_id, tag_name, resource_id, resource_type
+        FROM tb_tag_resource_map
+    </select>
+
+    <select id="getTagResourcesByResourceId" resultType="TagResource">
+        SELECT tag_id, tag_name, resource_id, resource_type
+        FROM tb_tag_resource_map
+        WHERE resource_id = #{resourceId}
+    </select>
+
+    <select id="getTagResourcesByTagName" resultType="TagResource">
+        SELECT tag_id, tag_name, resource_id, resource_type
+        FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName}
+    </select>
+
     <select id="getTagResourceType" resultType="String">
         SELECT resource_type
         FROM tb_tag_resource_map
-        WHERE tag_name = #{tagName} AND resource_id = #{resourceId}
-        LIMIT 1
+        WHERE tag_name = #{tagName}
+          AND resource_id = #{resourceId} LIMIT 1
     </select>
 
     <select id="getTagResourceIds" resultType="String">
@@ -31,12 +48,15 @@
 
 
     <delete id="deleteTagResource" flushCache="true">
-        DELETE FROM tb_tag_resource_map
-        WHERE tag_name = #{tagName} AND resource_id = #{resourceId}
+        DELETE
+        FROM tb_tag_resource_map
+        WHERE tag_name = #{tagName}
+          AND resource_id = #{resourceId}
     </delete>
 
     <delete id="deleteByTagName" flushCache="true">
-        DELETE FROM tb_tag_resource_map
+        DELETE
+        FROM tb_tag_resource_map
         WHERE tag_name = #{tagName}
     </delete>
 

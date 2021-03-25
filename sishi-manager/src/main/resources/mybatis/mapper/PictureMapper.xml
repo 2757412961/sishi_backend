@@ -11,6 +11,7 @@
         <result property="pictureContent" column="picture_content"/>
         <result property="picturePublishTime" column="picture_publish_time"/>
         <result property="pictureCreateTime" column="picture_create_time"/>
+        <result property="isPublic" column="is_public"/>
     </resultMap>
 
     <sql id="dynamicKeys">
@@ -21,6 +22,7 @@
             <if test="pictureContent != null and pictureContent != ''">picture_content,</if>
             <if test="picturePublishTime != null and picturePublishTime != ''">picture_publish_time,</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">picture_create_time,</if>
+            <if test="isPublic != null and isPublic != ''">is_public,</if>
         </trim>
     </sql>
 
@@ -32,23 +34,24 @@
             <if test="pictureContent != null and pictureContent != ''">#{pictureContent},</if>
             <if test="picturePublishTime != null and picturePublishTime != ''">#{picturePublishTime},</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">#{pictureCreateTime},</if>
+            <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
         </trim>
     </sql>
 
 
     <select id="getPicturesAll" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
         FROM tb_picture
     </select>
 
     <select id="getPictureById" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
         FROM tb_picture
         WHERE picture_id = #{pictureId}
     </select>
 
     <select id="getPicturesByIds" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
         FROM tb_picture
         <where>
             picture_id in
@@ -59,13 +62,13 @@
     </select>
 
     <select id="getPictureByTitle" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
         FROM tb_picture
         WHERE picture_title = #{pictureTitle}
     </select>
 
     <select id="getPicturesByPage" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
         FROM tb_picture
         ORDER BY picture_id ASC
         LIMIT #{length}
@@ -73,7 +76,7 @@
     </select>
 
     <select id="getPicturesByTag" resultMap="PictureResultMap">
-        SELECT p.picture_id, p.picture_title, p.picture_source, p.picture_content, p.picture_publish_time, p.picture_create_time
+        SELECT p.picture_id, p.picture_title, p.picture_source, p.picture_content, p.picture_publish_time, p.picture_create_time, p.is_public
         FROM tb_picture p, tb_tag_resource_map t
         WHERE t.tag_name = #{tagName} AND t.resource_id = p.picture_id AND t.resource_type = 'tb_picture'
     </select>
@@ -92,6 +95,13 @@
         DELETE FROM tb_picture
         WHERE picture_id = #{pictureId}
     </delete>
+
+
+    <update id="updateIsPublicById" parameterType="String" flushCache="true">
+        UPDATE tb_picture
+        SET is_public = true
+        WHERE picture_id = #{pictureId}
+    </update>
 
 
 </mapper>

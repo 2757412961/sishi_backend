@@ -56,6 +56,21 @@ public class TagResourceServiceImpl implements TagResourceService {
 
 
     @Override
+    public List<TagResource> getTagResourcesAll() {
+        return tagResourceDao.getTagResourcesAll();
+    }
+
+    @Override
+    public List<TagResource> getTagResourcesByResourceId(String resourceId) {
+        return tagResourceDao.getTagResourcesByResourceId(resourceId);
+    }
+
+    @Override
+    public List<TagResource> getTagResourcesByTagName(String tagName) {
+        return tagResourceDao.getTagResourcesByTagName(tagName);
+    }
+
+    @Override
     public String getTagResourceType(String tagName, String resourceId) {
         checkTagNameEmpty(tagName);
         checkResourceIDEmpty(resourceId);

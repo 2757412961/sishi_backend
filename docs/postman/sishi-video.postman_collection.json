@@ -30,7 +30,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/videos/tagName/天下大事@中国@基金",
+					"raw": "{{sishiServer}}/v1.0/api/videos/tagName/党史新学@中共一大",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -39,7 +39,7 @@
 						"api",
 						"videos",
 						"tagName",
-						"天下大事@中国@基金"
+						"党史新学@中共一大"
 					]
 				}
 			},
@@ -128,7 +128,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/video/718fdcb6-a079-48f6-9267-160bb7da5aa3/tagName/天下大事@中国@房价",
+					"raw": "localhost:7666/v1.0/api/video/9fd00c8e-678a-4778-b791-8ac17d6afce3/tagName/天下大事@中国@房价",
 					"host": [
 						"localhost"
 					],
@@ -137,7 +137,7 @@
 						"v1.0",
 						"api",
 						"video",
-						"718fdcb6-a079-48f6-9267-160bb7da5aa3",
+						"9fd00c8e-678a-4778-b791-8ac17d6afce3",
 						"tagName",
 						"天下大事@中国@房价"
 					]

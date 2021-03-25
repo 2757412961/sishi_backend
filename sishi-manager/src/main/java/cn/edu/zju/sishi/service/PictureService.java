@@ -9,16 +9,20 @@ public interface PictureService {
 
     List<Picture> getPicturesAll();
 
-    Picture getPictureById(@Param("pictureId") String pictureId);
+    Picture getPictureById(String pictureId);
 
-    List<Picture> getPicturesByIds(@Param("pictureIds") List<String> pictureIds);
+    List<Picture> getPicturesByIds(List<String> pictureIds);
 
 //    List<Picture> getPicturesByPage(@Param("length") int length, @Param("offset") int offset);
 
-    List<Picture> getPicturesByTag(@Param("tagName") String tagName);
+    Picture getPictureByTitle(String pictureTitle);
+
+    List<Picture> getPicturesByTag(String tagName);
 
     int addPicture(Picture picture);
 
-    int deletePictureById(@Param("pictureId") String pictureId);
+    int deletePictureById(String pictureId);
+
+    int updateIsPublicById(String pictureId);
 
 }

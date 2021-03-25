@@ -11,6 +11,12 @@ import java.util.List;
 @Component
 public interface TagResourceDao {
 
+    List<TagResource> getTagResourcesAll();
+
+    List<TagResource> getTagResourcesByResourceId(@Param("resourceId") String resourceId);
+
+    List<TagResource> getTagResourcesByTagName(@Param("tagName") String tagName);
+
     String getTagResourceType(@Param("tagName") String tagName, @Param("resourceId") String resourceId);
 
     List<String> getTagResourceIds(@Param("tagName") String tagName, @Param("resourceType") String resourceType);

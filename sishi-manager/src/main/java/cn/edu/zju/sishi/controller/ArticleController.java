@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -56,8 +57,9 @@ public class ArticleController {
     return result;
   }
 
+  @Transactional
   @ResponseBody
-  @RequestMapping(value = "/article/tagName/{tagName}", method = RequestMethod.POST)
+  @RequestMapping(value = "article/tagName/{tagName}", method = RequestMethod.POST)
   public Article addArticleByTagName(@RequestBody
                                      @Validated  Article article,
                                      BindingResult bindingResult,
@@ -135,7 +137,8 @@ public class ArticleController {
     return result;
   }
 
-  @RequestMapping(value = "/article/{articleId}/tagName/{tagName}", method = RequestMethod.DELETE)
+  @Transactional
+  @RequestMapping(value = "article/{articleId}/tagName/{tagName}", method = RequestMethod.DELETE)
   public Map<String, String> deleteArticleByTagName(@PathVariable("articleId")
                                                     @Size(min = 36, max = 36, message = "articleId length should be 36") String articleId,
                                                     @PathVariable("tagName")

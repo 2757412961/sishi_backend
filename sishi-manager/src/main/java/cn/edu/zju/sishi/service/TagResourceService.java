@@ -8,6 +8,12 @@ import java.util.List;
 
 public interface TagResourceService {
 
+    List<TagResource> getTagResourcesAll();
+
+    List<TagResource> getTagResourcesByResourceId(String resourceId);
+
+    List<TagResource> getTagResourcesByTagName(String tagName);
+
     String getTagResourceType(String tagName, String resourceId);
 
     List<String> getTagResourceIds(String tagName, String resourceType);
