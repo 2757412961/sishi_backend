@@ -36,5 +36,12 @@ public class Picture implements Serializable {
 
     long pictureCreateTime;
 
+    private String eventTime;
+
+    public String getEventTime() { return eventTime; }
+
+    public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+
+
     Boolean isPublic;
 }

@@ -12,6 +12,7 @@
         <result property="picturePublishTime" column="picture_publish_time"/>
         <result property="pictureCreateTime" column="picture_create_time"/>
         <result property="isPublic" column="is_public"/>
+        <result property="eventTime" column="event_time" />
     </resultMap>
 
     <sql id="dynamicKeys">
@@ -23,6 +24,7 @@
             <if test="picturePublishTime != null and picturePublishTime != ''">picture_publish_time,</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">picture_create_time,</if>
             <if test="isPublic != null and isPublic != ''">is_public,</if>
+            <if test="eventTime != null and eventTime != ''">eventTime,</if>
         </trim>
     </sql>
 
@@ -35,13 +37,17 @@
             <if test="picturePublishTime != null and picturePublishTime != ''">#{picturePublishTime},</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">#{pictureCreateTime},</if>
             <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
+            <if test="eventTime != null and eventTime != ''">eventTime,</if>
         </trim>
     </sql>
 
 
     <select id="getPicturesAll" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
+        WHERE
+        to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
+        AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
     </select>
 
     <select id="getPictureById" resultMap="PictureResultMap">

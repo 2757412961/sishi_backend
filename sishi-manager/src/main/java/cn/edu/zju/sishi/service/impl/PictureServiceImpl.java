@@ -24,8 +24,8 @@ public class PictureServiceImpl implements PictureService {
     private TagDao tagDao;
 
     @Override
-    public List<Picture> getPicturesAll() {
-        return pictureDao.getPicturesAll();
+    public List<Picture> getPicturesAll(String startTime, String endTime) {
+        return pictureDao.getPicturesAll(startTime, endTime);
     }
 
     @Override

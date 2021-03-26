@@ -32,4 +32,6 @@ public interface ArticleDao {
 
 
   Article getArticleByTitle(@Param("title") String title);
+
+  int updateIsPublicById(@Param("articleId") String articleId);
 }

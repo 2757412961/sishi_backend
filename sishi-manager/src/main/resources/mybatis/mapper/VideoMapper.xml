@@ -9,12 +9,17 @@
         <result property="videoContent" column="VIDEO_CONTENT" jdbcType="VARCHAR"/>
         <result property="videoPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="videoCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
+        <result property="eventTime" column="EVENT_TIME" jdbcType="DATE"/>
+        <result property="isPublic" column="is_public"/>
     </resultMap>
 
     <select id="listVideos" resultMap="videoDaoResultMap">
         SELECT video_id, video_title, video_content, video_source,
-        publish_time, create_time
+        publish_time, create_time, event_time, is_public
         FROM tb_video
+        WHERE
+        to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
+        AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
         LIMIT #{length}
         OFFSET #{offset}
     </select>
@@ -60,14 +65,22 @@
     <insert id="addVideo" parameterType="cn.edu.zju.sishi.entity.Video" flushCache="true">
         INSERT INTO tb_video
           (video_id, video_title, video_content, video_source,
-          publish_time, create_time)
+          publish_time, create_time, is_public)
         VALUES
         (#{video.videoId},
         #{video.videoTitle},
         #{video.videoContent},
         #{video.videoSource},
         #{video.videoPublishTime},
-        #{video.videoCreateTime});
+        #{video.videoCreateTime},
+        #{video.isPublic},
+        #{video.eventTime});
     </insert>
+
+    <update id="updateIsPublicById" parameterType="String" flushCache="true">
+        UPDATE tb_video
+        SET is_public = true
+        WHERE video_id = #{videoId}
+    </update>
 
 </mapper>

@@ -19,4 +19,6 @@ public interface ArticleService {
 
   void dropArticle(String articleId);
 
+  int updateIsPublicById(String articleId);
+
 }

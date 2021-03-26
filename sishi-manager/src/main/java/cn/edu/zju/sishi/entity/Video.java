@@ -28,6 +28,13 @@ public class Video implements Serializable {
 
   private long videoPublishTime;
 
+  private String eventTime;
+
+  public String getEventTime() { return eventTime; }
+
+  public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+
+
   public String getVideoId() {
     return videoId;
   }

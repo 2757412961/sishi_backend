@@ -28,6 +28,12 @@ public class Audio implements Serializable {
 
   private long audioPublishTime;
 
+  private String eventTime;
+
+  public String getEventTime() { return eventTime; }
+
+  public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+
   public String getAudioId() {
     return audioId;
   }

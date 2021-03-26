@@ -10,6 +10,7 @@ import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import cn.edu.zju.sishi.service.VideoService;
 import com.alibaba.fastjson.JSONObject;
@@ -56,6 +57,9 @@ public class VideoController {
 
     @Autowired
     TagResourceService tagResourceService;
+
+    @Autowired
+    private AuthorityService authorityService;
 
     @ResponseBody
     @RequestMapping(value = "video", method = RequestMethod.POST)
@@ -156,14 +160,16 @@ public class VideoController {
     @RequestMapping(value = "videos", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject listVideos(
-            @RequestParam(value = "start", required = false, defaultValue = "0")
-            @Min(value = 0, message = "start must not be negative") int start,
-            @RequestParam(value = "length", required = false, defaultValue = "10")
-            @Min(value = 1, message = "length must be larger than 0")
-            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length) {
+      @RequestParam(value = "start", required = false, defaultValue = "0")
+      @Min(value = 0, message = "start must not be negative") int start,
+      @RequestParam(value = "length", required = false, defaultValue = "10")
+      @Min(value = 1, message = "length must be larger than 0")
+      @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+      @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
+      @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime) {
         logger.info("start invoke listVideos()");
         JSONObject result = new JSONObject();
-        List<Video> videos = videoService.listVideos(start, length);
+        List<Video> videos = videoService.listVideos(start, length,startTime, endTime );
         result.put("videos", videos);
         int totalCount = videos.size();
         result.put("total", totalCount);
@@ -173,8 +179,8 @@ public class VideoController {
     @ResponseBody
     @RequestMapping(value = "video/{videoId}", method = RequestMethod.GET)
     public Video getVideo(
-            @Size(min = 36, max = 36, message = "videoId's length must be 36")
-            @PathVariable(value = "videoId") String videoId) {
+      @Size(min = 36, max = 36, message = "videoId's length must be 36")
+      @PathVariable(value = "videoId") String videoId) {
         logger.info("start invoke getVideo()");
         Video video = videoService.getVideo(videoId);
         if (video != null) {
@@ -188,12 +194,12 @@ public class VideoController {
     @RequestMapping(value = "videos/tagName/{tagName}", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getVideosByTagName(
-            @PathVariable(value = "tagName") String tagName,
-            @RequestParam(value = "start", required = false, defaultValue = "0")
-            @Min(value = 0, message = "start must not be negative") int start,
-            @RequestParam(value = "length", required = false, defaultValue = "10")
-            @Min(value = 1, message = "length must be larger than 0")
-            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
+      @PathVariable(value = "tagName") String tagName,
+      @RequestParam(value = "start", required = false, defaultValue = "0")
+      @Min(value = 0, message = "start must not be negative") int start,
+      @RequestParam(value = "length", required = false, defaultValue = "10")
+      @Min(value = 1, message = "length must be larger than 0")
+      @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
     ) {
         logger.info("start invoke getVideoIdsByTagName()");
         JSONObject result = new JSONObject();
@@ -206,8 +212,8 @@ public class VideoController {
 
     @RequestMapping(value = "video/{videoId}", method = RequestMethod.DELETE)
     public Map<String, String> dropVideo(
-            @Size(min = 36, max = 36, message = "videoId's length must be 36")
-            @PathVariable(value = "videoId") String videoId) {
+      @Size(min = 36, max = 36, message = "videoId's length must be 36")
+      @PathVariable(value = "videoId") String videoId) {
         logger.info("start invoke dropVideo()");
         Map<String, String> result = new HashMap<>();
         videoService.dropVideo(videoId);
@@ -241,4 +247,21 @@ public class VideoController {
         return result;
     }
 
+    @Transactional
+    @RequestMapping(value = "video/public/{videoId}", method = RequestMethod.PUT)
+    public Map<String, String> updateIsPublicById(@PathVariable("videoId")
+                                                  @Size(min = 36, max = 36, message = "videoId length should be 36") String videoId,
+                                                  HttpServletRequest request) {
+        logger.info("Start invoke updateIsPublicById()");
+        if (!authorityService.isAdamin(request)) {
+            throw new ValidationException("No permission to perform this operation");
+        }
+
+        videoService.updateIsPublicById(videoId);
+
+        Map<String, String> result = new HashMap<>();
+        result.put(ID, videoId);
+
+        return result;
+    }
 }

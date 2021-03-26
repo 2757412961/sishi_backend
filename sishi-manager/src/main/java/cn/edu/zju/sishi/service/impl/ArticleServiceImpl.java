@@ -63,5 +63,8 @@ public class ArticleServiceImpl implements ArticleService {
     articleDao.dropArticle(articleId);
   }
 
+  @Override
+  public int updateIsPublicById(String articleId) { return articleDao.updateIsPublicById(articleId); }
+
 }
 

@@ -12,7 +12,8 @@ import java.util.List;
 @Component
 public interface PictureDao {
 
-    List<Picture> getPicturesAll();
+    List<Picture> getPicturesAll( @Param("startTime") String startTime,
+                                  @Param("endTime") String endTime);
 
     Picture getPictureById(@Param("pictureId") String pictureId);
 
