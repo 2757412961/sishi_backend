@@ -9,19 +9,24 @@
         <result property="articleContent" column="ARTICLE_CONTENT" jdbcType="VARCHAR"/>
         <result property="articlePublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="articleCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
+        <result property="eventTime" column="EVENT_TIME" jdbcType="DATE"/>
+        <result property="isPublic" column="is_public"/>
     </resultMap>
 
     <select id="listArticles" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time
+        publish_time, create_time, event_time, is_public
         FROM tb_article
+        WHERE
+        to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
+        AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
         LIMIT #{length}
         OFFSET #{offset}
     </select>
 
     <select id="getArticle" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time
+        publish_time, create_time, event_time, is_public
         FROM tb_article
         WHERE article_id = #{articleId}
     </select>
@@ -31,7 +36,7 @@
 
 
     <select id="getArticlesByTagName" resultType="cn.edu.zju.sishi.entity.Article">
-        SELECT article_id, article_title, article_content, article_author,publish_time, create_time
+        SELECT article_id, article_title, article_content, article_author,publish_time, create_time, event_time, is_public
         FROM tb_article a, tb_tag_resource_map m
         WHERE m.tag_name = #{tagName}
         AND m.resource_id=a.article_id
@@ -45,21 +50,29 @@
     <insert id="addArticle" parameterType="cn.edu.zju.sishi.entity.Article" flushCache="true">
         INSERT INTO tb_article
           (article_id, article_title, article_content, article_author,
-          publish_time, create_time)
+          publish_time, create_time, event_time, is_public)
         VALUES
         (#{article.articleId},
         #{article.articleTitle},
         #{article.articleContent},
         #{article.articleAuthor},
-        #{article.articlePublishTime},
-        #{article.articleCreateTime});
+        #{article.publishTime},
+        #{article.createTime},
+        #{article.isPublic},
+        #{article.eventTime});
     </insert>
 
     <select id="getArticleByTitle" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time
+        publish_time, create_time, event_time
         FROM tb_article
         WHERE article_title = #{title}
 
     </select>
+
+    <update id="updateIsPublicById" parameterType="String" flushCache="true">
+        UPDATE tb_article
+        SET is_public = true
+        WHERE article_id = #{articleId}
+    </update>
 </mapper>

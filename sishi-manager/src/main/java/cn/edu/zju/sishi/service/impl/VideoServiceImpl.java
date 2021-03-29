@@ -42,8 +42,8 @@ public class VideoServiceImpl implements VideoService {
 
   @Override
 //  @Cacheable(value = "LIST_VIDEOS")
-  public List<Video> listVideos(int start, int length) {
-    return videoDao.listVideos(length, length*start);
+  public List<Video> listVideos(int start, int length, String startTime, String endTime) {
+    return videoDao.listVideos(length, length*start, startTime, endTime);
   }
 
   @Override
@@ -79,5 +79,9 @@ public class VideoServiceImpl implements VideoService {
       throw new ResourceNotFoundException("video", "id", videoId);
     }
     videoDao.dropVideo(videoId);
+  }
+  @Override
+  public int updateIsPublicById(String videoId) {
+    return videoDao.updateIsPublicById(videoId);
   }
 }

@@ -8,6 +8,7 @@ import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.ArticleService;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -43,6 +45,9 @@ public class ArticleController {
 
   @Autowired
   private TagResourceService tagResourceService;
+
+  @Autowired
+  private AuthorityService authorityService;
 
   @ResponseBody
   @RequestMapping(value = "article", method = RequestMethod.POST)
@@ -81,14 +86,18 @@ public class ArticleController {
   @RequestMapping(value = "articles", method = RequestMethod.GET)
   @ResponseBody
   public JSONObject listArticles(
-          @RequestParam(value = "start", required = false, defaultValue = "0")
-          @Min(value = 0, message = "start must not be negative") int start,
-          @RequestParam(value = "length", required = false, defaultValue = "10")
-          @Min(value = 1, message = "length must be larger than 0")
-          @Max(value = 1000, message = "the number of return size should be no more than 1000") int length) {
+    @RequestParam(value = "start", required = false, defaultValue = "0")
+    @Min(value = 0, message = "start must not be negative") int start,
+    @RequestParam(value = "length", required = false, defaultValue = "10")
+    @Min(value = 1, message = "length must be larger than 0")
+    @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+    @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
+    @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime) {
     logger.info("start invoke listArticles()");
     JSONObject result = new JSONObject();
-    List<Article> articles = articleService.listArticles(start, length);
+    List<Article> articles = articleService.listArticles(start, length, startTime, endTime);
+
+
     int count = articles.size();
     result.put("totalCount", count);
     result.put("articles", articles);
@@ -155,5 +164,21 @@ public class ArticleController {
 
     return result;
   }
+  @Transactional
+  @RequestMapping(value = "article/public/{articleId}", method = RequestMethod.PUT)
+  public Map<String, String> updateIsPublicById(@PathVariable("articleId")
+                                                @Size(min = 36, max = 36, message = "articleId length should be 36") String articleId,
+                                                HttpServletRequest request) {
+    logger.info("Start invoke updateIsPublicById()");
+    if (!authorityService.isAdamin(request)) {
+      throw new ValidationException("No permission to perform this operation");
+    }
 
+    articleService.updateIsPublicById(articleId);
+
+    Map<String, String> result = new HashMap<>();
+    result.put(ID, articleId);
+
+    return result;
+  }
 }

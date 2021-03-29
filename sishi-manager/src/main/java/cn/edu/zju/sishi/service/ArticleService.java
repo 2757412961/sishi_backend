@@ -11,12 +11,14 @@ import java.util.List;
 public interface ArticleService {
   void addArticle(Article articleEntity);
 
-  List<Article> listArticles(int start, int length);
+  List<Article> listArticles(int start, int length, String startTime, String endTime);
 
   List<Article> getArticlesByTagName(String tagName, int start, int length);
   
   Article getArticle(String articleId);
 
   void dropArticle(String articleId);
+
+  int updateIsPublicById(String articleId);
 
 }

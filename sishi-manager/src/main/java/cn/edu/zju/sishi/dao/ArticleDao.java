@@ -17,7 +17,9 @@ public interface ArticleDao {
   void addArticle(@Param("article") Article articleEntity);
 
   List<Article> listArticles(@Param("length") int length,
-                             @Param("offset") int offset);
+                             @Param("offset") int offset,
+                             @Param("startTime") String startTime,
+                             @Param("endTime") String endTime);
 
 
   Article getArticle(@Param("articleId") String articleId);
@@ -30,4 +32,6 @@ public interface ArticleDao {
 
 
   Article getArticleByTitle(@Param("title") String title);
+
+  int updateIsPublicById(@Param("articleId") String articleId);
 }

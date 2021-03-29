@@ -39,8 +39,8 @@ public class AudioServiceImpl implements AudioService {
   }
 
   @Override
-  public List<Audio> listAudios(int start, int length) {
-    return audioDao.listAudios(length, length * start);
+  public List<Audio> listAudios(int start, int length, String startTime, String endTime) {
+    return audioDao.listAudios(length, length * start, startTime, endTime);
   }
 
   @Override
@@ -76,5 +76,10 @@ public class AudioServiceImpl implements AudioService {
     }
     audioDao.dropAudio(audioId);
   }
+
+  public int updateIsPublicById(String audioId) {
+    return audioDao.updateIsPublicById(audioId);
+  }
+
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public interface VideoService {
   void addVideo(Video video);
 
-  List<Video> listVideos(int start, int length);
+  List<Video> listVideos(int start, int length, String startTime, String endTime);
 
   Video getVideoByTitle(String videoTitle);
 
@@ -24,4 +24,6 @@ public interface VideoService {
   Video getVideo(String videoId);
 
   void dropVideo(String videoId);
+
+  int updateIsPublicById(String videoId);
 }

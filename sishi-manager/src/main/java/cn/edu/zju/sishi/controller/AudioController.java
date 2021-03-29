@@ -9,6 +9,7 @@ import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.AudioService;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -55,6 +56,9 @@ public class AudioController {
     @Autowired
     TagResourceService tagResourceService;
 
+    @Autowired
+    private AuthorityService authorityService;
+
     @ResponseBody
     @RequestMapping(value = "audio", method = RequestMethod.POST)
     public Map<String, String> addAudio(@RequestBody @Validated Audio audio, BindingResult bindingResult) {
@@ -70,12 +74,13 @@ public class AudioController {
 
     @Transactional
     @RequestMapping(value = "audio/tagName/{tagName}", method = RequestMethod.POST)
-    public Audio addAudioByTagName(@RequestBody
-                                   @Validated Audio audio,
-                                   BindingResult bindingResult,
-                                   @PathVariable("tagName")
-                                   @NotNull(message = "tagName cannot be null")
-                                   @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+    public Audio addAudioByTagName(
+      @RequestBody
+      @Validated Audio audio,
+      BindingResult bindingResult,
+      @PathVariable("tagName")
+      @NotNull(message = "tagName cannot be null")
+      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         BindResultUtils.validData(bindingResult);
 
         logger.info("Start invoke addAudioByTagName()");
@@ -158,10 +163,12 @@ public class AudioController {
             @Min(value = 0, message = "start must not be negative") int start,
             @RequestParam(value = "length", required = false, defaultValue = "10")
             @Min(value = 1, message = "length must be larger than 0")
-            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length) {
+            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+            @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
+            @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime) {
         logger.info("start invoke listAudios()");
         JSONObject result = new JSONObject();
-        List<Audio> audios = audioService.listAudios(start, length);
+        List<Audio> audios = audioService.listAudios(start, length, startTime, endTime);
         result.put("audios", audios);
         int totalCount = audios.size();
         result.put("total", totalCount);
@@ -217,11 +224,12 @@ public class AudioController {
 
     @Transactional
     @RequestMapping(value = "audio/{audioId}/tagName/{tagName}", method = RequestMethod.DELETE)
-    public Map<String, String> deleteAudioByTagName(@PathVariable("audioId")
-                                                    @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
-                                                    @PathVariable("tagName")
-                                                    @NotNull(message = "tagName cannot be null")
-                                                    @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+    public Map<String, String> deleteAudioByTagName(
+      @PathVariable("audioId")
+      @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
+      @PathVariable("tagName")
+      @NotNull(message = "tagName cannot be null")
+      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         logger.info("Start invoke deleteAudioByTagName()");
         // 1. 找到资源
         Audio audio = audioService.getAudio(audioId);
@@ -242,4 +250,22 @@ public class AudioController {
         return result;
     }
 
+    @Transactional
+    @RequestMapping(value = "audio/public/{audioId}", method = RequestMethod.PUT)
+    public Map<String, String> updateIsPublicById(
+      @PathVariable("audioId")
+      @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
+      HttpServletRequest request) {
+        logger.info("Start invoke updateIsPublicById()");
+        if (!authorityService.isAdamin(request)) {
+            throw new ValidationException("No permission to perform this operation");
+        }
+
+        audioService.updateIsPublicById(audioId);
+
+        Map<String, String> result = new HashMap<>();
+        result.put(ID, audioId);
+
+        return result;
+    }
 }

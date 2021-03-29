@@ -28,6 +28,12 @@ public class Article implements Serializable {
 
   private long articlePublishTime;
 
+  private String eventTime;
+
+  public String getEventTime() { return eventTime; }
+
+  public void setEventTime(String eventTime) { this.eventTime = eventTime; }
+
   public String getArticleId() {
     return articleId;
   }

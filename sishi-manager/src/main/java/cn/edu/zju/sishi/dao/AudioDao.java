@@ -17,7 +17,9 @@ public interface AudioDao {
   void addAudio(@Param("audio") Audio audio);
 
   List<Audio> listAudios(@Param("length") int length,
-                         @Param("offset") int offset);
+                         @Param("offset") int offset,
+                         @Param("startTime") String startTime,
+                         @Param("endTime") String endTime);
 
   int countAudios();
 
@@ -31,7 +33,10 @@ public interface AudioDao {
 
 
   void dropAudio(@Param("audioId") String audioId);
+
   Audio getAudioByTitle(@Param("title") String title);
+
+  int updateIsPublicById(@Param("audioId") String audioId);
 
 
 }

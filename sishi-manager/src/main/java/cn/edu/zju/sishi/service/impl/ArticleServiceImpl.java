@@ -1,5 +1,4 @@
 package cn.edu.zju.sishi.service.impl;
-
 import cn.edu.zju.sishi.dao.ArticleDao;
 import cn.edu.zju.sishi.entity.Article;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
@@ -7,6 +6,7 @@ import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -23,7 +23,9 @@ public class ArticleServiceImpl implements ArticleService {
   @Autowired
   private ArticleDao articleDao;
 
+  @Transactional
   public void addArticle(Article articleEntity) {
+
     String title = articleEntity.getArticleTitle();
     Article existArticle = articleDao.getArticleByTitle(title);
     if (existArticle != null) {
@@ -38,8 +40,8 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> listArticles(int start, int length) {
-    return articleDao.listArticles(length, length * start);
+  public List<Article> listArticles(int start, int length, String startTime, String endTime) {
+    return articleDao.listArticles(length, length * start, startTime, endTime );
   }
 
   @Override
@@ -52,6 +54,7 @@ public class ArticleServiceImpl implements ArticleService {
     return articleDao.getArticlesByTagName(tagName, length, length * start);
   }
 
+  @Override
   public void dropArticle(String articleId) {
     Article articleEntity = articleDao.getArticle(articleId);
     if (articleEntity == null) {
@@ -59,6 +62,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
     articleDao.dropArticle(articleId);
   }
+
+  @Override
+  public int updateIsPublicById(String articleId) { return articleDao.updateIsPublicById(articleId); }
 
 }
 

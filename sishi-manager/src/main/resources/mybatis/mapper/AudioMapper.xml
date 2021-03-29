@@ -9,12 +9,17 @@
         <result property="audioContent" column="AUDIO_CONTENT" jdbcType="VARCHAR"/>
         <result property="audioPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="audioCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
+        <result property="eventTime" column="EVENT_TIME" jdbcType="DATE"/>
+        <result property="isPublic" column="is_public"/>
     </resultMap>
 
     <select id="listAudios" resultMap="audioDaoResultMap">
         SELECT audio_id, audio_title, audio_content, audio_source,
-        publish_time, create_time
+        publish_time, create_time, event_time
         FROM tb_audio
+        WHERE
+        to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
+        AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
         LIMIT #{length}
         OFFSET #{offset}
     </select>
@@ -61,14 +66,17 @@
     <insert id="addAudio" parameterType="cn.edu.zju.sishi.entity.Audio" flushCache="true">
         INSERT INTO tb_audio
           (audio_id, audio_title, audio_content, audio_source,
-          publish_time, create_time)
+          publish_time, create_time, event_time)
         VALUES
         (#{audio.audioId},
         #{audio.audioTitle},
         #{audio.audioContent},
         #{audio.audioSource},
         #{audio.audioPublishTime},
-        #{audio.audioCreateTime});
+        #{audio.audioCreateTime},
+        #{audio.isPublic},
+        #{audio.eventTime});
+
     </insert>
 
     <select id="getAudioByTitle" resultMap="audioDaoResultMap">
@@ -76,7 +84,12 @@
           publish_time, create_time
         FROM tb_audio
         WHERE audio_title = #{title}
-
     </select>
+
+    <update id="updateIsPublicById" parameterType="String" flushCache="true">
+        UPDATE tb_audio
+        SET is_public = true
+        WHERE audio_id = #{audioId}
+    </update>
 
 </mapper>

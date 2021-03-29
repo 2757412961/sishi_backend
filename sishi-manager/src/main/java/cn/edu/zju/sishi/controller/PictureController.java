@@ -51,9 +51,12 @@ public class PictureController {
     private AuthorityService authorityService;
 
     @RequestMapping(value = "pictures", method = RequestMethod.GET)
-    public JSONObject getPicturesAll() {
+    public JSONObject getPicturesAll(
+      @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
+      @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime
+    ) {
         log.info("Start invoke getPicturesAll()");
-        List<Picture> pictures = pictureService.getPicturesAll();
+        List<Picture> pictures = pictureService.getPicturesAll(startTime, endTime);
 
         JSONObject result = new JSONObject();
         result.put("totalCount", pictures.size());
