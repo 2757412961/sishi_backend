@@ -12,6 +12,7 @@
         <result property="mapPublishTime" column="map_publish_time"/>
         <result property="mapCreateTime" column="map_create_time"/>
         <result property="mapTime" column="map_time"/>
+        <result property="isPublic" column="is_public"/>
     </resultMap>
 
     <sql id="dynamicKeys">
@@ -23,6 +24,7 @@
             <if test="mapPublishTime != null and mapPublishTime != ''">map_publish_time,</if>
             <if test="mapCreateTime != null and mapCreateTime != ''">map_create_time,</if>
             <if test="mapTime != null and mapTime != ''">map_time,</if>
+            <if test="isPublic != null and isPublic != ''">is_public,</if>
         </trim>
     </sql>
 
@@ -35,31 +37,34 @@
             <if test="mapPublishTime != null and mapPublishTime != ''">#{mapPublishTime},</if>
             <if test="mapCreateTime != null and mapCreateTime != ''">#{mapCreateTime},</if>
             <if test="mapTime != null and mapTime != ''">#{mapTime},</if>
+            <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
         </trim>
     </sql>
 
 
     <select id="getAllMapInfos" resultMap="MapInfoResultMap">
-        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time
+        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time, is_public
         FROM tb_mapinfo
+        WHERE (is_public = true ${logicSymbol} 1=1)
     </select>
 
     <select id="getMapInfoById" parameterType="String" resultMap="MapInfoResultMap">
-        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time
+        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time, is_public
         FROM tb_mapinfo
         WHERE map_id = #{mapId}
     </select>
 
     <select id="getMapInfoByTitle" parameterType="String" resultMap="MapInfoResultMap">
-        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time
+        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time, is_public
         FROM tb_mapinfo
         WHERE map_title = #{mapTitle}
     </select>
 
     <select id="getMapInfosByTag" parameterType="String" resultMap="MapInfoResultMap">
-        SELECT m.map_id, m.map_title, m.map_lon, m.map_lat, m.map_publish_time, m.map_create_time, m.map_time
+        SELECT m.map_id, m.map_title, m.map_lon, m.map_lat, m.map_publish_time, m.map_create_time, m.map_time, m.is_public
         FROM tb_mapinfo m, tb_tag_resource_map t
         WHERE t.tag_name = #{tagName} AND t.resource_type = 'tb_mapinfo' AND t.resource_id = m.map_id
+          AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
 
@@ -88,6 +93,12 @@
             <if test="mapCreateTime != null">map_create_time = #{mapCreateTime},</if>
             <if test="mapTime != null">map_time = #{mapTime},</if>
         </set>
+        WHERE map_id = #{mapId}
+    </update>
+
+    <update id="updateIsPublicById" parameterType="String" flushCache="true">
+        UPDATE tb_mapinfo
+        SET is_public = true
         WHERE map_id = #{mapId}
     </update>
 

@@ -2,6 +2,7 @@ package cn.edu.zju.sishi.controller;
 
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.config.NginxConfig;
 import cn.edu.zju.sishi.entity.Audio;
 import cn.edu.zju.sishi.entity.TagResource;
@@ -117,6 +118,10 @@ public class VideoController {
             if (videoSource == null) {
                 throw new ValidationException("未提交来源");
             }
+            String eventTime = request.getParameter("eventTime");
+            if (eventTime == null) {
+                throw new ValidationException("未提交事件时间");
+            }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -132,6 +137,7 @@ public class VideoController {
             // 文件名称
             video.setVideoTitle(videoTitle);
             video.setVideoSource(videoSource);
+            video.setEventTime(eventTime);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录
@@ -166,10 +172,12 @@ public class VideoController {
       @Min(value = 1, message = "length must be larger than 0")
       @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
       @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-      @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime) {
+      @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
+      HttpServletRequest request) {
         logger.info("start invoke listVideos()");
         JSONObject result = new JSONObject();
-        List<Video> videos = videoService.listVideos(start, length,startTime, endTime );
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Video> videos = videoService.listVideos(start, length,startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
         result.put("videos", videos);
         int totalCount = videos.size();
         result.put("total", totalCount);
@@ -199,11 +207,12 @@ public class VideoController {
       @Min(value = 0, message = "start must not be negative") int start,
       @RequestParam(value = "length", required = false, defaultValue = "10")
       @Min(value = 1, message = "length must be larger than 0")
-      @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
-    ) {
+      @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+      HttpServletRequest request) {
         logger.info("start invoke getVideoIdsByTagName()");
         JSONObject result = new JSONObject();
-        List<Video> videosByTagName = videoService.getVideosByTagName(tagName, start, length);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Video> videosByTagName = videoService.getVideosByTagName(tagName, start, length, LogicUtil.getLogicByIsAdmins(isAdministrator));
         int totalCount = videosByTagName.size();
         result.put("totalCount", totalCount);
         result.put("videos", videosByTagName);

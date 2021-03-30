@@ -24,8 +24,8 @@ public class PictureServiceImpl implements PictureService {
     private TagDao tagDao;
 
     @Override
-    public List<Picture> getPicturesAll(String startTime, String endTime) {
-        return pictureDao.getPicturesAll(startTime, endTime);
+    public List<Picture> getPicturesAll(String startTime, String endTime, String logicSymbol) {
+        return pictureDao.getPicturesAll(startTime, endTime, logicSymbol);
     }
 
     @Override
@@ -48,12 +48,12 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public List<Picture> getPicturesByTag(String tagName) {
+    public List<Picture> getPicturesByTag(String tagName, String logicSymbol) {
         if (tagDao.getTagByTagName(tagName) == null) {
             throw new ValidationException(String.format("TagName %s does not exist!", tagName));
         }
 
-        return pictureDao.getPicturesByTag(tagName);
+        return pictureDao.getPicturesByTag(tagName, logicSymbol);
     }
 
     @Override

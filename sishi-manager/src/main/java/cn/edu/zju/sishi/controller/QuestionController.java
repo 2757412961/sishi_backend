@@ -1,10 +1,13 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Question;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
+import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.QuestionService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import cn.edu.zju.sishi.service.UserAnswerService;
@@ -17,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -41,14 +45,18 @@ public class QuestionController {
     @Autowired
     private TagResourceService tagResourceService;
 
+    @Autowired
+    private AuthorityService authorityService;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "questions/selectques", method = RequestMethod.GET)
     @ResponseBody
-    public List<Question> getQues() {
+    public List<Question> getQues(HttpServletRequest request) {
         logger.info("Start invoke getQues()");
 
-        List<Question> questions = questionService.getQues();
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Question> questions = questionService.getQues(LogicUtil.getLogicByIsAdmins(isAdministrator));
 
         JSONObject result = new JSONObject();
         result.put("totalCount", questions.size());
@@ -65,10 +73,11 @@ public class QuestionController {
 
     @RequestMapping(value = "questions/tagName/{tagName}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Question> getQuestionsByTagName(@PathVariable(value = "tagName") String tagName) {
+    public List<Question> getQuestionsByTagName(@PathVariable(value = "tagName") String tagName, HttpServletRequest request) {
         logger.info("start invoke listQuestionsByTagName()");
 
-        List<Question> questionsByTagName = userAnswerService.getQuesByTag(tagName);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Question> questionsByTagName = userAnswerService.getQuesByTag(tagName, LogicUtil.getLogicByIsAdmins(isAdministrator));
 
         JSONObject result = new JSONObject();
         result.put("totalCount", questionsByTagName.size());
@@ -170,5 +179,22 @@ public class QuestionController {
     }
 
 
+    @Transactional
+    @RequestMapping(value = "question/public/{questionId}", method = RequestMethod.PUT)
+    public Map<String, String> updateIsPublicById(@PathVariable("questionId")
+                                                  @Size(min = 36, max = 36, message = "questionId length should be 36") String questionId,
+                                                  HttpServletRequest request) {
+        logger.info("Start invoke updateIsPublicById()");
+        if (!authorityService.isAdamin(request)) {
+            throw new ValidationException("No permission to perform this operation");
+        }
+
+        questionService.updateIsPublicById(questionId);
+
+        Map<String, String> result = new HashMap<>();
+        result.put("questionId", questionId);
+
+        return result;
+    }
 
 }

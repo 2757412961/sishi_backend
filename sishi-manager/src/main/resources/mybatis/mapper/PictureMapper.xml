@@ -24,7 +24,7 @@
             <if test="picturePublishTime != null and picturePublishTime != ''">picture_publish_time,</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">picture_create_time,</if>
             <if test="isPublic != null and isPublic != ''">is_public,</if>
-            <if test="eventTime != null and eventTime != ''">eventTime,</if>
+            <if test="eventTime != null and eventTime != ''">event_time,</if>
         </trim>
     </sql>
 
@@ -37,7 +37,7 @@
             <if test="picturePublishTime != null and picturePublishTime != ''">#{picturePublishTime},</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">#{pictureCreateTime},</if>
             <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
-            <if test="eventTime != null and eventTime != ''">eventTime,</if>
+            <if test="eventTime != null and eventTime != ''">to_date(#{eventTime}, 'YYYY-MM-DD'),</if>
         </trim>
     </sql>
 
@@ -45,19 +45,19 @@
     <select id="getPicturesAll" resultMap="PictureResultMap">
         SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
-        WHERE
-        to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
-        AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
+        WHERE to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
+            AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
+            AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
     <select id="getPictureById" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
         WHERE picture_id = #{pictureId}
     </select>
 
     <select id="getPicturesByIds" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
         <where>
             picture_id in
@@ -68,13 +68,13 @@
     </select>
 
     <select id="getPictureByTitle" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
         WHERE picture_title = #{pictureTitle}
     </select>
 
     <select id="getPicturesByPage" resultMap="PictureResultMap">
-        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
         ORDER BY picture_id ASC
         LIMIT #{length}
@@ -82,9 +82,10 @@
     </select>
 
     <select id="getPicturesByTag" resultMap="PictureResultMap">
-        SELECT p.picture_id, p.picture_title, p.picture_source, p.picture_content, p.picture_publish_time, p.picture_create_time, p.is_public
+        SELECT p.picture_id, p.picture_title, p.picture_source, p.picture_content, p.picture_publish_time, p.picture_create_time, p.is_public, p.event_time
         FROM tb_picture p, tb_tag_resource_map t
         WHERE t.tag_name = #{tagName} AND t.resource_id = p.picture_id AND t.resource_type = 'tb_picture'
+            AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
 

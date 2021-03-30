@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.config.NginxConfig;
 import cn.edu.zju.sishi.entity.Audio;
 import cn.edu.zju.sishi.entity.TagResource;
@@ -116,6 +117,10 @@ public class AudioController {
             if (audioSource == null) {
                 throw new ValidationException("未提交来源");
             }
+            String eventTime = request.getParameter("eventTime");
+            if (eventTime == null) {
+                throw new ValidationException("未提交事件时间");
+            }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -131,6 +136,7 @@ public class AudioController {
             // 文件名称
             audio.setAudioTitle(audioTitle);
             audio.setAudioSource(audioSource);
+            audio.setEventTime(eventTime);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录
@@ -165,10 +171,12 @@ public class AudioController {
             @Min(value = 1, message = "length must be larger than 0")
             @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
             @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-            @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime) {
+            @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
+            HttpServletRequest request) {
         logger.info("start invoke listAudios()");
         JSONObject result = new JSONObject();
-        List<Audio> audios = audioService.listAudios(start, length, startTime, endTime);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Audio> audios = audioService.listAudios(start, length, startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
         result.put("audios", audios);
         int totalCount = audios.size();
         result.put("total", totalCount);
@@ -198,12 +206,13 @@ public class AudioController {
             @Min(value = 0, message = "start must not be negative") int start,
             @RequestParam(value = "length", required = false, defaultValue = "10")
             @Min(value = 1, message = "length must be larger than 0")
-            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
-    ) {
+            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+            HttpServletRequest request) {
         logger.info("start invoke getAudiosByTagName()");
         JSONObject result = new JSONObject();
 
-        List<Audio> audiosByTagName = audioService.getAudiosByTagName(tagName, start, length);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Audio> audiosByTagName = audioService.getAudiosByTagName(tagName, start, length, LogicUtil.getLogicByIsAdmins(isAdministrator));
         result.put("audios", audiosByTagName);
 
         int totalCount = audiosByTagName.size();

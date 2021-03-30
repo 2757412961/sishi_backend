@@ -20,7 +20,7 @@ public class PictureDaoTest {
 
     @Test
     public void getPictureAll() {
-        System.out.println(pictureDao.getPicturesAll());
+//        System.out.println(pictureDao.getPicturesAll());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class PictureDaoTest {
 
     @Test
     public void getPictureByTag() {
-        System.out.println(pictureDao.getPicturesByTag("党史新学@中共一大"));
+        System.out.println(pictureDao.getPicturesByTag("党史新学@中共一大", "and"));
     }
 
 

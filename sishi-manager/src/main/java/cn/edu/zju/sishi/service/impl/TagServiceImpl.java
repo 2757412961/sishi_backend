@@ -1,5 +1,6 @@
 package cn.edu.zju.sishi.service.impl;
 
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.dao.TagDao;
 import cn.edu.zju.sishi.entity.MapInfo;
 import cn.edu.zju.sishi.entity.Tag;
@@ -93,7 +94,7 @@ public class TagServiceImpl implements TagService {
                         newTagTree.setTagId(tag.getTagId());
                         newTagTree.setTagName(tag.getTagName());
 
-                        List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName());
+                        List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
                         if (!mapInfos.isEmpty()) {
                             newTagTree.setTime(mapInfos.get(0).getMapTime());
                             newTagTree.setGeoCoordinates(
@@ -142,7 +143,7 @@ public class TagServiceImpl implements TagService {
         List<TagCompareTime> results = new ArrayList<>();
         List<Tag> tagList = tagDao.getTagsByPrefix(tagName);
         for (Tag tag : tagList) {
-            List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName());
+            List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
             if (!mapInfos.isEmpty()) {
                 MapInfo mapInfo = mapInfos.get(0);
 

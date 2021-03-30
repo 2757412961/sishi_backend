@@ -29,8 +29,8 @@ public class MapInfoServiceImpl implements MapInfoService {
 
     @Override
 //    @Cacheable(value = "GET_ALL_MAPINFO")
-    public List<MapInfo> getAllMapInfos() {
-        return mapInfoDao.getAllMapInfos();
+    public List<MapInfo> getAllMapInfos(String logicSymbol) {
+        return mapInfoDao.getAllMapInfos(logicSymbol);
     }
 
     @Override
@@ -66,12 +66,12 @@ public class MapInfoServiceImpl implements MapInfoService {
 
     @Override
 //    @Cacheable(value = "GET_MAPINFO_BY_TAG")
-    public List<MapInfo> getMapInfosByTag(String tagName) {
+    public List<MapInfo> getMapInfosByTag(String tagName, String logicSymbol) {
         if (tagDao.getTagByTagName(tagName) == null) {
             throw new ValidationException(String.format("TagName %s does not exist!", tagName));
         }
 
-        return mapInfoDao.getMapInfosByTag(tagName);
+        return mapInfoDao.getMapInfosByTag(tagName, logicSymbol);
     }
 
     @Override
@@ -110,5 +110,10 @@ public class MapInfoServiceImpl implements MapInfoService {
         }
 
         return mapInfoDao.updateMapInfo(mapInfoEntity);
+    }
+
+    @Override
+    public int updateIsPublicById(String mapId) {
+        return mapInfoDao.updateIsPublicById(mapId);
     }
 }

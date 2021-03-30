@@ -10,7 +10,7 @@
     <select id="selectTags" resultType="cn.edu.zju.sishi.entity.Tag">
         SELECT tag_id, tag_name
         FROM tb_tag
-        ORDER BY tag_id ASC
+        ORDER BY tag_name ASC
     </select>
 
     <select id="getTagByTagName" resultType="cn.edu.zju.sishi.entity.Tag">

@@ -19,7 +19,7 @@ public class MapInfoServiceImplTest {
 
     @Test
     public void getAllMapInfo() {
-        System.out.println(mapInfoService.getAllMapInfos());
+//        System.out.println(mapInfoService.getAllMapInfos());
     }
 
     @Test

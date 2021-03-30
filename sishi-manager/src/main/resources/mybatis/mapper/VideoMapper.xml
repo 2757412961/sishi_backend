@@ -20,20 +20,21 @@
         WHERE
         to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
         AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
+        AND (is_public = true ${logicSymbol} 1=1)
         LIMIT #{length}
         OFFSET #{offset}
     </select>
 
     <select id="getVideo" resultMap="videoDaoResultMap">
         SELECT video_id, video_title, video_content, video_source,
-        publish_time, create_time
+        publish_time, create_time, event_time, is_public
         FROM tb_video
         WHERE video_id = #{videoId}
     </select>
 
     <select id="getVideoByTitle" resultMap="videoDaoResultMap">
         SELECT video_id, video_title, video_content, video_source,
-        publish_time, create_time
+        publish_time, create_time, event_time, is_public
         FROM tb_video
         WHERE video_title = #{title}
     </select>
@@ -51,11 +52,12 @@
 
     <select id="getVideosByTagName" resultType="cn.edu.zju.sishi.entity.Video">
         SELECT video_id, video_title, video_content, video_source,
-        publish_time, create_time
+        publish_time, create_time, event_time, is_public
         FROM tb_video v, tb_tag_resource_map m
         WHERE tag_name = #{tagName}
         AND m.resource_id=v.video_id
         AND m.resource_type = 'tb_video'
+        AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
     <delete id="dropVideo" flushCache="true">
@@ -65,7 +67,7 @@
     <insert id="addVideo" parameterType="cn.edu.zju.sishi.entity.Video" flushCache="true">
         INSERT INTO tb_video
           (video_id, video_title, video_content, video_source,
-          publish_time, create_time, is_public)
+          publish_time, create_time, event_time, is_public)
         VALUES
         (#{video.videoId},
         #{video.videoTitle},
@@ -73,8 +75,8 @@
         #{video.videoSource},
         #{video.videoPublishTime},
         #{video.videoCreateTime},
-        #{video.isPublic},
-        #{video.eventTime});
+        to_date(#{video.eventTime}, 'YYYY-MM-DD'),
+        #{video.isPublic});
     </insert>
 
     <update id="updateIsPublicById" parameterType="String" flushCache="true">

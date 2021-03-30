@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Article;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
@@ -92,10 +93,12 @@ public class ArticleController {
     @Min(value = 1, message = "length must be larger than 0")
     @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
     @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-    @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime) {
+    @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
+    HttpServletRequest request) {
     logger.info("start invoke listArticles()");
     JSONObject result = new JSONObject();
-    List<Article> articles = articleService.listArticles(start, length, startTime, endTime);
+    boolean isAdministrator = authorityService.isAdamin(request);
+    List<Article> articles = articleService.listArticles(start, length, startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
 
 
     int count = articles.size();
@@ -125,11 +128,12 @@ public class ArticleController {
           @Min(value = 0, message = "start must not be negative") int start,
           @RequestParam(value = "length", required = false, defaultValue = "10")
           @Min(value = 1, message = "length must be larger than 0")
-          @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
-  ) {
+          @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+          HttpServletRequest request) {
     logger.info("start invoke listArticlesByTagName()");
     JSONObject result = new JSONObject();
-    List<Article> articlesByTagName = articleService.getArticlesByTagName(tagName, start, length);
+    boolean isAdministrator = authorityService.isAdamin(request);
+    List<Article> articlesByTagName = articleService.getArticlesByTagName(tagName, start, length, LogicUtil.getLogicByIsAdmins(isAdministrator));
     int count = articlesByTagName.size();
     result.put("totalCount", count);
     result.put("articles", articlesByTagName);

@@ -1,11 +1,15 @@
 package cn.edu.zju.sishi.controller;
 
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Question;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.UserAnswerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +22,13 @@ import java.util.Map;
 @RestController
 public class UserAnswerController {
 
-
     @Autowired
     private UserAnswerService userAnswerService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private AuthorityService authorityService;
+
 
     @RequestMapping(value="getuseranswer" , method = RequestMethod.GET)
     @ResponseBody
@@ -33,9 +40,10 @@ public class UserAnswerController {
 
     @RequestMapping(value="questionsTag" , method = RequestMethod.GET)
     @ResponseBody
-    public List<Question> getQuesByTag(@RequestParam(value = "tag_name")String tag_name) {
+    public List<Question> getQuesByTag(@RequestParam(value = "tag_name")String tag_name, HttpServletRequest request) {
         logger.info("Start invoke getQuesByTag()");
-        return userAnswerService.getQuesByTag(tag_name);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        return userAnswerService.getQuesByTag(tag_name, LogicUtil.getLogicByIsAdmins(isAdministrator));
     }
 
 

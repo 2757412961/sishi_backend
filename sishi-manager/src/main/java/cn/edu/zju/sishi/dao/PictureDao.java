@@ -12,8 +12,9 @@ import java.util.List;
 @Component
 public interface PictureDao {
 
-    List<Picture> getPicturesAll( @Param("startTime") String startTime,
-                                  @Param("endTime") String endTime);
+    List<Picture> getPicturesAll(@Param("startTime") String startTime,
+                                 @Param("endTime") String endTime,
+                                 @Param("logicSymbol") String logicSymbol);
 
     Picture getPictureById(@Param("pictureId") String pictureId);
 
@@ -23,7 +24,7 @@ public interface PictureDao {
 
     List<Picture> getPicturesByPage(@Param("length") int length, @Param("offset") int offset);
 
-    List<Picture> getPicturesByTag(@Param("tagName") String tagName);
+    List<Picture> getPicturesByTag(@Param("tagName") String tagName, @Param("logicSymbol") String logicSymbol);
 
     int addPicture(Picture picture);
 

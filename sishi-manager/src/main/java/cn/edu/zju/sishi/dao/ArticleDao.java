@@ -19,14 +19,16 @@ public interface ArticleDao {
   List<Article> listArticles(@Param("length") int length,
                              @Param("offset") int offset,
                              @Param("startTime") String startTime,
-                             @Param("endTime") String endTime);
+                             @Param("endTime") String endTime,
+                             @Param("logicSymbol") String logicSymbol);
 
 
   Article getArticle(@Param("articleId") String articleId);
 
   List<Article> getArticlesByTagName(@Param("tagName") String tagName,
                                      @Param("start") int start,
-                                     @Param("length") int length);
+                                     @Param("length") int length,
+                                     @Param("logicSymbol") String logicSymbol);
 
   void dropArticle(@Param("articleId") String articleId);
 

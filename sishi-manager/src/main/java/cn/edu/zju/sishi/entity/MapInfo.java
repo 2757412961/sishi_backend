@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,22 +19,25 @@ import java.io.Serializable;
 public class MapInfo implements Serializable {
 
     @Size(min = 36, max = 36, message = "mapId length should be 36")
-    String mapId;
+    private String mapId;
 
     @NotNull(message = "mapTitle cannot be null")
     @Size(min = 1, max = 50, message = "mapTitle length should be between 1 and 50")
-    String mapTitle;
+    private String mapTitle;
 
     @NotNull(message = "longitude can not be null")
-    Double mapLon;
+    private Double mapLon;
 
     @NotNull(message = "latitude can not be null")
-    Double mapLat;
+    private Double mapLat;
 
-    Long mapPublishTime;
+    private Long mapPublishTime;
 
-    Long mapCreateTime;
+    private Long mapCreateTime;
 
-    String mapTime;
+    private String mapTime;
+
+    @JsonProperty("isPublic")
+    private Boolean isPublic;
 
 }

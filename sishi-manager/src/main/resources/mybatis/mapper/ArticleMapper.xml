@@ -20,6 +20,7 @@
         WHERE
         to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
         AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
+        AND (is_public = true ${logicSymbol} 1=1)
         LIMIT #{length}
         OFFSET #{offset}
     </select>
@@ -31,17 +32,23 @@
         WHERE article_id = #{articleId}
     </select>
 
-
-
-
-
     <select id="getArticlesByTagName" resultType="cn.edu.zju.sishi.entity.Article">
         SELECT article_id, article_title, article_content, article_author,publish_time, create_time, event_time, is_public
         FROM tb_article a, tb_tag_resource_map m
         WHERE m.tag_name = #{tagName}
         AND m.resource_id=a.article_id
         AND m.resource_type= 'tb_article'
+        AND (is_public = true ${logicSymbol} 1=1)
     </select>
+
+    <select id="getArticleByTitle" resultMap="articleDaoResultMap">
+        SELECT article_id, article_title, article_content, article_author,
+               publish_time, create_time, event_time, is_public
+        FROM tb_article
+        WHERE article_title = #{title}
+
+    </select>
+
 
     <delete id="dropArticle" flushCache="true">
         DELETE FROM tb_article WHERE article_id = #{articleId};
@@ -56,23 +63,16 @@
         #{article.articleTitle},
         #{article.articleContent},
         #{article.articleAuthor},
-        #{article.publishTime},
-        #{article.createTime},
-        #{article.isPublic},
-        #{article.eventTime});
+        #{article.articlePublishTime},
+        #{article.articleCreateTime},
+        to_date(#{article.eventTime}, 'YYYY-MM-DD'),
+        #{article.isPublic});
     </insert>
-
-    <select id="getArticleByTitle" resultMap="articleDaoResultMap">
-        SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time, event_time
-        FROM tb_article
-        WHERE article_title = #{title}
-
-    </select>
 
     <update id="updateIsPublicById" parameterType="String" flushCache="true">
         UPDATE tb_article
         SET is_public = true
         WHERE article_id = #{articleId}
     </update>
+
 </mapper>

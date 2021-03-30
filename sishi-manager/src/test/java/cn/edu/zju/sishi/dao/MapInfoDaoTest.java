@@ -18,7 +18,7 @@ public class MapInfoDaoTest {
 
     @Test
     public void getAllMapInfo() {
-        System.out.println(mapInfoDao.getAllMapInfos());
+//        System.out.println(mapInfoDao.getAllMapInfos());
     }
 
     @Test
@@ -62,6 +62,6 @@ public class MapInfoDaoTest {
 
     @Test
     public void getMapInfoByTag() {
-        System.out.println(mapInfoDao.getMapInfosByTag("党史新学@中共一大"));
+//        System.out.println(mapInfoDao.getMapInfosByTag("党史新学@中共一大"));
     }
 }

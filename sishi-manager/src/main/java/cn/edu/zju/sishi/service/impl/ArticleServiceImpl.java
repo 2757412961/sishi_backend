@@ -40,8 +40,8 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> listArticles(int start, int length, String startTime, String endTime) {
-    return articleDao.listArticles(length, length * start, startTime, endTime );
+  public List<Article> listArticles(int start, int length, String startTime, String endTime, String logicSymbol) {
+    return articleDao.listArticles(length, length * start, startTime, endTime, logicSymbol );
   }
 
   @Override
@@ -50,8 +50,8 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> getArticlesByTagName(String tagName, int start, int length) {
-    return articleDao.getArticlesByTagName(tagName, length, length * start);
+  public List<Article> getArticlesByTagName(String tagName, int start, int length, String logicSymbol) {
+    return articleDao.getArticlesByTagName(tagName, length, length * start, logicSymbol);
   }
 
   @Override

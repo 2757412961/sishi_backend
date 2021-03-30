@@ -99,6 +99,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
   }
 
   private void flushError(HttpServletResponse res, String code, String desc) throws IOException {
+//    throw new RuntimeException("falil");
+
     res.setCharacterEncoding("utf-8");
     res.setContentType("application/json;charset=UTF-8");
     PrintWriter writer = res.getWriter();

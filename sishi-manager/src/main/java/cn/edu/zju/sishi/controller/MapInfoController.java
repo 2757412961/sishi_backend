@@ -1,12 +1,14 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Article;
 import cn.edu.zju.sishi.entity.MapInfo;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.MapInfoService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
@@ -17,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,10 +42,14 @@ public class MapInfoController {
     @Autowired
     private TagResourceService tagResourceService;
 
+    @Autowired
+    private AuthorityService authorityService;
+
     @RequestMapping(value = "mapinfos", method = RequestMethod.GET)
-    public JSONObject getAllMapInfo() {
+    public JSONObject getAllMapInfo(HttpServletRequest request) {
         log.info("Start invoke getAllMapInfo()");
-        List<MapInfo> mapInfos = mapInfoService.getAllMapInfos();
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<MapInfo> mapInfos = mapInfoService.getAllMapInfos(LogicUtil.getLogicByIsAdmins(isAdministrator));
 
         JSONObject result = new JSONObject();
         result.put("totalCount", mapInfos.size());
@@ -53,15 +60,15 @@ public class MapInfoController {
 
     @RequestMapping(value = "mapinfo/{mapId}", method = RequestMethod.GET)
     public MapInfo getMapInfoById(@PathVariable(value = "mapId")
-        @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId) {
+                                  @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId) {
         log.info("Start invoke getMapInfoById()");
         return mapInfoService.getMapInfoById(mapId);
     }
 
     @RequestMapping(value = "mapinfos/ids", method = RequestMethod.POST)
     public JSONObject getMapInfoByIds(@RequestBody
-        @NotEmpty(message = "mapIds can not be empty")
-        List<@Size(min = 36, max = 36, message = "mapId length should be 36") String> mapIds) {
+                                      @NotEmpty(message = "mapIds can not be empty")
+                                              List<@Size(min = 36, max = 36, message = "mapId length should be 36") String> mapIds) {
         log.info("Start invoke getMapInfoByIds()");
         List<MapInfo> mapInfos = mapInfoService.getMapInfosByIds(mapIds);
 
@@ -74,9 +81,11 @@ public class MapInfoController {
 
     @RequestMapping(value = "mapinfos/tagName/{tagName}", method = RequestMethod.GET)
     public JSONObject getMapInfoByTag(@PathVariable("tagName") @NotNull(message = "tagName cannot be null")
-        @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+                                      HttpServletRequest request) {
         log.info("Start invoke getMapInfoByTag()");
-        List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tagName);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tagName, LogicUtil.getLogicByIsAdmins(isAdministrator));
 
         JSONObject result = new JSONObject();
         result.put("totalCount", mapInfos.size());
@@ -88,7 +97,7 @@ public class MapInfoController {
 
     @RequestMapping(value = "mapinfo", method = RequestMethod.POST)
     public MapInfo addMapInfo(@RequestBody @Validated MapInfo mapInfo,
-        BindingResult bindingResult) {
+                              BindingResult bindingResult) {
         BindResultUtils.validData(bindingResult);
         log.info("Start invoke addMapInfo()");
         mapInfoService.addMapInfo(mapInfo);
@@ -98,11 +107,11 @@ public class MapInfoController {
     @Transactional
     @RequestMapping(value = "mapinfo/tagName/{tagName}", method = RequestMethod.POST)
     public MapInfo addMapInfoByTagName(@RequestBody
-        @Validated MapInfo mapInfo,
-        BindingResult bindingResult,
-        @PathVariable("tagName")
-        @NotNull(message = "tagName cannot be null")
-        @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                       @Validated MapInfo mapInfo,
+                                       BindingResult bindingResult,
+                                       @PathVariable("tagName")
+                                       @NotNull(message = "tagName cannot be null")
+                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         BindResultUtils.validData(bindingResult);
         log.info("Start invoke addMapInfoByTagName()");
         // 先添加资源表的记录
@@ -116,8 +125,8 @@ public class MapInfoController {
 
     @RequestMapping(value = "mapinfo/{mapId}", method = RequestMethod.DELETE)
     public Map<String, String> deleteMapInfoById(
-      @PathVariable(value = "mapId")
-      @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId) {
+            @PathVariable(value = "mapId")
+            @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId) {
         log.info("Start invoke deleteMapInfoById()");
         mapInfoService.deleteMapInfoById(mapId);
         Map<String, String> result = new HashMap<>();
@@ -128,10 +137,10 @@ public class MapInfoController {
     @Transactional
     @RequestMapping(value = "mapinfo/{mapId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deleteMapInfoByTagName(@PathVariable(value = "mapId")
-        @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId,
-        @PathVariable("tagName")
-        @NotNull(message = "tagName cannot be null")
-        @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                                      @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId,
+                                                      @PathVariable("tagName")
+                                                      @NotNull(message = "tagName cannot be null")
+                                                      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         log.info("Start invoke deleteMapInfoByTagName()");
         // 先删除资源关联表中的记录
         tagResourceService.deleteTagResource(tagName, mapId);
@@ -146,12 +155,30 @@ public class MapInfoController {
 
     @RequestMapping(value = "mapinfo", method = RequestMethod.PUT)
     public Map<String, String> updateMapInfo(
-      @RequestBody MapInfo mapInfo, BindingResult bindingResult) {
+            @RequestBody MapInfo mapInfo, BindingResult bindingResult) {
         BindResultUtils.validData(bindingResult);
         log.info("Start invoke updateMapInfo()");
         mapInfoService.updateMapInfo(mapInfo);
         Map<String, String> result = new HashMap<>();
         result.put(MAP_ID, mapInfo.getMapId());
+        return result;
+    }
+
+    @Transactional
+    @RequestMapping(value = "mapinfo/public/{mapId}", method = RequestMethod.PUT)
+    public Map<String, String> updateIsPublicById(@PathVariable("mapId")
+                                                  @Size(min = 36, max = 36, message = "mapId length should be 36") String mapId,
+                                                  HttpServletRequest request) {
+        log.info("Start invoke updateIsPublicById()");
+        if (!authorityService.isAdamin(request)) {
+            throw new ValidationException("No permission to perform this operation");
+        }
+
+        mapInfoService.updateIsPublicById(mapId);
+
+        Map<String, String> result = new HashMap<>();
+        result.put(MAP_ID, mapId);
+
         return result;
     }
 

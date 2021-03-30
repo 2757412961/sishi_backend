@@ -39,8 +39,8 @@ public class AudioServiceImpl implements AudioService {
   }
 
   @Override
-  public List<Audio> listAudios(int start, int length, String startTime, String endTime) {
-    return audioDao.listAudios(length, length * start, startTime, endTime);
+  public List<Audio> listAudios(int start, int length, String startTime, String endTime, String logicSymbol) {
+    return audioDao.listAudios(length, length * start, startTime, endTime, logicSymbol);
   }
 
   @Override
@@ -49,8 +49,8 @@ public class AudioServiceImpl implements AudioService {
   }
 
   @Override
-  public List<Audio> getAudiosByTagName(String tagName, int start, int length) {
-    return audioDao.getAudiosByTagName(tagName, length, length * start);
+  public List<Audio> getAudiosByTagName(String tagName, int start, int length, String logicSymbol) {
+    return audioDao.getAudiosByTagName(tagName, length, length * start, logicSymbol);
   }
 
   @Override

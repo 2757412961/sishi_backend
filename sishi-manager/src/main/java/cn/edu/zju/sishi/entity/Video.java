@@ -1,5 +1,7 @@
 package cn.edu.zju.sishi.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -30,10 +32,20 @@ public class Video implements Serializable {
 
   private String eventTime;
 
+  @JsonProperty("isPublic")
+  private Boolean isPublic;
+
+  public Boolean getPublic() {
+    return isPublic;
+  }
+
+  public void setPublic(Boolean aPublic) {
+    isPublic = aPublic;
+  }
+
   public String getEventTime() { return eventTime; }
 
   public void setEventTime(String eventTime) { this.eventTime = eventTime; }
-
 
   public String getVideoId() {
     return videoId;

@@ -23,8 +23,8 @@ public class QuestionServiceImp implements QuestionService {
     private QuestionDao questionDao;
 
     @Override
-    public List<Question> getQues()
-    { return questionDao.getQues(); }
+    public List<Question> getQues(String logicSymbol)
+    { return questionDao.getQues(logicSymbol); }
 
     @Override
     public Question getQuesByID(String question_id)
@@ -58,6 +58,11 @@ public class QuestionServiceImp implements QuestionService {
             throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Question %s does not exist!", question.getQuestionId()));
         }
         return questionDao.updateQues(question);
+    }
+
+    @Override
+    public int updateIsPublicById(String question_id) {
+        return questionDao.updateIsPublicById(question_id);
     }
 
 

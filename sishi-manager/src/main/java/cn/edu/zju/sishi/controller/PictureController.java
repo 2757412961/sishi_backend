@@ -2,6 +2,7 @@ package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
 import cn.edu.zju.sishi.commons.utils.HttpServletRequestUtil;
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.config.NginxConfig;
 import cn.edu.zju.sishi.entity.Picture;
 import cn.edu.zju.sishi.entity.TagResource;
@@ -52,11 +53,12 @@ public class PictureController {
 
     @RequestMapping(value = "pictures", method = RequestMethod.GET)
     public JSONObject getPicturesAll(
-      @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-      @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime
-    ) {
+            @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
+            @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
+            HttpServletRequest request) {
         log.info("Start invoke getPicturesAll()");
-        List<Picture> pictures = pictureService.getPicturesAll(startTime, endTime);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Picture> pictures = pictureService.getPicturesAll(startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
 
         JSONObject result = new JSONObject();
         result.put("totalCount", pictures.size());
@@ -88,9 +90,11 @@ public class PictureController {
     @RequestMapping(value = "pictures/tagName/{tagName}", method = RequestMethod.GET)
     public JSONObject getPicturesByTag(@PathVariable("tagName")
                                        @NotNull(message = "tagName cannot be null")
-                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+                                       HttpServletRequest request) {
         log.info("Start invoke getPicturesByTag()");
-        List<Picture> pictures = pictureService.getPicturesByTag(tagName);
+        boolean isAdministrator = authorityService.isAdamin(request);
+        List<Picture> pictures = pictureService.getPicturesByTag(tagName, LogicUtil.getLogicByIsAdmins(isAdministrator));
 
         JSONObject result = new JSONObject();
         result.put("totalCount", pictures.size());
@@ -152,6 +156,10 @@ public class PictureController {
             if (pictureSource == null) {
                 throw new ValidationException("未提交来源");
             }
+            String eventTime = request.getParameter("eventTime");
+            if (eventTime == null) {
+                throw new ValidationException("未提交事件时间");
+            }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -167,6 +175,7 @@ public class PictureController {
             // 文件名称
             picture.setPictureTitle(pictureTitle);
             picture.setPictureSource(pictureSource);
+            picture.setEventTime(eventTime);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录

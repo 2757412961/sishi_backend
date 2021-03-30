@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
@@ -24,4 +25,7 @@ public class Question implements Serializable {
     private  String optionD;
     private  String optionE;
     private  String answer;
+
+    @JsonProperty("isPublic")
+    private Boolean isPublic;
 }
