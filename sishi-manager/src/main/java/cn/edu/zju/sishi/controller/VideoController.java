@@ -42,7 +42,7 @@ import java.util.Map;
  */
 @RestController
 @Validated
-//@AuthController
+@AuthController
 public class VideoController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

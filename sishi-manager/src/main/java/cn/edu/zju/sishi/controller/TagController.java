@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @RestController
-//@AuthController
+@AuthController
 public class TagController {
 
     private static final String ID = "id";

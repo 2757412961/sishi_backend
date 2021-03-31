@@ -31,7 +31,7 @@ import java.util.Map;
 @Slf4j
 //@Validated
 @RestController
-//@AuthController
+@AuthController
 public class MapInfoController {
 
     private final String MAP_ID = "mapId";

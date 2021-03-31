@@ -99,17 +99,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
   }
 
   private void flushError(HttpServletResponse res, String code, String desc) throws IOException {
-//    throw new RuntimeException("falil");
+    throw new RuntimeException("Auth 权限验证失败。请重新登录！");
 
-    res.setCharacterEncoding("utf-8");
-    res.setContentType("application/json;charset=UTF-8");
-    PrintWriter writer = res.getWriter();
-    AuthResult authResult = new AuthResult();
-    authResult.setCode(code);
-    authResult.setCodeDesc(desc);
-    String jsonStr = JSON.toJSONString(authResult);
-    writer.append(jsonStr);
-    writer.flush();
-    writer.close();
+//    res.setCharacterEncoding("utf-8");
+//    res.setContentType("application/json;charset=UTF-8");
+//    PrintWriter writer = res.getWriter();
+//    AuthResult authResult = new AuthResult();
+//    authResult.setCode(code);
+//    authResult.setCodeDesc(desc);
+//    String jsonStr = JSON.toJSONString(authResult);
+//    writer.append(jsonStr);
+//    writer.flush();
+//    writer.close();
   }
 }

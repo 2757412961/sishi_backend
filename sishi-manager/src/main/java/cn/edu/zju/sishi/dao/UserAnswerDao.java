@@ -20,7 +20,7 @@ public interface UserAnswerDao {
     Integer getUserAnswerStatus(@Param("tag_name") String tag_name,@Param("user_name") String user_name);
 
 
-    @Select("select q.question_id, q.question_content, q.\"optionA\",q.\"optionB\",q.\"optionC\",q.\"optionD\",q.\"optionE\",q.answer from tb_question q, tb_tag_resource_map t where t.tag_name = #{tag_name} and t.resource_type = 'tb_question' and t.resource_id = q.question_id AND (is_public = true ${logicSymbol} 1=1)")
+    @Select("select q.question_id, q.question_content, q.\"optionA\",q.\"optionB\",q.\"optionC\",q.\"optionD\",q.\"optionE\",q.answer, q.is_public from tb_question q, tb_tag_resource_map t where t.tag_name = #{tag_name} and t.resource_type = 'tb_question' and t.resource_id = q.question_id AND (is_public = true ${logicSymbol} 1=1)")
     List<Question> getQuesByTag (@Param(("tag_name")) String tag_name, @Param("logicSymbol") String logicSymbol);
 
 

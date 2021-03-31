@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-//@AuthController
+@AuthController
 public class TagResourceController {
 
     @Autowired

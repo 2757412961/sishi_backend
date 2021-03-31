@@ -33,7 +33,7 @@ import java.util.Map;
  * @create 2021-03-09 10:17
  */
 @RestController
-//@AuthController
+@AuthController
 public class QuestionController {
 
     @Autowired

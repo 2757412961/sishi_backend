@@ -36,7 +36,7 @@ import java.util.Map;
  */
 @RestController
 @Validated
-//@AuthController
+@AuthController
 public class ArticleController {
   private static final String ID = "id";
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
