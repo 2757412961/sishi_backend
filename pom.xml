@@ -50,6 +50,13 @@
                 <version>${spring-boot.version}</version>
             </dependency>
 
+            <!-- email依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
@@ -136,6 +143,7 @@
                 <systemPath>${java.home}/../lib/tools.jar</systemPath>
             </dependency>
             <!-- jdk -->
+
 
         </dependencies>
     </dependencyManagement>
