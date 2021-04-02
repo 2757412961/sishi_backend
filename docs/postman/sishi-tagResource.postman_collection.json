@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "7f833cb8-3039-4831-b8c9-e1ec2e316ab5",
+		"name": "sishi/tagResource",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{sishiServer}}/v1.0/api/tagResource/mediaItems",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"id\": \"17c396ac-dc26-44b2-8caa-c9ef8760842e\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"www.baidu.com\"\r\n    },\r\n    {\r\n        \"id\": \"1b5a8260-d012-4a39-bf08-efe38da2bf68\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"www.baidu.com\"\r\n    },\r\n    {\r\n        \"id\": \"d63de485-f7f0-4944-84a6-9f981917946b\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"http://192.168.2.2:89/media/video/Skylar Grey,Eminem,Dr. Dre - I Need a Doctor.mp4\"\r\n    },\r\n    {\r\n        \"id\": \"87d6860e-a1fe-4fc4-a293-c8b5a91e237f\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"https://msy-geo.obs.myhuaweicloud.com/%E9%99%95%E5%8C%97%E5%BB%B6%E5%AE%89demo/28%E9%99%95%E5%8C%97%E5%BB%B6%E5%AE%89-%E6%8A%97%E6%97%A5%E6%B0%91%E6%97%8F%E7%BB%9F%E4%B8%80%E6%88%98%E7%BA%BF%E7%9A%84%E5%BB%BA%E7%AB%8B-%E7%93%A6%E7%AA%91%E5%A0%A1%E4%BC%9A%E8%AE%AE-%5B%E4%B8%9C%E6%96%B9%E4%B8%BB%E6%88%98%E5%9C%BA%5D%E7%93%A6%E7%AA%91%E5%A0%A1%E4%BC%9A%E8%AE%AE%E7%A1%AE%E7%AB%8B%E4%BA%86%E4%B8%AD%E5%85%B1%E6%8A%97%E6%97%A5%E6%B0%91%E6%97%8F%E7%BB%9F%E4%B8%80%E6%88%98%E7%BA%BF%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%94%BF%E7%AD%96.mp4\"\r\n    },\r\n    {\r\n        \"id\": \"67b9157a-a6f5-4644-a0c2-b53a68110ca7\",\r\n        \"type\": \"VIDEO\",\r\n        \"url\": \"http://192.168.2.2:89/media/video/Bishop Briggs - River.mp4\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tagResource/mediaItems",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tagResource",
+						"mediaItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/tagResources",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tagResources",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tagResources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/tagResources/tagName/{tagName}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tagResources/tagName/党史新学@中共一大",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tagResources",
+						"tagName",
+						"党史新学@中共一大"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/tagResources/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tagResources/1b5a8260-d012-4a39-bf08-efe38da2bf68",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tagResources",
+						"1b5a8260-d012-4a39-bf08-efe38da2bf68"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

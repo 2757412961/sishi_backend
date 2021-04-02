@@ -13,4 +13,6 @@ public interface MailService {
 
     void sendHTMLMail(String recipient);
 
+    String getRedisCaptcha(String emailAddress);
+
 }

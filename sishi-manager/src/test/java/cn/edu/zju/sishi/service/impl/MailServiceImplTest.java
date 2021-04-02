@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
 import java.util.Date;
@@ -51,5 +52,11 @@ public class MailServiceImplTest {
         System.out.println(100000 + new Random().nextInt(899999));
         System.out.println(100000 + new Random().nextInt(899999));
         System.out.println(100000 + new Random().nextInt(899999));
+    }
+
+    @Test
+    public void getRedisCaptcha() {
+        System.out.println(mailService.getRedisCaptcha(""));
+        System.out.println(StringUtils.isEmpty(mailService.getRedisCaptcha("")));
     }
 }

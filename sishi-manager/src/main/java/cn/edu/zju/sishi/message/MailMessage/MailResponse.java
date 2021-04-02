@@ -14,10 +14,10 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class CaptchaResponse implements Serializable {
+public class MailResponse implements Serializable {
 
     private String message;
 
-    private int captcha;
+    private String newPassword;
 
 }

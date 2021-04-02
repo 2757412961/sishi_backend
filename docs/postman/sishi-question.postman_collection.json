@@ -97,6 +97,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/getuseranswer?tag_name=党史新学@中共五大&user_name=ADMIN",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/getuseranswer?tag_name=党史新学@中共五大&user_name=ADMIN",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"getuseranswer"
+					],
+					"query": [
+						{
+							"key": "tag_name",
+							"value": "党史新学@中共五大"
+						},
+						{
+							"key": "user_name",
+							"value": "ADMIN"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -1,6 +1,6 @@
 package cn.edu.zju.sishi.controller;
 
-import cn.edu.zju.sishi.message.MailMessage.CaptchaResponse;
+import cn.edu.zju.sishi.message.MailMessage.MailResponse;
 import cn.edu.zju.sishi.service.MailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,22 @@ public class MailController {
     private MailService mailService;
 
     @GetMapping("/sendCaptcha")
-    public CaptchaResponse sendCaptcha(@RequestParam("recipient") String recipient){
-        CaptchaResponse captchaResponse = new CaptchaResponse();
+    public MailResponse sendCaptcha(@RequestParam("emailAddress") String emailAddress) {
+        MailResponse mailResponse = new MailResponse();
 
         log.info("Start invoke sendCaptcha()");
-        mailService.sendHTMLMail(recipient);
+        mailService.sendHTMLMail(emailAddress);
 
-        captchaResponse.setMessage("发送成功，验证码将在120秒后过期");
-        return captchaResponse;
+        mailResponse.setMessage("发送成功，验证码将在120秒后过期");
+        return mailResponse;
     }
 
+    @GetMapping("/resetPassword")
+    public MailResponse resetPassword(@RequestParam("emailAddress") String emailAddress) {
+        MailResponse mailResponse = new MailResponse();
+        log.info("Start invoke resetPassword()");
+
+        mailResponse.setMessage("密码重置成功");
+        return mailResponse;
+    }
 }

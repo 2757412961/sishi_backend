@@ -94,7 +94,8 @@ public class MailServiceImpl implements MailService {
                             "<p style='text-indent:2em'>您好！</p>" +
                             "<p style='text-indent:2em'>欢迎使用党史学习教育平台！</p>" +
                             "<p style='text-indent:2em'>当前时间为：" + new SimpleDateFormat("yyyy-MM-dd HH:MM:ss").format(new Date()) + "</p>" +
-                            "<p style='text-indent:2em'>您的注册验证码为：" + captcha + "</p>",
+                            "<p style='text-indent:2em'>您的注册验证码为：" + captcha + "</p>" +
+                            "<p>此致，敬礼</p>",
                     true);
 
             javaMailSender.send(mimeMessage);
@@ -103,4 +104,11 @@ public class MailServiceImpl implements MailService {
             throw new InternalException("邮件发送失败" + e.getMessage());
         }
     }
+
+    @Override
+    public String getRedisCaptcha(String emailAddress) {
+        return redisService.get(REDIS_EMAIL_PREFIX + emailAddress);
+    }
+
+
 }
