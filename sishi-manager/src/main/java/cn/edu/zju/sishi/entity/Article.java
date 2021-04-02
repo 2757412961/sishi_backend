@@ -37,6 +37,14 @@ public class Article implements Serializable {
   @JsonProperty("isPublic")
   private Boolean isPublic;
 
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
   public Boolean getPublic() {
     return isPublic;
   }
