@@ -26,7 +26,9 @@ public class LoginController {
 
   @RequestMapping(value = "register",method = RequestMethod.POST)
   @ResponseBody
-  public RegisterResponse register(@RequestBody @Validated User user, BindingResult bindingResult)  {
+  public RegisterResponse register(@RequestBody @Validated User user,
+                                   BindingResult bindingResult,
+                                   @RequestParam(value = "captcha") String captcha)  {
     if(bindingResult.hasErrors()) {
       throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
     }
