@@ -13,6 +13,7 @@ import cn.edu.zju.sishi.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -24,7 +25,7 @@ import java.util.UUID;
 public class LoginServiceImpl implements LoginService {
 
   private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
-  public static final Long tokenExpire = 1000000000L;
+  public static final Long tokenExpire = 14400L;
   public static final String DEFAULT_ROLE_TYPE = "general";
 
   @Autowired
