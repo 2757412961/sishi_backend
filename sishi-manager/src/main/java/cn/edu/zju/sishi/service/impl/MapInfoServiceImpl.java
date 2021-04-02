@@ -8,6 +8,7 @@ import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.MapInfoService;
 import cn.edu.zju.sishi.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -75,6 +76,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public int addMapInfo(MapInfo mapInfoEntity) {
         String mapName = mapInfoEntity.getMapTitle();
         if (mapInfoDao.getMapInfoByTitle(mapName) != null) {
@@ -89,6 +91,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
+    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public int deleteMapInfoById(String mapId) {
         MapInfo mapInfoDelete = mapInfoDao.getMapInfoById(mapId);
         if (mapInfoDelete == null) {

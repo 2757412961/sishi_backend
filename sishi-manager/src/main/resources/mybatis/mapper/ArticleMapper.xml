@@ -11,11 +11,12 @@
         <result property="articleCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
         <result property="eventTime" column="EVENT_TIME" jdbcType="DATE"/>
         <result property="isPublic" column="is_public"/>
+        <result property="address" column="address"/>
     </resultMap>
 
     <select id="listArticles" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time, event_time, is_public
+        publish_time, create_time, event_time, is_public, address
         FROM tb_article
         WHERE
         to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
@@ -27,13 +28,13 @@
 
     <select id="getArticle" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-        publish_time, create_time, event_time, is_public
+        publish_time, create_time, event_time, is_public, address
         FROM tb_article
         WHERE article_id = #{articleId}
     </select>
 
     <select id="getArticlesByTagName" resultType="cn.edu.zju.sishi.entity.Article">
-        SELECT article_id, article_title, article_content, article_author,publish_time, create_time, event_time, is_public
+        SELECT article_id, article_title, article_content, article_author,publish_time, create_time, event_time, is_public, address
         FROM tb_article a, tb_tag_resource_map m
         WHERE m.tag_name = #{tagName}
         AND m.resource_id=a.article_id
@@ -43,7 +44,7 @@
 
     <select id="getArticleByTitle" resultMap="articleDaoResultMap">
         SELECT article_id, article_title, article_content, article_author,
-               publish_time, create_time, event_time, is_public
+               publish_time, create_time, event_time, is_public, address
         FROM tb_article
         WHERE article_title = #{title}
 
@@ -57,7 +58,7 @@
     <insert id="addArticle" parameterType="cn.edu.zju.sishi.entity.Article" flushCache="true">
         INSERT INTO tb_article
           (article_id, article_title, article_content, article_author,
-          publish_time, create_time, event_time, is_public)
+          publish_time, create_time, event_time, is_public, address)
         VALUES
         (#{article.articleId},
         #{article.articleTitle},
@@ -66,7 +67,8 @@
         #{article.articlePublishTime},
         #{article.articleCreateTime},
         to_date(#{article.eventTime}, 'YYYY-MM-DD'),
-        #{article.isPublic});
+        #{article.isPublic},
+        #{article.address});
     </insert>
 
     <update id="updateIsPublicById" parameterType="String" flushCache="true">

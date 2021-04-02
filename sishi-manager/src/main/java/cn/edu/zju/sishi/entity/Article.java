@@ -32,6 +32,8 @@ public class Article implements Serializable {
 
   private String eventTime;
 
+  private String address;
+
   @JsonProperty("isPublic")
   private Boolean isPublic;
 
