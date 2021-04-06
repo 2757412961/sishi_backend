@@ -34,6 +34,30 @@ public class UserInfoResponse {
 
   private String roleType;
 
+  private String studentNumber;
+
+  private String idNumber;
+
+  private String grade;
+
+  private String studentName;
+
+  public String getStudentName() { return studentName; }
+
+  public void setStudentName(String studentName) { this.studentName = studentName; }
+
+  public String getStudentNumber() { return studentNumber; }
+
+  public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
+
+  public String getIdNumber() { return idNumber; }
+
+  public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
+
+  public String getGrade() { return grade; }
+
+  public void setGrade(String grade) { this.grade = grade; }
+
   public String getRoleType() { return roleType; }
 
   public void setRoleType(String roleType) { this.roleType = roleType; }

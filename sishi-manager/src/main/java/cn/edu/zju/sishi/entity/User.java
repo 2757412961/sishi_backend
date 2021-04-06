@@ -25,6 +25,7 @@ public class User implements Serializable {
 
   private String salt;
 
+  @NotNull(message = "mobile cannot be null")
   private String mobile;
 
   @NotNull(message = "email cannot be null")
@@ -32,6 +33,7 @@ public class User implements Serializable {
 
   private int score;
 
+  @NotNull(message = "partyBranch cannot be null")
   private  String partyBranch;
 
   private String avatar;
@@ -39,6 +41,35 @@ public class User implements Serializable {
   private String honor;
 
   private String roleType;
+
+  @NotNull(message = "studentNumber cannot be null")
+  private String studentNumber;
+
+  @NotNull(message = "idNumber cannot be null")
+  private String idNumber;
+
+  @NotNull(message = "grade cannot be null")
+  private String grade;
+
+  @NotNull(message = "studentName cannot be null")
+  private String studentName;
+
+  public String getStudentName() { return studentName; }
+
+  public void setStudentName(String studentName) { this.studentName = studentName; }
+
+  public String getGrade() { return grade; }
+
+  public void setGrade(String grade) { this.grade = grade; }
+
+
+  public String getStudentNumber() { return studentNumber; }
+
+  public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
+
+  public String getIdNumber() { return idNumber; }
+
+  public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
 
   public String getSalt() { return salt; }
 

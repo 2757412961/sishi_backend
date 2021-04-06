@@ -25,15 +25,29 @@ public class UserListResponse {
 
   private  String partyBranch;
 
+  private String studentNumber;
+
+  private String grade;
+
+  private String studentName;
+
   private Long createTime;
 
   private Long updateTime;
 
-//  public int getTotalCount() { return totalCount; }
+  public String getStudentName() { return studentName; }
 
-//  public void setTotalCount(int totalCount) {
-//    this.totalCount = totalCount;
-//  }
+  public void setStudentName(String studentName) { this.studentName = studentName; }
+
+
+
+  public String getStudentNumber() { return studentNumber; }
+
+  public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
+
+  public String getGrade() { return grade; }
+
+  public void setGrade(String grade) { this.grade = grade; }
 
   public String getUserId() { return userId; }
 
