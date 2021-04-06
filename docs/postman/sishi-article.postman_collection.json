@@ -11,7 +11,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/articles",
+					"raw": "{{sishiServer}}/v1.0/api/articles?length=1000",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -19,6 +19,12 @@
 						"v1.0",
 						"api",
 						"articles"
+					],
+					"query": [
+						{
+							"key": "length",
+							"value": "1000"
+						}
 					]
 				}
 			},
@@ -28,7 +34,18 @@
 			"name": "{{sishiServer}}/v1.0/api/articles/tagName/{tagName}",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{sishiServer}}/v1.0/api/articles/tagName/党史新学@抗日战争@陕北延安",
 					"host": [
@@ -52,7 +69,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"articleTitle\": \"飞行艇\",\r\n    \"articleAuthor\": \"sss\",\r\n    \"articleContent\": \"nothing\"\r\n}",
+					"raw": "{\r\n    \"articleTitle\": \"飞行艇3\",\r\n    \"articleAuthor\": \"sss\",\r\n    \"articleContent\": \"nothing\",\r\n    \"eventTime\": \"2020-11-10\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

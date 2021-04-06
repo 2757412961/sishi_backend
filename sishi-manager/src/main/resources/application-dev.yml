@@ -29,6 +29,18 @@ spring:
     username: postgres
     password: Root123!@$
     driver-class-name: org.postgresql.Driver
+  mail:
+    host: smtp.qq.com
+    username: 2643094929@qq.com
+    password: oswgfnpksbjiebhf
+    properties:
+      mail:
+        stmp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    default-encoding: utf-8
 
 myconfig:
   # Nginx

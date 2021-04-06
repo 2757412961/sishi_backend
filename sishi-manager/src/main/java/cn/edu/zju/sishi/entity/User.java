@@ -27,6 +27,7 @@ public class User implements Serializable {
 
   private String mobile;
 
+  @NotNull(message = "email cannot be null")
   private String email;
 
   private int score;

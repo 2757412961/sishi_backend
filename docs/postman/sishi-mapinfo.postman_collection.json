@@ -11,11 +11,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfos",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfos",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -31,11 +30,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfo/c671c5ac-c7a7-485f-8129-82c09b7fe132",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/c671c5ac-c7a7-485f-8129-82c09b7fe132",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -61,11 +59,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:7666/v1.0/api/mapinfos/ids",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfos/ids",
 					"host": [
-						"localhost"
+						"{{sishiServer}}"
 					],
-					"port": "7666",
 					"path": [
 						"v1.0",
 						"api",
@@ -129,10 +126,21 @@
 			"name": "localhost:7666/v1.0/api/mapinfo/tagName/{tagName}",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mapTitle\": \"天下大事@中国@房价\",\r\n    \"mapLon\": 116.38748691963224,\r\n    \"mapLat\": 39.90337460887406,\r\n    \"mapTime\": \"1973年8月24日至28日\"\r\n}",
+					"raw": "{\r\n    \"mapTitle\": \"理论学习\",\r\n    \"mapLon\": 116.38748691963224,\r\n    \"mapLat\": 39.90337460887406,\r\n    \"mapTime\": \"1973年8月24日至28日\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -140,7 +148,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/mapinfo/tagName/天下大事@中国@房价",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/tagName/理论学习",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -149,7 +157,7 @@
 						"api",
 						"mapinfo",
 						"tagName",
-						"天下大事@中国@房价"
+						"理论学习"
 					]
 				}
 			},

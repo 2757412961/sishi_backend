@@ -4,6 +4,7 @@ import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Question;
 import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.UserAnswerService;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,26 +31,31 @@ public class UserAnswerController {
     private AuthorityService authorityService;
 
 
-    @RequestMapping(value="getuseranswer" , method = RequestMethod.GET)
+    @RequestMapping(value = "getuseranswer", method = RequestMethod.GET)
     @ResponseBody
-    public int getUserAnswerStatus(@RequestParam(value = "tag_name")String tag_name,@RequestParam(value = "user_name")String user_name) {
+    public JSONObject getUserAnswerStatus(@RequestParam(value = "tag_name") String tag_name, @RequestParam(value = "user_name") String user_name) {
         logger.info("Start invoke getUserAnswerStatus()");
-        return userAnswerService.getUserAnswerStatus(tag_name, user_name);
+        Integer userAnswerStatus = userAnswerService.getUserAnswerStatus(tag_name, user_name);
+
+        JSONObject object = new JSONObject();
+        object.put("user_answer_status", userAnswerStatus);
+
+        return object;
     }
 
 
-    @RequestMapping(value="questionsTag" , method = RequestMethod.GET)
+    @RequestMapping(value = "questionsTag", method = RequestMethod.GET)
     @ResponseBody
-    public List<Question> getQuesByTag(@RequestParam(value = "tag_name")String tag_name, HttpServletRequest request) {
+    public List<Question> getQuesByTag(@RequestParam(value = "tag_name") String tag_name, HttpServletRequest request) {
         logger.info("Start invoke getQuesByTag()");
         boolean isAdministrator = authorityService.isAdamin(request);
         return userAnswerService.getQuesByTag(tag_name, LogicUtil.getLogicByIsAdmins(isAdministrator));
     }
 
 
-    @RequestMapping(value="useranswer" , method = RequestMethod.PUT)
+    @RequestMapping(value = "useranswer", method = RequestMethod.PUT)
     @ResponseBody
-    public Map<String, String> updateUserAnswerStatusAndScore (@RequestParam(value = "tag_name")String tag_name,@RequestParam(value = "user_name")String user_name) {
+    public Map<String, String> updateUserAnswerStatusAndScore(@RequestParam(value = "tag_name") String tag_name, @RequestParam(value = "user_name") String user_name) {
         logger.info("Start invoke updateUserAnswerStatusAndScore()");
         List<Integer> count = userAnswerService.insertUserAnswerStatus(tag_name, user_name);
         Map<String, String> result = new HashMap<>();
@@ -57,12 +63,11 @@ public class UserAnswerController {
         int count1 = count.get(0).intValue();
         int count2 = count.get(1).intValue();
 
-        if (count1>=1 && count2>=1){
-            result.put(tag_name,user_name+"success!");
+        if (count1 >= 1 && count2 >= 1) {
+            result.put(tag_name, user_name + "success!");
             return result;
-        }
-        else{
-            result.put("Fail"+tag_name,user_name);
+        } else {
+            result.put("Fail" + tag_name, user_name);
             return result;
         }
     }
