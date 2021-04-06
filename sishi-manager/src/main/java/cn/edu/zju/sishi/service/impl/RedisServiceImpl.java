@@ -19,6 +19,8 @@ public class RedisServiceImpl implements RedisService {
     @Autowired
     private JedisPool jedisPool;
 
+    public static final String REDIS_Captcha_PREFIX = "captcha:";
+
     /**
      * @Description: 从Redeis中获取值
      * @Param: [key]

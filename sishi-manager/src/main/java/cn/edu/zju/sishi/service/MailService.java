@@ -11,8 +11,10 @@ public interface MailService {
 
     void sendSimpleMail(String recipient);
 
-    void sendHTMLMail(String recipient);
+    void sendCaptcha(String recipient, Integer captcha);
 
-    String getRedisCaptcha(String emailAddress);
+    void sendResetPassword(String recipient, String newPassword);
+
+
 
 }

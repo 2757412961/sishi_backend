@@ -1,11 +1,16 @@
 package cn.edu.zju.sishi.message.UserMessage;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotNull;
 
 /**
  * @author lemon
  * @date 2021/3/18
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class UpdatePasswordRequest {
 
 

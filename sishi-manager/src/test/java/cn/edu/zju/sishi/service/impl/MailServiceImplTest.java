@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
-import java.util.Date;
 import java.util.Random;
 
 
@@ -41,7 +40,7 @@ public class MailServiceImplTest {
     public void sendSimpleMail() {
         int captcha = 100000 + new Random().nextInt(899999);
 
-        mailService.sendHTMLMail("2757412961@qq.com");
+        mailService.sendCaptcha("2757412961@qq.com", captcha);
         System.out.println(Math.abs(new SecureRandom().nextInt()));
         System.out.println(Math.abs(new SecureRandom().nextInt()));
         System.out.println(Math.abs(new SecureRandom().nextInt()));
@@ -56,7 +55,7 @@ public class MailServiceImplTest {
 
     @Test
     public void getRedisCaptcha() {
-        System.out.println(mailService.getRedisCaptcha(""));
-        System.out.println(StringUtils.isEmpty(mailService.getRedisCaptcha("")));
+//        System.out.println(mailService.getRedisCaptcha(""));
+//        System.out.println(StringUtils.isEmpty(mailService.getRedisCaptcha("")));
     }
 }

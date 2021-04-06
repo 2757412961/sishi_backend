@@ -7,10 +7,12 @@ import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.message.UserMessage.*;
 import cn.edu.zju.sishi.service.UserService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -95,6 +97,21 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public String updatePasswordByEmail(String email, String newPassword) {
+    User user = userDao.getUserByEmail(email);
+    if (user == null){
+      throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "邮箱和对应用户不存在，请核对邮箱");
+    }
+
+    String salt = user.getSalt();
+    String encryptNewPassword = encrypt(newPassword, salt);
+
+    userDao.updatePassword(user.getUserId(), encryptNewPassword, Instant.now().toEpochMilli());
+    return newPassword;
+  }
+
+
+  @Override
   public List<ScoreResponse> getTopTenByScore() {
     return userDao.getTopTenByScore();
   }
@@ -120,7 +137,16 @@ public class UserServiceImpl implements UserService {
     return userDao.getScore(id);
   }
 
+  @Override
+  public User getUserByEmail(String email) {
+    User user = userDao.getUserByEmail(email);
 
+    if (user==null){
+      throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "邮箱和对应用户不存在，请核对邮箱");
+    }
+
+    return user;
+  }
 
 
   public String encrypt(String password, String salt) {
