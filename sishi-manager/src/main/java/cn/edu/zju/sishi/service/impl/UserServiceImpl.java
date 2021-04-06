@@ -97,18 +97,17 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public String resetPasswordByEmail(String email) {
-      User user = userDao.getUserByEmail(email);
-      if (user == null){
-          throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "邮箱和对应用户不存在，请核对邮箱");
-      }
+  public String updatePasswordByEmail(String email, String newPassword) {
+    User user = userDao.getUserByEmail(email);
+    if (user == null){
+      throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), "邮箱和对应用户不存在，请核对邮箱");
+    }
 
-      String newPassword = RandomStringUtils.randomAlphanumeric(8);
-      String salt = user.getSalt();
-      String encryptNewPassword = encrypt(newPassword, salt);
+    String salt = user.getSalt();
+    String encryptNewPassword = encrypt(newPassword, salt);
 
-      userDao.updatePassword(user.getUserId(), encryptNewPassword, Instant.now().toEpochMilli());
-      return newPassword;
+    userDao.updatePassword(user.getUserId(), encryptNewPassword, Instant.now().toEpochMilli());
+    return newPassword;
   }
 
 

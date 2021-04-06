@@ -18,7 +18,7 @@ public interface UserService {
 
   void updatePassword(String id, UpdatePasswordRequest updatePasswordRequest);
 
-  String resetPasswordByEmail(String email);
+  String updatePasswordByEmail(String email, String newPassword);
 
 
   List<ScoreResponse> getTopTenByScore();

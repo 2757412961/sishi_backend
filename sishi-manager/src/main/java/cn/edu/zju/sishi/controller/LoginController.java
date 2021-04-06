@@ -1,17 +1,21 @@
 package cn.edu.zju.sishi.controller;
 
+import cn.edu.zju.sishi.commons.RedisKeys;
 import cn.edu.zju.sishi.entity.User;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.message.LoginMessage.LoginResponse;
 import cn.edu.zju.sishi.message.LoginMessage.RegisterResponse;
 import cn.edu.zju.sishi.service.LoginService;
 import cn.edu.zju.sishi.service.MailService;
+import cn.edu.zju.sishi.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static cn.edu.zju.sishi.commons.RedisKeys.REDIS_Captcha_PREFIX;
 
 @RestController
 @Validated
@@ -21,7 +25,7 @@ public class LoginController {
     private LoginService loginService;
 
     @Autowired
-    private MailService mailService;
+    private RedisService redisService;
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
@@ -41,7 +45,9 @@ public class LoginController {
         }
         RegisterResponse register = loginService.register(user);
 
-        String redisCaptcha = mailService.getRedisCaptcha(user.getEmail());
+        // redis 中存储的验证码
+        String redisCaptcha = redisService.get(RedisKeys.REDIS_Captcha_PREFIX + user.getEmail());
+        System.out.println(redisCaptcha);
         if (StringUtils.isEmpty(redisCaptcha)) {
             throw new ValidationException("验证码失效");
         }
