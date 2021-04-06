@@ -34,7 +34,7 @@ public interface UserDao {
 
   UserInfoResponse getUserInfo(@Param("id") String id);
 
-  //todo
+
   List<ScoreResponse> getTopTenByScore();
 
   ScoreResponse getScore(@Param("id") String id);

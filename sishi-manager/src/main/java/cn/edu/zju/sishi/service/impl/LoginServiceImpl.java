@@ -102,6 +102,10 @@ public class LoginServiceImpl implements LoginService {
       loginResult.setPartyBranch(user.getPartyBranch());
       loginResult.setScore(user.getScore());
       loginResult.setRoleType(user.getRoleType());
+      loginResult.setIdNumber(user.getIdNumber());
+      loginResult.setGrade(user.getGrade());
+      loginResult.setStudentName(user.getStudentName());
+      loginResult.setStudentNumber(user.getStudentNumber());
       return loginResult;
     } else {
       throw new ValidationException("Login Error: Password error!");

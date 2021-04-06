@@ -16,6 +16,10 @@
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
         <result property="salt" column="salt" jdbcType="VARCHAR"/>
         <result property="roleType" column="role_type" jdbcType="VARCHAR"/>
+        <result property="studentNumber" column="student_number" jdbcType="VARCHAR"/>
+        <result property="idNumber" column="id_number" jdbcType="VARCHAR"/>
+        <result property="grade" column="grade" jdbcType="VARCHAR"/>
+        <result property="studentName" column="student_name" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="userInfoMap" type="cn.edu.zju.sishi.message.UserMessage.UserInfoResponse"></resultMap>
     <resultMap id="scoreMap" type="cn.edu.zju.sishi.message.UserMessage.ScoreResponse"></resultMap>
@@ -24,16 +28,9 @@
 
     <insert id="addUser" parameterType="cn.edu.zju.sishi.entity.User" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO tb_user(user_name, user_id, create_time, update_time, password, salt
-        <if test="mobile!=null and mobile!=''">
-            ,mobile
-        </if>
-        <if test="email!=null and email!=''">
-            ,email
-        </if>
-        <if test="partyBranch!=null and partyBranch!=''">
-            ,party_branch
-        </if>
+        INSERT INTO tb_user(user_name, user_id,email, create_time, update_time, password,
+        salt, student_name, mobile, grade, party_branch, id_number, student_number
+
         <if test="avatar!=null and avatar!=''">
             ,avatar
         </if>
@@ -41,16 +38,9 @@
             ,role_type
         </if>
         )
-        VALUES (#{userName}, #{userId}, #{createTime}, #{updateTime}, #{password}, #{salt}
-        <if test="mobile!=null and mobile!=''">
-            ,#{mobile}
-        </if>
-        <if test="email!=null and email!=''">
-            ,#{email}
-        </if>
-        <if test="partyBranch!=null and partyBranch!=''">
-            ,#{partyBranch}
-        </if>
+        VALUES (#{userName}, #{userId},#{email}, #{createTime}, #{updateTime}, #{password},
+        #{salt},  #{studentName}, #{mobile}, #{grade}, #{partyBranch}, #{idNumber},#{studentNumber}
+
         <if test="avatar!=null and avatar!=''">
             ,#{avatar}
         </if>
@@ -91,7 +81,7 @@
     </update>
 
     <select id="getUserList" resultMap="userInfoMap">
-    SELECT user_id, email, user_name,create_time, update_time, score, party_branch
+    SELECT user_id, email, user_name,create_time, update_time, score, party_branch, student_name, grade, student_number
     FROM tb_user
     LIMIT #{length}
     OFFSET #{offset}
@@ -99,7 +89,7 @@
 
 
     <select id="getUserInfo" resultMap="userInfoMap">
-        SELECT user_id,create_time, update_time, mobile, email, user_name, score, party_branch, avatar, honor,role_type
+        SELECT user_id,create_time, update_time, mobile, email, user_name, score, party_branch, avatar, honor,role_type,student_name, grade, id_number, student_number
         FROM tb_user
         WHERE user_id = #{id}
     </select>
