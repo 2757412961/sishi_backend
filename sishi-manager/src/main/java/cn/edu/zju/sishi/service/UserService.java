@@ -18,6 +18,8 @@ public interface UserService {
 
   void updatePassword(String id, UpdatePasswordRequest updatePasswordRequest);
 
+  String resetPasswordByEmail(String email);
+
 
   List<ScoreResponse> getTopTenByScore();
 
@@ -28,6 +30,7 @@ public interface UserService {
   ScoreResponse getScore(String id);
 
 
+  User getUserByEmail(String email);
 
 
 

@@ -13,6 +13,10 @@ public interface MailService {
 
     void sendHTMLMail(String recipient);
 
+    void sendResetPassword(String recipient, String newPassword);
+
     String getRedisCaptcha(String emailAddress);
+
+
 
 }
