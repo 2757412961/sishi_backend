@@ -30,6 +30,9 @@ public class UserAnswerController {
     private UserAnswerService userAnswerService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private AuthorityService authorityService;
+
     @RequestMapping(value="getuseranswer" , method = RequestMethod.GET)
     @ResponseBody
     public UserAnswer getUserAnswerStatus(@RequestParam(value = "tag_name")String tag_name, @RequestParam(value = "user_name")String user_name) {
