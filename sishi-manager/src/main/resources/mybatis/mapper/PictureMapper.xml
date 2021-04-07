@@ -6,43 +6,58 @@
 
     <resultMap id="PictureResultMap" type="Picture">
         <result property="pictureId" column="picture_id"/>
-        <result property="pictureName" column="picture_name"/>
-        <result property="pictureUrl" column="picture_url"/>
-        <result property="createTime" column="create_time"/>
+        <result property="pictureTitle" column="picture_title"/>
+        <result property="pictureSource" column="picture_source"/>
+        <result property="pictureContent" column="picture_content"/>
+        <result property="picturePublishTime" column="picture_publish_time"/>
+        <result property="pictureCreateTime" column="picture_create_time"/>
+        <result property="isPublic" column="is_public"/>
+        <result property="eventTime" column="event_time" />
     </resultMap>
 
     <sql id="dynamicKeys">
         <trim prefix="" prefixOverrides="" suffix="" suffixOverrides=",">
             <if test="pictureId != null and pictureId != ''">picture_id,</if>
-            <if test="pictureName != null and pictureName != ''">picture_name,</if>
-            <if test="pictureUrl != null and pictureUrl != ''">picture_url,</if>
-            <if test="createTime != null and createTime != ''">create_time,</if>
+            <if test="pictureTitle != null and pictureTitle != ''">picture_title,</if>
+            <if test="pictureSource != null and pictureSource != ''">picture_source,</if>
+            <if test="pictureContent != null and pictureContent != ''">picture_content,</if>
+            <if test="picturePublishTime != null and picturePublishTime != ''">picture_publish_time,</if>
+            <if test="pictureCreateTime != null and pictureCreateTime != ''">picture_create_time,</if>
+            <if test="isPublic != null and isPublic != ''">is_public,</if>
+            <if test="eventTime != null and eventTime != ''">event_time,</if>
         </trim>
     </sql>
 
     <sql id="dynamicValues">
         <trim prefix="" prefixOverrides="" suffix="" suffixOverrides=",">
             <if test="pictureId != null and pictureId != ''">#{pictureId},</if>
-            <if test="pictureName != null and pictureName != ''">#{pictureName},</if>
-            <if test="pictureUrl != null and pictureUrl != ''">#{pictureUrl},</if>
-            <if test="createTime != null and createTime != ''">#{createTime},</if>
+            <if test="pictureTitle != null and pictureTitle != ''">#{pictureTitle},</if>
+            <if test="pictureSource != null and pictureSource != ''">#{pictureSource},</if>
+            <if test="pictureContent != null and pictureContent != ''">#{pictureContent},</if>
+            <if test="picturePublishTime != null and picturePublishTime != ''">#{picturePublishTime},</if>
+            <if test="pictureCreateTime != null and pictureCreateTime != ''">#{pictureCreateTime},</if>
+            <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
+            <if test="eventTime != null and eventTime != ''">to_date(#{eventTime}, 'YYYY-MM-DD'),</if>
         </trim>
     </sql>
 
 
-    <select id="getPictureAll" resultMap="PictureResultMap">
-        SELECT picture_id, picture_name, picture_url, create_time
+    <select id="getPicturesAll" resultMap="PictureResultMap">
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
+        WHERE to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
+            AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
+            AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
     <select id="getPictureById" resultMap="PictureResultMap">
-        SELECT picture_id, picture_name, picture_url, create_time
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
         WHERE picture_id = #{pictureId}
     </select>
 
-    <select id="getPictureByIds" resultMap="PictureResultMap">
-        SELECT picture_id, picture_name, picture_url, create_time
+    <select id="getPicturesByIds" resultMap="PictureResultMap">
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
         <where>
             picture_id in
@@ -52,18 +67,25 @@
         </where>
     </select>
 
-    <select id="getPictureByPage" resultMap="PictureResultMap">
-        SELECT picture_id, picture_name, picture_url, create_time
+    <select id="getPictureByTitle" resultMap="PictureResultMap">
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
+        FROM tb_picture
+        WHERE picture_title = #{pictureTitle}
+    </select>
+
+    <select id="getPicturesByPage" resultMap="PictureResultMap">
+        SELECT picture_id, picture_title, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, event_time
         FROM tb_picture
         ORDER BY picture_id ASC
         LIMIT #{length}
         OFFSET #{offset}
     </select>
 
-    <select id="getPictureByTag" resultMap="PictureResultMap">
-        SELECT p.picture_id, p.picture_name, p.picture_url, p.create_time
+    <select id="getPicturesByTag" resultMap="PictureResultMap">
+        SELECT p.picture_id, p.picture_title, p.picture_source, p.picture_content, p.picture_publish_time, p.picture_create_time, p.is_public, p.event_time
         FROM tb_picture p, tb_tag_resource_map t
         WHERE t.tag_name = #{tagName} AND t.resource_id = p.picture_id AND t.resource_type = 'tb_picture'
+            AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
 
@@ -80,6 +102,13 @@
         DELETE FROM tb_picture
         WHERE picture_id = #{pictureId}
     </delete>
+
+
+    <update id="updateIsPublicById" parameterType="String" flushCache="true">
+        UPDATE tb_picture
+        SET is_public = true
+        WHERE picture_id = #{pictureId}
+    </update>
 
 
 </mapper>

@@ -6,55 +6,69 @@
 
     <resultMap id="MapInfoResultMap" type="MapInfo">
         <result property="mapId" column="map_id"/>
-        <result property="mapName" column="map_name"/>
-        <result property="mapJson" column="map_json"/>
-        <result property="createTime" column="create_time"/>
+        <result property="mapTitle" column="map_title"/>
+        <result property="mapLon" column="map_lon"/>
+        <result property="mapLat" column="map_lat"/>
+        <result property="mapPublishTime" column="map_publish_time"/>
+        <result property="mapCreateTime" column="map_create_time"/>
+        <result property="mapTime" column="map_time"/>
+        <result property="isPublic" column="is_public"/>
     </resultMap>
 
     <sql id="dynamicKeys">
         <trim prefix="" suffix="" suffixOverrides=",">
             <if test="mapId != null and mapId != ''">map_id,</if>
-            <if test="mapName != null and mapName != ''">map_name,</if>
-            <if test="mapJson != null and mapJson != ''">map_json,</if>
-            <if test="createTime != null and createTime != ''">create_time,</if>
+            <if test="mapTitle != null and mapTitle != ''">map_title,</if>
+            <if test="mapLon != null and mapLon != ''">map_lon,</if>
+            <if test="mapLat != null and mapLat != ''">map_lat,</if>
+            <if test="mapPublishTime != null and mapPublishTime != ''">map_publish_time,</if>
+            <if test="mapCreateTime != null and mapCreateTime != ''">map_create_time,</if>
+            <if test="mapTime != null and mapTime != ''">map_time,</if>
+            <if test="isPublic != null and isPublic != ''">is_public,</if>
         </trim>
     </sql>
 
     <sql id="dynamicValues">
         <trim prefix="" suffix="" suffixOverrides=",">
             <if test="mapId != null and mapId != ''">#{mapId},</if>
-            <if test="mapName != null and mapName != ''">#{mapName},</if>
-            <if test="mapJson != null and mapJson != ''">#{mapJson},</if>
-            <if test="createTime != null and createTime != ''">#{createTime},</if>
+            <if test="mapTitle != null and mapTitle != ''">#{mapTitle},</if>
+            <if test="mapLon != null and mapLon != ''">#{mapLon},</if>
+            <if test="mapLat != null and mapLat != ''">#{mapLat},</if>
+            <if test="mapPublishTime != null and mapPublishTime != ''">#{mapPublishTime},</if>
+            <if test="mapCreateTime != null and mapCreateTime != ''">#{mapCreateTime},</if>
+            <if test="mapTime != null and mapTime != ''">#{mapTime},</if>
+            <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
         </trim>
     </sql>
 
 
-    <select id="getAllMapInfo" resultMap="MapInfoResultMap">
-        SELECT map_id, map_name, map_json, create_time
+    <select id="getAllMapInfos" resultMap="MapInfoResultMap">
+        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time, is_public
         FROM tb_mapinfo
+        WHERE (is_public = true ${logicSymbol} 1=1)
     </select>
 
     <select id="getMapInfoById" parameterType="String" resultMap="MapInfoResultMap">
-        SELECT map_id, map_name, map_json, create_time
+        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time, is_public
         FROM tb_mapinfo
         WHERE map_id = #{mapId}
     </select>
 
-    <select id="getMapInfoByName" parameterType="String" resultMap="MapInfoResultMap">
-        SELECT map_id, map_name, map_json, create_time
+    <select id="getMapInfoByTitle" parameterType="String" resultMap="MapInfoResultMap">
+        SELECT map_id, map_title, map_lon, map_lat, map_publish_time, map_create_time, map_time, is_public
         FROM tb_mapinfo
-        WHERE map_name = #{mapName}
+        WHERE map_title = #{mapTitle}
     </select>
 
-    <select id="getMapInfoByTag" parameterType="String" resultMap="MapInfoResultMap">
-        SELECT m.map_id, m.map_name, m.map_json, m.create_time
+    <select id="getMapInfosByTag" parameterType="String" resultMap="MapInfoResultMap">
+        SELECT m.map_id, m.map_title, m.map_lon, m.map_lat, m.map_publish_time, m.map_create_time, m.map_time, m.is_public
         FROM tb_mapinfo m, tb_tag_resource_map t
         WHERE t.tag_name = #{tagName} AND t.resource_type = 'tb_mapinfo' AND t.resource_id = m.map_id
+          AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
 
-    <insert id="addMapInfo" parameterType="MapInfo">
+    <insert id="addMapInfo" parameterType="MapInfo" flushCache="true">
         INSERT INTO tb_mapinfo(
         <include refid="dynamicKeys"/>
         ) VALUES(
@@ -72,10 +86,19 @@
     <update id="updateMapInfo" parameterType="MapInfo" flushCache="true">
         UPDATE tb_mapinfo
         <set>
-            <if test="mapName != null">map_name = #{mapName},</if>
-            <if test="mapJson != null">map_json = #{mapJson},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="mapTitle != null">map_title = #{mapTitle},</if>
+            <if test="mapLon != null">map_lon = #{mapLon},</if>
+            <if test="mapLat != null">map_lat = #{mapLat},</if>
+            <if test="mapPublishTime != null">map_publish_time = #{mapPublishTime},</if>
+            <if test="mapCreateTime != null">map_create_time = #{mapCreateTime},</if>
+            <if test="mapTime != null">map_time = #{mapTime},</if>
         </set>
+        WHERE map_id = #{mapId}
+    </update>
+
+    <update id="updateIsPublicById" parameterType="String" flushCache="true">
+        UPDATE tb_mapinfo
+        SET is_public = true
         WHERE map_id = #{mapId}
     </update>
 

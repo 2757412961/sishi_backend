@@ -11,7 +11,7 @@ import redis.clients.jedis.JedisPool;
 @Service
 public class TokenRedisService {
   private static final Logger logger = LoggerFactory.getLogger(TokenRedisService.class);
-
+  public static final int tokenExpire = 14400;
   @Autowired
   private JedisPool jedisPool;
 
@@ -28,6 +28,7 @@ public class TokenRedisService {
     String key = CommonCacheKey.PASSPORT_PREFIX + userId;
     Jedis jedis = jedisPool.getResource();
     String result = jedis.set(key, token);
+    jedis.expire(key, tokenExpire);
     jedis.close();
     logger.info("TokenRedisService.setToken:key={},value={}", new Object[]{key, token});
     return result;

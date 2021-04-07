@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "a90118ee-3020-4944-b86a-16910fce4c5c",
+		"name": "sishi/tag",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:7666/v1.0/api/tags",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tags",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "192.168.137.116:7666/v1.0/api/tag/{tagName}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tag/改革开放@改革复兴@上海",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tag",
+						"改革开放@改革复兴@上海"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/tag/tree",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tag/tree",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tag",
+						"tree"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/tag/children/{tagName}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tag/children/党史新学",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tag",
+						"children",
+						"党史新学"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/tag/compareTime/{tagName}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tag/compareTime/党史新学",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tag",
+						"compareTime",
+						"党史新学"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/tag",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tagName\": \"天下大事@中国@物价2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tag",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tag"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/tag/{tagName}",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/tag/天下大事@中国@基金@大跌12",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"tag",
+						"天下大事@中国@基金@大跌12"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

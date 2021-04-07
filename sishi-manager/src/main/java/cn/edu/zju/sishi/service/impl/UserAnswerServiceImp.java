@@ -37,8 +37,8 @@ public class UserAnswerServiceImp implements UserAnswerService {
     }
 
     @Override
-    public List<Question> getQuesByTag(String tag_name) {
-        return userAnswerDao.getQuesByTag(tag_name);
+    public List<Question> getQuesByTag(String tag_name, String logicSymbol) {
+        return userAnswerDao.getQuesByTag(tag_name, logicSymbol);
     }
 
 

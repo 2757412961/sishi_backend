@@ -18,48 +18,50 @@ public class MapInfoDaoTest {
 
     @Test
     public void getAllMapInfo() {
-        System.out.println(mapInfoDao.getAllMapInfo());
+//        System.out.println(mapInfoDao.getAllMapInfos());
     }
 
     @Test
     public void getMapInfoById() {
-        System.out.println(mapInfoDao.getMapInfoById("test"));
+        System.out.println(mapInfoDao.getMapInfoById("70ec86d1-bddd-4a1e-befd-580d17977b46"));
     }
 
     @Test
     public void getMapInfoByName() {
-        System.out.println(mapInfoDao.getMapInfoByName("test2"));
+        System.out.println(mapInfoDao.getMapInfoByTitle("test"));
     }
 
     @Test
     public void addMapInfo() {
         MapInfo mapInfo = new MapInfo();
         mapInfo.setMapId("test3");
-        mapInfo.setMapName("test3");
-        mapInfo.setMapJson("json3");
-        mapInfo.setCreateTime(Instant.now().toEpochMilli());
+        mapInfo.setMapTitle("test3");
+        mapInfo.setMapLon(123.3);
+        mapInfo.setMapLat(13.3);
+        mapInfo.setMapCreateTime(Instant.now().toEpochMilli());
 
         System.out.println(mapInfoDao.addMapInfo(mapInfo));
     }
 
     @Test
     public void deleteMapInfoById() {
-        System.out.println(mapInfoDao.deleteMapInfoById("123"));
+        System.out.println(mapInfoDao.deleteMapInfoById("test3"));
     }
 
     @Test
     public void updateMapInfo() {
         MapInfo mapInfo = new MapInfo();
         mapInfo.setMapId("dfas");
-        mapInfo.setMapName("test2");
-        mapInfo.setMapJson("json2");
-        mapInfo.setCreateTime(Instant.now().toEpochMilli());
+        mapInfo.setMapTitle("test2");
+        mapInfo.setMapLon(123.3);
+        mapInfo.setMapLat(13.3);
+        mapInfo.setMapCreateTime(Instant.now().toEpochMilli());
 
         System.out.println(mapInfoDao.updateMapInfo(mapInfo));
     }
 
     @Test
     public void getMapInfoByTag() {
-        System.out.println(mapInfoDao.getMapInfoByTag("党史新学@中共一大"));
+//        System.out.println(mapInfoDao.getMapInfosByTag("党史新学@中共一大"));
     }
 }

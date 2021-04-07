@@ -17,7 +17,10 @@ public interface VideoDao {
   void addVideo(@Param("video") Video video);
 
   List<Video> listVideos(@Param("length") int length,
-                         @Param("offset") int offset);
+                         @Param("offset") int offset,
+                         @Param("startTime") String startTime,
+                         @Param("endTime") String endTime,
+                         @Param("logicSymbol") String logicSymbol);
 
   int countVideos();
 
@@ -29,9 +32,11 @@ public interface VideoDao {
 
   List<Video> getVideosByTagName(@Param("tagName") String tagName,
                                  @Param("start") int start,
-                                 @Param("length") int length);
+                                 @Param("length") int length,
+                                 @Param("logicSymbol") String logicSymbol);
 
 
   void dropVideo(@Param("videoId") String videoId);
 
+  int updateIsPublicById(@Param("videoId") String videoId);
 }

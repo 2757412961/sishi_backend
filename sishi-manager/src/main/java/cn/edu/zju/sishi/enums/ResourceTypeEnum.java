@@ -1,5 +1,7 @@
 package cn.edu.zju.sishi.enums;
 
+import org.springframework.util.StringUtils;
+
 public enum ResourceTypeEnum {
 
     ARTICLE("tb_article"),
@@ -24,6 +26,20 @@ public enum ResourceTypeEnum {
         }
         return false;
     }
+
+    public static ResourceTypeEnum getTypeByValue(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+
+        for (ResourceTypeEnum enums : ResourceTypeEnum.values()) {
+            if (enums.getResourceType().equals(value)) {
+                return enums;
+            }
+        }
+        return null;
+    }
+
 
     public String getResourceType() {
         return resourceType;

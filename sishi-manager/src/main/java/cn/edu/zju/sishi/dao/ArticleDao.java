@@ -17,17 +17,23 @@ public interface ArticleDao {
   void addArticle(@Param("article") Article articleEntity);
 
   List<Article> listArticles(@Param("length") int length,
-                             @Param("offset") int offset);
+                             @Param("offset") int offset,
+                             @Param("startTime") String startTime,
+                             @Param("endTime") String endTime,
+                             @Param("logicSymbol") String logicSymbol);
 
 
   Article getArticle(@Param("articleId") String articleId);
 
   List<Article> getArticlesByTagName(@Param("tagName") String tagName,
                                      @Param("start") int start,
-                                     @Param("length") int length);
+                                     @Param("length") int length,
+                                     @Param("logicSymbol") String logicSymbol);
 
   void dropArticle(@Param("articleId") String articleId);
 
 
   Article getArticleByTitle(@Param("title") String title);
+
+  int updateIsPublicById(@Param("articleId") String articleId);
 }

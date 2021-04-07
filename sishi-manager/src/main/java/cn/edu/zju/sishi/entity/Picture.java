@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,14 +19,26 @@ import java.io.Serializable;
 public class Picture implements Serializable {
 
     @Size(min = 36, max = 36, message = "pictureId length should be 36")
-    String pictureId;
+    private String pictureId;
 
-    @NotNull(message = "pictureName can not be null")
-    @Size(min = 1, max = 100, message = "pictureName length should be between 1 and 100")
-    String pictureName;
+    @NotNull(message = "pictureTitle can not be null")
+    @Size(min = 1, max = 500, message = "pictureTitle length should be between 1 and 500")
+    private String pictureTitle;
 
-    @Size(min = 1, max = 200, message = "pictureUrl length should be between 1 and 200")
-    String pictureUrl;
+    @NotNull(message = "pictureSource can not be null")
+    @Size(min = 1, max = 200, message = "pictureSource length should be between 1 and 200")
+    private String pictureSource;
 
-    long createTime;
+    @NotNull(message = "pictureSource can not be null")
+    @Size(min = 1, max = 200, message = "pictureSource length should be between 1 and 200")
+    private String pictureContent;
+
+    private long picturePublishTime;
+
+    private long pictureCreateTime;
+
+    private String eventTime;
+
+    @JsonProperty("isPublic")
+    private Boolean isPublic;
 }

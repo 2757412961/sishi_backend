@@ -10,8 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MapInfoServiceImplTest {
@@ -21,7 +19,7 @@ public class MapInfoServiceImplTest {
 
     @Test
     public void getAllMapInfo() {
-        System.out.println(mapInfoService.getAllMapInfo());
+//        System.out.println(mapInfoService.getAllMapInfos());
     }
 
     @Test
@@ -38,7 +36,7 @@ public class MapInfoServiceImplTest {
         ids.add("test2");
 
 
-        System.out.println(mapInfoService.getMapInfoByIds(ids));
+        System.out.println(mapInfoService.getMapInfosByIds(ids));
     }
 
     @Test

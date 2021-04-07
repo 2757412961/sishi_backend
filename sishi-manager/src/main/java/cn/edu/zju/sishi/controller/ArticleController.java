@@ -1,20 +1,31 @@
 package cn.edu.zju.sishi.controller;
 
+import cn.edu.zju.sishi.commons.utils.BindResultUtils;
+import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Article;
+import cn.edu.zju.sishi.entity.TagResource;
+import cn.edu.zju.sishi.enums.ResourceTypeEnum;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
+import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.ArticleService;
+import cn.edu.zju.sishi.service.AuthorityService;
+import cn.edu.zju.sishi.service.TagResourceService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +36,19 @@ import java.util.Map;
  */
 @RestController
 @Validated
+@AuthController
 public class ArticleController {
   private static final String ID = "id";
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Autowired
   ArticleService articleService;
+
+  @Autowired
+  private TagResourceService tagResourceService;
+
+  @Autowired
+  private AuthorityService authorityService;
 
   @ResponseBody
   @RequestMapping(value = "article", method = RequestMethod.POST)
@@ -45,18 +63,44 @@ public class ArticleController {
     return result;
   }
 
+  @Transactional
+  @ResponseBody
+  @RequestMapping(value = "article/tagName/{tagName}", method = RequestMethod.POST)
+  public Article addArticleByTagName(@RequestBody
+                                     @Validated  Article article,
+                                     BindingResult bindingResult,
+                                     @PathVariable("tagName")
+                                     @NotNull(message = "tagName cannot be null")
+                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+    BindResultUtils.validData(bindingResult);
+
+    logger.info("Start invoke addArticleByTagName()");
+    // 先添加资源表的记录
+    articleService.addArticle(article);
+    // 再添加资源关联表中的记录
+    TagResource tagResource = new TagResource("", tagName, article.getArticleId(), ResourceTypeEnum.ARTICLE.getResourceType());
+    tagResourceService.addTagResource(tagResource);
+
+    return article;
+  }
+
   @RequestMapping(value = "articles", method = RequestMethod.GET)
   @ResponseBody
   public JSONObject listArticles(
-          @Min(value = 0, message = "start must not be negative")
-          @RequestParam(value = "start", required = false, defaultValue = "0")
-          @Min(value = 0, message = "start must not be negative") int start,
-          @RequestParam(value = "length", required = false, defaultValue = "10")
-          @Min(value = 1, message = "length must be larger than 0")
-          @Max(value = 1000, message = "the number of return size should be no more than 1000") int length) {
+    @RequestParam(value = "start", required = false, defaultValue = "0")
+    @Min(value = 0, message = "start must not be negative") int start,
+    @RequestParam(value = "length", required = false, defaultValue = "10")
+    @Min(value = 1, message = "length must be larger than 0")
+    @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+    @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
+    @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
+    HttpServletRequest request) {
     logger.info("start invoke listArticles()");
     JSONObject result = new JSONObject();
-    List<Article> articles = articleService.listArticles(start, length);
+    boolean isAdministrator = authorityService.isAdamin(request);
+    List<Article> articles = articleService.listArticles(start, length, startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
+
+
     int count = articles.size();
     result.put("totalCount", count);
     result.put("articles", articles);
@@ -84,11 +128,12 @@ public class ArticleController {
           @Min(value = 0, message = "start must not be negative") int start,
           @RequestParam(value = "length", required = false, defaultValue = "10")
           @Min(value = 1, message = "length must be larger than 0")
-          @Max(value = 1000, message = "the number of return size should be no more than 1000") int length
-  ) {
+          @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+          HttpServletRequest request) {
     logger.info("start invoke listArticlesByTagName()");
     JSONObject result = new JSONObject();
-    List<Article> articlesByTagName = articleService.getArticlesByTagName(tagName, start, length);
+    boolean isAdministrator = authorityService.isAdamin(request);
+    List<Article> articlesByTagName = articleService.getArticlesByTagName(tagName, start, length, LogicUtil.getLogicByIsAdmins(isAdministrator));
     int count = articlesByTagName.size();
     result.put("totalCount", count);
     result.put("articles", articlesByTagName);
@@ -102,6 +147,42 @@ public class ArticleController {
     Map<String, String> result = new HashMap<>();
     articleService.dropArticle(articleId);
     result.put(ID, articleId);
+    return result;
+  }
+
+  @Transactional
+  @RequestMapping(value = "article/{articleId}/tagName/{tagName}", method = RequestMethod.DELETE)
+  public Map<String, String> deleteArticleByTagName(@PathVariable("articleId")
+                                                    @Size(min = 36, max = 36, message = "articleId length should be 36") String articleId,
+                                                    @PathVariable("tagName")
+                                                    @NotNull(message = "tagName cannot be null")
+                                                    @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+    logger.info("Start invoke deleteArticleByTagName()");
+    // 先删除资源关联表中的记录
+    tagResourceService.deleteTagResource(tagName, articleId);
+    // 再删除资源表的记录
+    articleService.dropArticle(articleId);
+
+    Map<String, String> result = new HashMap<>();
+    result.put(ID, articleId);
+
+    return result;
+  }
+  @Transactional
+  @RequestMapping(value = "article/public/{articleId}", method = RequestMethod.PUT)
+  public Map<String, String> updateIsPublicById(@PathVariable("articleId")
+                                                @Size(min = 36, max = 36, message = "articleId length should be 36") String articleId,
+                                                HttpServletRequest request) {
+    logger.info("Start invoke updateIsPublicById()");
+    if (!authorityService.isAdamin(request)) {
+      throw new ValidationException("No permission to perform this operation");
+    }
+
+    articleService.updateIsPublicById(articleId);
+
+    Map<String, String> result = new HashMap<>();
+    result.put(ID, articleId);
+
     return result;
   }
 }

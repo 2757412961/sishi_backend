@@ -12,7 +12,7 @@
  Target Server Version : 110005
  File Encoding         : 65001
 
- Date: 10/03/2021 19:32:37
+ Date: 15/03/2021 18:23:54
 */
 
 
@@ -22,9 +22,12 @@
 DROP TABLE IF EXISTS "public"."tb_mapinfo";
 CREATE TABLE "public"."tb_mapinfo" (
   "map_id" varchar(36) COLLATE "pg_catalog"."default" NOT NULL,
-  "map_name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-  "map_json" text COLLATE "pg_catalog"."default" NOT NULL,
-  "create_time" int8
+  "map_title" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "map_json" text COLLATE "pg_catalog"."default",
+  "map_create_time" int8,
+  "map_lon" float8 NOT NULL,
+  "map_lat" float8 NOT NULL,
+  "map_publish_time" int8
 )
 ;
 

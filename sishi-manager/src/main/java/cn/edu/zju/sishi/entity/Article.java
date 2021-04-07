@@ -1,5 +1,7 @@
 package cn.edu.zju.sishi.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -27,6 +29,33 @@ public class Article implements Serializable {
   private long articleCreateTime;
 
   private long articlePublishTime;
+
+  private String eventTime;
+
+  private String address;
+
+  @JsonProperty("isPublic")
+  private Boolean isPublic;
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public Boolean getPublic() {
+    return isPublic;
+  }
+
+  public void setPublic(Boolean aPublic) {
+    isPublic = aPublic;
+  }
+
+  public String getEventTime() { return eventTime; }
+
+  public void setEventTime(String eventTime) { this.eventTime = eventTime; }
 
   public String getArticleId() {
     return articleId;

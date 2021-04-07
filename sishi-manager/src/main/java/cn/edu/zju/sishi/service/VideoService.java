@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.service;
 
 import cn.edu.zju.sishi.entity.Video;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,9 +12,11 @@ import java.util.List;
 public interface VideoService {
   void addVideo(Video video);
 
-  List<Video> listVideos(int start, int length);
+  List<Video> listVideos(int start, int length, String startTime, String endTime, String logicSymbol);
 
-  List<Video> getVideosByTagName(String tagName, int start, int length);
+  Video getVideoByTitle(String videoTitle);
+
+  List<Video> getVideosByTagName(String tagName, int start, int length, String logicSymbol);
 
   int countVideos();
 
@@ -22,4 +25,6 @@ public interface VideoService {
   Video getVideo(String videoId);
 
   void dropVideo(String videoId);
+
+  int updateIsPublicById(String videoId);
 }

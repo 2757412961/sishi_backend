@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.service;
 
 import cn.edu.zju.sishi.entity.Question;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface QuestionService {
 
-    List<Question> getQues ();
+    List<Question> getQues (String logicSymbol);
 
     Question getQuesByID (String question_id);
 
@@ -20,5 +21,6 @@ public interface QuestionService {
 
     int updateQues ( Question question);
 
+    int updateIsPublicById(String question_id);
 
 }

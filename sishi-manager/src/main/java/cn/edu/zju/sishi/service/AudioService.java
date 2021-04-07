@@ -11,9 +11,11 @@ import java.util.List;
 public interface AudioService {
   void addAudio(Audio audio);
 
-  List<Audio> listAudios(int start, int length);
+  List<Audio> listAudios(int start, int length, String startTime, String endTime, String logicSymbol);
 
-  List<Audio> getAudiosByTagName(String tagName, int start, int length);
+  Audio getAudioByTitle(String audioTitle);
+
+  List<Audio> getAudiosByTagName(String tagName, int start, int length, String logicSymbol);
 
   int countAudios();
 
@@ -22,6 +24,8 @@ public interface AudioService {
   Audio getAudio(String audioId);
 
   void dropAudio(String audioId);
+
+  int updateIsPublicById(String audioId);
 
 
 }

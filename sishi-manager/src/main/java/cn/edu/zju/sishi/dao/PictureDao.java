@@ -12,18 +12,24 @@ import java.util.List;
 @Component
 public interface PictureDao {
 
-    List<Picture> getPictureAll();
+    List<Picture> getPicturesAll(@Param("startTime") String startTime,
+                                 @Param("endTime") String endTime,
+                                 @Param("logicSymbol") String logicSymbol);
 
     Picture getPictureById(@Param("pictureId") String pictureId);
 
-    List<Picture> getPictureByIds(@Param("pictureIds") List<String> pictureIds);
+    List<Picture> getPicturesByIds(@Param("pictureIds") List<String> pictureIds);
 
-    List<Picture> getPictureByPage(@Param("length") int length, @Param("offset") int offset);
+    Picture getPictureByTitle(@Param("pictureTitle") String pictureTitle);
 
-    List<Picture> getPictureByTag(@Param("tagName") String tagName);
+    List<Picture> getPicturesByPage(@Param("length") int length, @Param("offset") int offset);
+
+    List<Picture> getPicturesByTag(@Param("tagName") String tagName, @Param("logicSymbol") String logicSymbol);
 
     int addPicture(Picture picture);
 
     int deletePictureById(@Param("pictureId") String pictureId);
+
+    int updateIsPublicById(@Param("pictureId") String pictureId);
 
 }

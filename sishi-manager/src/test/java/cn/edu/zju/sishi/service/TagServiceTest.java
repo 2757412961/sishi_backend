@@ -75,11 +75,17 @@ public class TagServiceTest {
     }
 
     @Test
-    public void getTagTree() {
+    public void testGetTagCompareTime() {
 
+        System.out.println(JSON.toJSONString(tagService.getTagCompareTime("党史新学")));
+
+    }
+
+    @Test
+    public void getTagTree() {
         TagTree tagTree = new TagTree();
 
-        System.out.println(tagService.getTagTree());
+//        System.out.println(tagService.getTagTree());
         System.out.println(JSON.toJSON(tagService.getTagTree()));
     }
 

@@ -7,18 +7,22 @@ import java.util.List;
 
 public interface PictureService {
 
-    List<Picture> getPictureAll();
+    List<Picture> getPicturesAll(String startTime, String endTime, String logicSymbol);
 
-    Picture getPictureById(@Param("pictureId") String pictureId);
+    Picture getPictureById(String pictureId);
 
-    List<Picture> getPictureByIds(@Param("pictureIds") List<String> pictureIds);
+    List<Picture> getPicturesByIds(List<String> pictureIds);
 
-//    List<Picture> getPictureByPage(@Param("length") int length, @Param("offset") int offset);
+//    List<Picture> getPicturesByPage(@Param("length") int length, @Param("offset") int offset);
 
-    List<Picture> getPictureByTag(@Param("tagName") String tagName);
+    Picture getPictureByTitle(String pictureTitle);
+
+    List<Picture> getPicturesByTag(String tagName, String logicSymbol);
 
     int addPicture(Picture picture);
 
-    int deletePictureById(@Param("pictureId") String pictureId);
+    int deletePictureById(String pictureId);
+
+    int updateIsPublicById(String pictureId);
 
 }

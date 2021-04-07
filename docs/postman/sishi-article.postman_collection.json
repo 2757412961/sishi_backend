@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "603d05f8-c049-461c-9bb8-1dbbfcc6a310",
+		"name": "sishi/article",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:7666/v1.0/api/articles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/articles?length=1000",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"articles"
+					],
+					"query": [
+						{
+							"key": "length",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/articles/tagName/{tagName}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/articles/tagName/党史新学@抗日战争@陕北延安",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"articles",
+						"tagName",
+						"党史新学@抗日战争@陕北延安"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/article/tagName/{tagName}",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"articleTitle\": \"飞行艇3\",\r\n    \"articleAuthor\": \"sss\",\r\n    \"articleContent\": \"nothing\",\r\n    \"eventTime\": \"2020-11-10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/article/tagName/天下大事@中国@房价",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"article",
+						"tagName",
+						"天下大事@中国@房价"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/article/{articleId}/tagName/{tagName}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/article/518aad4f-408e-4365-8b91-63039ab45a12/tagName/天下大事@中国@房价",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"article",
+						"518aad4f-408e-4365-8b91-63039ab45a12",
+						"tagName",
+						"天下大事@中国@房价"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

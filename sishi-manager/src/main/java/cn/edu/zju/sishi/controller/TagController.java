@@ -1,6 +1,7 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.entity.Tag;
+import cn.edu.zju.sishi.entity.vo.TagCompareTime;
 import cn.edu.zju.sishi.entity.vo.TagTree;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
@@ -15,13 +16,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Size;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
-//@AuthController
+@AuthController
 public class TagController {
 
     private static final String ID = "id";
@@ -40,6 +38,18 @@ public class TagController {
         return tagService.selectTags();
     }
 
+    @RequestMapping(value = "tag/{tagName}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Tag> selectTag(
+            @PathVariable(value = "tagName")
+            @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200") String tagName) {
+        logger.info("start invoke selectTag()");
+
+        ArrayList<Tag> tag = new ArrayList<>();
+        tag.add(tagService.getTagByTagName(tagName));
+        return tag;
+    }
+
     @RequestMapping(value = "tag/tree", method = RequestMethod.GET)
     public List<TagTree> getTagTree() {
         logger.info("Start invoke getTagTree()");
@@ -48,9 +58,14 @@ public class TagController {
 
     @RequestMapping(value = "tag/children/{tagName}", method = RequestMethod.GET)
     public Set<String> getChildTag(@PathVariable(value = "tagName")
-                                   @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200")
-                                           String tagName) {
+                                   @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200") String tagName) {
         return tagService.getChildTag(tagName);
+    }
+
+    @RequestMapping(value = "tag/compareTime/{tagName}", method = RequestMethod.GET)
+    public List<TagCompareTime> getTagCompareTime(@PathVariable(value = "tagName")
+                                   @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200") String tagName) {
+        return tagService.getTagCompareTime(tagName);
     }
 
 
@@ -80,8 +95,7 @@ public class TagController {
     @ResponseBody
     public Map<String, String> dropTag(
             @PathVariable(value = "tagName")
-            @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200")
-                    String tagName) {
+            @Size(min = 1, max = 200, message = "tagName length should be in 1 and 200") String tagName) {
         logger.info("start invoke dropTag()");
         Map<String, String> result = new HashMap<>();
         tagService.dropTag(tagName);

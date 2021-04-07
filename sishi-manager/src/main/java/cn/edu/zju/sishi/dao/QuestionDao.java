@@ -15,8 +15,8 @@ import java.util.List;
 @Component
 public interface QuestionDao {
 
-    @Select("select * from tb_question ORDER BY question_id ASC")
-    List<Question> getQues ();
+    @Select("select * from tb_question WHERE (is_public = true ${logicSymbol} 1=1)")
+    List<Question> getQues (@Param("logicSymbol") String logicSymbol);
 
     @Select("select * from tb_question where question_id = #{question_id}")
     Question getQuesByID (String question_id);
@@ -43,5 +43,7 @@ public interface QuestionDao {
                 "</script>"})
     int updateQues (Question question);
 
+    @Update("UPDATE tb_question SET is_public = true WHERE question_id = #{question_id}")
+    int updateIsPublicById(@Param("question_id") String question_id);
 
 }

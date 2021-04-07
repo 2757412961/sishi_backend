@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "44a2df36-0034-42af-b51d-01085d34805b",
+		"name": "sishi/question",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{sishiServer}}/v1.0/api/questions/selectques",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/questions/selectques",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"questions",
+						"selectques"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/questions/tagName/{tagName}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/questions/tagName/党史新学@中共一大",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"questions",
+						"tagName",
+						"党史新学@中共一大"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/question/tagName/{tagName}",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"questionContent\": \"testg\",\r\n    \"optionA\": \"optionA\",\r\n    \"optionB\": \"optionB\",\r\n    \"optionC\": \"optionC\",\r\n    \"optionD\": \"optionD\",\r\n    \"optionE\": \"optionE\",\r\n    \"answer\": \"answer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/question/tagName/党史新学@中共二大",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"question",
+						"tagName",
+						"党史新学@中共二大"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/question/{questionId}/tagName/{tagName}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/question/2a6a7b61-dcd1-41c9-9cc5-498b05cc0432/tagName/党史新学@中共二大",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"question",
+						"2a6a7b61-dcd1-41c9-9cc5-498b05cc0432",
+						"tagName",
+						"党史新学@中共二大"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/getuseranswer?tag_name=党史新学@中共五大&user_name=ADMIN",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/getuseranswer?tag_name=党史新学@中共五大&user_name=ADMIN",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"getuseranswer"
+					],
+					"query": [
+						{
+							"key": "tag_name",
+							"value": "党史新学@中共五大"
+						},
+						{
+							"key": "user_name",
+							"value": "ADMIN"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

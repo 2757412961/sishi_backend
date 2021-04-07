@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- create by autoCode,v1.0.0 -->
 <mapper namespace="cn.edu.zju.sishi.dao.UserDao">
+
     <resultMap id="userResultMap" type="cn.edu.zju.sishi.entity.User">
         <id property="userId" column="user_id" jdbcType="VARCHAR"/>
         <result property="userName" column="user_name" jdbcType="VARCHAR"/>
@@ -10,24 +11,41 @@
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
         <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="score" column="score" jdbcType="BIGINT"/>
+        <result property="partyBranch" column="party_branch" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="salt" column="salt" jdbcType="VARCHAR"/>
+        <result property="roleType" column="role_type" jdbcType="VARCHAR"/>
+        <result property="studentNumber" column="student_number" jdbcType="VARCHAR"/>
+        <result property="idNumber" column="id_number" jdbcType="VARCHAR"/>
+        <result property="grade" column="grade" jdbcType="VARCHAR"/>
+        <result property="studentName" column="student_name" jdbcType="VARCHAR"/>
     </resultMap>
+    <resultMap id="userInfoMap" type="cn.edu.zju.sishi.message.UserMessage.UserInfoResponse"></resultMap>
+    <resultMap id="scoreMap" type="cn.edu.zju.sishi.message.UserMessage.ScoreResponse"></resultMap>
+    <resultMap id="PasswordSaltMap" type="cn.edu.zju.sishi.message.UserMessage.UserPasswordSaltResponse"></resultMap>
+
 
     <insert id="addUser" parameterType="cn.edu.zju.sishi.entity.User" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO tb_user(user_name, user_id, create_time, update_time, password
-        <if test="mobile!=null and mobile!=''">
-            ,mobile
+        INSERT INTO tb_user(user_name, user_id,email, create_time, update_time, password,
+        salt, student_name, mobile, grade, party_branch, id_number, student_number
+
+        <if test="avatar!=null and avatar!=''">
+            ,avatar
         </if>
-        <if test="email!=null and email!=''">
-            ,email
+        <if test="roleType!=null and roleType!=''">
+            ,role_type
         </if>
         )
-        VALUES (#{userName}, #{userId}, #{createTime}, #{updateTime}, #{password}
-        <if test="mobile!=null and mobile!=''">
-            ,#{mobile}
+        VALUES (#{userName}, #{userId},#{email}, #{createTime}, #{updateTime}, #{password},
+        #{salt},  #{studentName}, #{mobile}, #{grade}, #{partyBranch}, #{idNumber},#{studentNumber}
+
+        <if test="avatar!=null and avatar!=''">
+            ,#{avatar}
         </if>
-        <if test="email!=null and email!=''">
-            ,#{email}
+        <if test="roleType!=null and roleType!=''">
+            ,#{roleType}
         </if>
         )
     </insert>
@@ -43,4 +61,63 @@
     <select id="userNameExist" parameterType="Map" resultType="Integer">
         SELECT COUNT(*) FROM tb_user WHERE user_name = #{userName}
     </select>
+
+    <update id="updateUserInfo" parameterType="cn.edu.zju.sishi.entity.User" flushCache="true">
+        UPDATE tb_user SET
+            mobile = #{user.mobile},
+            email = #{user.email},
+            user_name = #{user.userName},
+            party_branch = #{user.partyBranch},
+            avatar = #{user.avatar}
+        WHERE user_id = #{id}
+
+    </update>
+
+    <update id="updatePassword" flushCache="true">
+        UPDATE tb_user SET
+        password = #{password},
+        update_time = #{updateTime}
+        WHERE user_id = #{id}
+    </update>
+
+    <select id="getUserList" resultMap="userInfoMap">
+    SELECT user_id, email, user_name,create_time, update_time, score, party_branch, student_name, grade, student_number
+    FROM tb_user
+    LIMIT #{length}
+    OFFSET #{offset}
+    </select>
+
+
+    <select id="getUserInfo" resultMap="userInfoMap">
+        SELECT user_id,create_time, update_time, mobile, email, user_name, score, party_branch, avatar, honor,role_type,student_name, grade, id_number, student_number
+        FROM tb_user
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="getTopTenByScore" resultMap="scoreMap">
+        SELECT  user_name, score, party_branch, avatar,
+        RANK()OVER (ORDER BY score DESC) AS rank
+        FROM tb_user
+        LIMIT 10
+    </select>
+
+    <select id="getScore" resultMap="scoreMap">
+        SELECT user_name, score, party_branch, avatar,
+        RANK()OVER (ORDER BY score DESC) AS Rank
+        FROM tb_user
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="getPasswordSalt" resultMap="PasswordSaltMap">
+        SELECT password, salt
+        FROM tb_user
+        WHERE user_id = #{id}
+    </select>
+
+    <select id="getUserRoleType" resultType="java.lang.String">
+       SELECT role_type
+       FROM tb_user
+       WHERE user_id = #{id}
+    </select>
+
 </mapper>
