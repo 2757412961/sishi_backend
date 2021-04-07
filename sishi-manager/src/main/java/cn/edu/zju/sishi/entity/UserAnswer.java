@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author sky
@@ -18,5 +19,6 @@ public class UserAnswer implements Serializable {
     private String userName;
     private String tagName;
     private Integer userAnswerStatus;
+    private Date time;
 
 }
