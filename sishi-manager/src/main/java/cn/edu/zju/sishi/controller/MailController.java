@@ -103,6 +103,7 @@ public class MailController {
         MailResponse mailResponse = new MailResponse();
 
         log.info("Start invoke updatePasswordByEmail()");
+        userService.updatePasswordByEmail(emailAddress, newPassword);
         String redisCaptcha = redisService.get(RedisKeys.REDIS_Captcha_PREFIX + emailAddress);
         if (StringUtils.isEmpty(redisCaptcha)) {
             throw new ValidationException("验证码失效");
@@ -110,7 +111,6 @@ public class MailController {
         if (!captcha.equals(redisCaptcha)) {
             throw new ValidationException("验证码错误");
         }
-        userService.updatePasswordByEmail(emailAddress, newPassword);
         mailService.sendResetPassword(emailAddress, newPassword);
 
         mailResponse.setMessage("根据邮箱修改密码：1.发送验证码 2.填入验证码和新的密码 3.修改成功");

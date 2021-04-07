@@ -3,12 +3,14 @@ package cn.edu.zju.sishi.service.impl;
 import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.dao.TagDao;
 import cn.edu.zju.sishi.entity.MapInfo;
+import cn.edu.zju.sishi.entity.Picture;
 import cn.edu.zju.sishi.entity.Tag;
 import cn.edu.zju.sishi.entity.vo.TagCompareTime;
 import cn.edu.zju.sishi.entity.vo.TagTree;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.MapInfoService;
+import cn.edu.zju.sishi.service.PictureService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import cn.edu.zju.sishi.service.TagService;
 import com.alibaba.fastjson.JSONArray;
@@ -34,6 +36,9 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     private MapInfoService mapInfoService;
+
+    @Autowired
+    private PictureService pictureService;
 
     @Override
     @Cacheable(value = "SELECT_TAGS")
@@ -100,7 +105,6 @@ public class TagServiceImpl implements TagService {
                             newTagTree.setGeoCoordinates(
                                     new ArrayList<>(Arrays.asList
                                             (mapInfos.get(0).getMapLon(), mapInfos.get(0).getMapLat())));
-
                         }
                     }
 
@@ -136,17 +140,12 @@ public class TagServiceImpl implements TagService {
     @Override
     @Cacheable(value = "GET_TAG_COMPARE_TIME")
     public List<TagCompareTime> getTagCompareTime(String tagName) {
-//        if (tagDao.getTagByTagName(tagName) == null) {
-//            throw new ValidationException(String.format("Tag %s does not exist!", tagName));
-//        }
-
         List<TagCompareTime> results = new ArrayList<>();
         List<Tag> tagList = tagDao.getTagsByPrefix(tagName);
         for (Tag tag : tagList) {
             List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
             if (!mapInfos.isEmpty()) {
                 MapInfo mapInfo = mapInfos.get(0);
-
                 if (mapInfo.getMapTime() != null && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
                     TagCompareTime tagCompareTime = new TagCompareTime();
 
@@ -160,6 +159,13 @@ public class TagServiceImpl implements TagService {
                     tagCompareTime.setTime(mapInfo.getMapTime());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
+
+                    // 添加图片 url
+                    List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
+                    if (!pictures.isEmpty()){
+                        Picture picture = pictures.get(0);
+                        tagCompareTime.setPicUrl(picture.getPictureContent());
+                    }
 
                     results.add(tagCompareTime);
                 }
