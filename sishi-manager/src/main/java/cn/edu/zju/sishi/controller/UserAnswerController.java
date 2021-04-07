@@ -3,6 +3,7 @@ package cn.edu.zju.sishi.controller;
 import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Question;
 import cn.edu.zju.sishi.service.AuthorityService;
+import cn.edu.zju.sishi.entity.UserAnswer;
 import cn.edu.zju.sishi.service.UserAnswerService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,17 +33,11 @@ public class UserAnswerController {
     @Autowired
     private AuthorityService authorityService;
 
-
-    @RequestMapping(value = "getuseranswer", method = RequestMethod.GET)
+    @RequestMapping(value="getuseranswer" , method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getUserAnswerStatus(@RequestParam(value = "tag_name") String tag_name, @RequestParam(value = "user_name") String user_name) {
+    public UserAnswer getUserAnswerStatus(@RequestParam(value = "tag_name")String tag_name, @RequestParam(value = "user_name")String user_name) {
         logger.info("Start invoke getUserAnswerStatus()");
-        Integer userAnswerStatus = userAnswerService.getUserAnswerStatus(tag_name, user_name);
-
-        JSONObject object = new JSONObject();
-        object.put("user_answer_status", userAnswerStatus);
-
-        return object;
+        return userAnswerService.getUserAnswerStatus(tag_name, user_name);
     }
 
 
@@ -57,7 +54,9 @@ public class UserAnswerController {
     @ResponseBody
     public Map<String, String> updateUserAnswerStatusAndScore(@RequestParam(value = "tag_name") String tag_name, @RequestParam(value = "user_name") String user_name) {
         logger.info("Start invoke updateUserAnswerStatusAndScore()");
-        List<Integer> count = userAnswerService.insertUserAnswerStatus(tag_name, user_name);
+
+        Date time = new Date();
+        List<Integer> count = userAnswerService.insertUserAnswerStatus(tag_name, user_name,time);
         Map<String, String> result = new HashMap<>();
 
         int count1 = count.get(0).intValue();
