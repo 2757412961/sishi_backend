@@ -33,14 +33,20 @@ spring:
     host: smtp.qq.com
     username: 2643094929@qq.com
     password: oswgfnpksbjiebhf
+    port: 587
+    default-encoding: utf-8
     properties:
       mail:
         stmp:
+          timeout: 10000
           auth: true
           starttls:
             enable: true
             required: true
-    default-encoding: utf-8
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
+#            fallback: false
 
 myconfig:
   # Nginx
