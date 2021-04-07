@@ -30,7 +30,7 @@ public interface UserAnswerDao {
     int  updateUserScore(String user_name);
 
 
-    @Insert("insert into tb_user_answer(user_name,tag_name,user_answer_status,time) values(#{user_name},#{tag_name},1,#{tag_name})")
+    @Insert("insert into tb_user_answer(user_name,tag_name,user_answer_status,time) values(#{user_name},#{tag_name},1,#{time})")
     int insertUserAnswerStatus(@Param("tag_name") String tag_name,@Param("user_name") String user_name,@Param("time") Date time);
 
 
