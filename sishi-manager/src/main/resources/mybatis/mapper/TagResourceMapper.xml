@@ -5,18 +5,18 @@
     <cache/>
 
     <select id="getTagResourcesAll" resultType="TagResource">
-        SELECT tag_id, tag_name, resource_id, resource_type
+        SELECT tag_id, tag_name, resource_id, resource_type, user_id
         FROM tb_tag_resource_map
     </select>
 
     <select id="getTagResourcesByResourceId" resultType="TagResource">
-        SELECT tag_id, tag_name, resource_id, resource_type
+        SELECT tag_id, tag_name, resource_id, resource_type, user_id
         FROM tb_tag_resource_map
         WHERE resource_id = #{resourceId}
     </select>
 
     <select id="getTagResourcesByTagName" resultType="TagResource">
-        SELECT tag_id, tag_name, resource_id, resource_type
+        SELECT tag_id, tag_name, resource_id, resource_type, user_id
         FROM tb_tag_resource_map
         WHERE tag_name = #{tagName}
     </select>
@@ -35,15 +35,15 @@
     </select>
 
     <select id="getTagResourceByResourceType" resultType="TagResource">
-        SELECT tag_id, tag_name, resource_id, resource_type
+        SELECT tag_id, tag_name, resource_id, resource_type, user_id
         FROM tb_tag_resource_map
         WHERE resource_type = '${resourceType}'
     </select>
 
 
     <insert id="addTagResource" parameterType="TagResource" flushCache="true">
-        INSERT INTO tb_tag_resource_map(tag_id, tag_name, resource_id, resource_type)
-        VALUES (#{tagId}, #{tagName}, #{resourceId}, #{resourceType})
+        INSERT INTO tb_tag_resource_map(tag_id, tag_name, resource_id, resource_type, user_id)
+        VALUES (#{tagId}, #{tagName}, #{resourceId}, #{resourceType}, #{userId})
     </insert>
 
 
