@@ -12,6 +12,8 @@ public interface TagResourceService {
 
     List<TagResource> getTagResourcesByResourceId(String resourceId);
 
+    List<TagResource> getTagResourcesByUserId(String userId);
+
     List<TagResource> getTagResourcesByTagName(String tagName);
 
     String getTagResourceType(String tagName, String resourceId);

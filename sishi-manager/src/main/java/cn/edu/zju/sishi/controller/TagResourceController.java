@@ -51,6 +51,19 @@ public class TagResourceController {
         return result;
     }
 
+    @RequestMapping(value = "tagResources/user/{userId}", method = RequestMethod.GET)
+    public JSONObject getTagResourcesByUserId(@PathVariable("userId")
+                                                  @Size(min = 36, max = 36, message = "userId length should be 36") String userId) {
+        log.info("Start invoke getTagResourcesByUserId()");
+        List<TagResource> tagResources = tagResourceService.getTagResourcesByUserId(userId);
+
+        JSONObject result = new JSONObject();
+        result.put("totalCount", tagResources.size());
+        result.put("tagResources", tagResources);
+
+        return result;
+    }
+
     @RequestMapping(value = "tagResources/tagName/{tagName}", method = RequestMethod.GET)
     public JSONObject getTagResourcesByTagName(@PathVariable("tagName")
                                                @NotNull(message = "tagName cannot be null")

@@ -63,6 +63,11 @@ public class TagResourceServiceImpl implements TagResourceService {
     }
 
     @Override
+    public List<TagResource> getTagResourcesByUserId(String userId) {
+        return tagResourceDao.getTagResourcesByUserId(userId);
+    }
+
+    @Override
     public List<TagResource> getTagResourcesByTagName(String tagName) {
         return tagResourceDao.getTagResourcesByTagName(tagName);
     }
