@@ -82,14 +82,15 @@ public class VideoController {
                                    BindingResult bindingResult,
                                    @PathVariable("tagName")
                                    @NotNull(message = "tagName cannot be null")
-                                   @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                   @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+                                   HttpServletRequest request) {
         BindResultUtils.validData(bindingResult);
 
         logger.info("Start invoke addVideoByTagName()");
         // 先添加资源表的记录
         videoService.addVideo(video);
         // 再添加资源关联表中的记录
-        TagResource tagResource = new TagResource("", tagName, video.getVideoId(), ResourceTypeEnum.VIDEO.getResourceType());
+        TagResource tagResource = new TagResource("", tagName, video.getVideoId(), ResourceTypeEnum.VIDEO.getResourceType(), authorityService.getUserId(request));
         tagResourceService.addTagResource(tagResource);
 
         return video;
@@ -146,7 +147,7 @@ public class VideoController {
             videoService.addVideo(video);
 
             // 保存 标签、资源 关联记录
-            TagResource tagResource = new TagResource("", tagName, video.getVideoId(), ResourceTypeEnum.VIDEO.getResourceType());
+            TagResource tagResource = new TagResource("", tagName, video.getVideoId(), ResourceTypeEnum.VIDEO.getResourceType(), authorityService.getUserId(request));
             tagResourceService.addTagResource(tagResource);
 
             // 保存到本地

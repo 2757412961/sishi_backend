@@ -30,4 +30,11 @@ public class AuthorityServiceImpl implements AuthorityService {
 
         return false;
     }
+
+    @Override
+    public String getUserId(HttpServletRequest request) {
+        return request.getHeader(USER_ID);
+    }
+
+
 }

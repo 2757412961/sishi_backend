@@ -92,12 +92,11 @@ public class QuestionController {
         int count = questionService.deleteQuesByID(question_id);
         Map<String, String> result = new HashMap<>();
 
-        if (count >= 1){
-            result.put("msg", "Delete question "+question_id+"!");
+        if (count >= 1) {
+            result.put("msg", "Delete question " + question_id + "!");
             return result;
-        }
-        else {
-            result.put("msg", "Failed to delete question "+question_id+"!");
+        } else {
+            result.put("msg", "Failed to delete question " + question_id + "!");
             return result;
         }
     }
@@ -105,10 +104,10 @@ public class QuestionController {
     @Transactional
     @RequestMapping(value = "question/{questionId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deleteQuestionByTagName(@PathVariable("questionId")
-                                                      @Size(min = 36, max = 36, message = "questionId length should be 36") String questionId,
-                                                      @PathVariable("tagName")
-                                                      @NotNull(message = "tagName cannot be null")
-                                                      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                                       @Size(min = 36, max = 36, message = "questionId length should be 36") String questionId,
+                                                       @PathVariable("tagName")
+                                                       @NotNull(message = "tagName cannot be null")
+                                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         logger.info("Start invoke deleteQuestionByTagName()");
         // 先删除资源关联表中的记录
         tagResourceService.deleteTagResource(tagName, questionId);
@@ -129,11 +128,10 @@ public class QuestionController {
         Map<String, String> result = new HashMap<>();
         int count = questionService.insertQues(question);
 
-        if (count >= 1){
+        if (count >= 1) {
             result.put("msg", "Add this question successfully!");
             return result;
-        }
-        else {
+        } else {
             result.put("msg", "Failed to add this question !");
             return result;
         }
@@ -142,18 +140,19 @@ public class QuestionController {
     @Transactional
     @RequestMapping(value = "question/tagName/{tagName}", method = RequestMethod.POST)
     public Question addQuestionByTagName(@RequestBody
-                                       @Validated Question question,
-                                       BindingResult bindingResult,
-                                       @PathVariable("tagName")
-                                       @NotNull(message = "tagName cannot be null")
-                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                         @Validated Question question,
+                                         BindingResult bindingResult,
+                                         @PathVariable("tagName")
+                                         @NotNull(message = "tagName cannot be null")
+                                         @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+                                         HttpServletRequest request) {
         BindResultUtils.validData(bindingResult);
 
         logger.info("Start invoke addQuestionByTagName()");
         // 先添加资源表的记录
         questionService.insertQues(question);
         // 再添加资源关联表中的记录
-        TagResource tagResource = new TagResource("", tagName, question.getQuestionId(), ResourceTypeEnum.QUESTION.getResourceType());
+        TagResource tagResource = new TagResource("", tagName, question.getQuestionId(), ResourceTypeEnum.QUESTION.getResourceType(), authorityService.getUserId(request));
         tagResourceService.addTagResource(tagResource);
 
         return question;
@@ -167,11 +166,10 @@ public class QuestionController {
         int count = questionService.updateQues(question);
         Map<String, String> result = new HashMap<>();
 
-        if (count >= 1){
-            result.put("question_id", "Update "+question.getQuestionId());
+        if (count >= 1) {
+            result.put("question_id", "Update " + question.getQuestionId());
             return result;
-        }
-        else {
+        } else {
             result.put("msg", "Failed to update this question !");
             return result;
         }

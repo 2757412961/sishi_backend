@@ -31,4 +31,6 @@ public class TagResource implements Serializable {
     @Size(min = 1, max = 20, message = "resourceType length should be between 1 and 200")
     private String resourceType;
 
+    private String userId;
+
 }

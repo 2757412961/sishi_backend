@@ -81,14 +81,15 @@ public class AudioController {
       BindingResult bindingResult,
       @PathVariable("tagName")
       @NotNull(message = "tagName cannot be null")
-      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+      HttpServletRequest request) {
         BindResultUtils.validData(bindingResult);
 
         logger.info("Start invoke addAudioByTagName()");
         // 先添加资源表的记录
         audioService.addAudio(audio);
         // 再添加资源关联表中的记录
-        TagResource tagResource = new TagResource("", tagName, audio.getAudioId(), ResourceTypeEnum.AUDIO.getResourceType());
+        TagResource tagResource = new TagResource("", tagName, audio.getAudioId(), ResourceTypeEnum.AUDIO.getResourceType(), authorityService.getUserId(request));
         tagResourceService.addTagResource(tagResource);
 
         return audio;
@@ -145,7 +146,7 @@ public class AudioController {
             audioService.addAudio(audio);
 
             // 保存 标签、资源 关联记录
-            TagResource tagResource = new TagResource("", tagName, audio.getAudioId(), ResourceTypeEnum.AUDIO.getResourceType());
+            TagResource tagResource = new TagResource("", tagName, audio.getAudioId(), ResourceTypeEnum.AUDIO.getResourceType(), authorityService.getUserId(request));
             tagResourceService.addTagResource(tagResource);
 
             // 保存到本地
