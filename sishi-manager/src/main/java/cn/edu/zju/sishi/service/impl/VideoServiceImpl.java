@@ -1,12 +1,11 @@
 package cn.edu.zju.sishi.service.impl;
+
 import cn.edu.zju.sishi.dao.VideoDao;
 import cn.edu.zju.sishi.entity.Video;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

@@ -15,7 +15,8 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cn.edu.zju.sishi.enums.ResourceTypeEnum.*;
+import static cn.edu.zju.sishi.enums.ResourceTypeEnum.getTypeByValue;
+import static cn.edu.zju.sishi.enums.ResourceTypeEnum.hasResource;
 
 @Service
 public class TagResourceServiceImpl implements TagResourceService {

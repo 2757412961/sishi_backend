@@ -6,7 +6,6 @@ import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.message.LoginMessage.LoginResponse;
 import cn.edu.zju.sishi.message.LoginMessage.RegisterResponse;
 import cn.edu.zju.sishi.service.LoginService;
-import cn.edu.zju.sishi.service.MailService;
 import cn.edu.zju.sishi.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import static cn.edu.zju.sishi.commons.RedisKeys.REDIS_Captcha_PREFIX;
 
 @RestController
 @Validated

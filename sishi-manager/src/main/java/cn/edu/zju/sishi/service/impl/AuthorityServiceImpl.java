@@ -1,12 +1,9 @@
 package cn.edu.zju.sishi.service.impl;
 
 import cn.edu.zju.sishi.dao.UserDao;
-import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.AuthorityService;
-import cn.edu.zju.sishi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 

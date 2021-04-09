@@ -4,7 +4,6 @@ package cn.edu.zju.sishi.controller;
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
 import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.config.NginxConfig;
-import cn.edu.zju.sishi.entity.Audio;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.entity.Video;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;

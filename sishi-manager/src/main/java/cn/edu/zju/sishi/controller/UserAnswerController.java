@@ -2,17 +2,15 @@ package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.LogicUtil;
 import cn.edu.zju.sishi.entity.Question;
-import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.entity.UserAnswer;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.UserAnswerService;
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;

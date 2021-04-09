@@ -5,23 +5,31 @@
     <resultMap id="tagDaoResultMap" type="cn.edu.zju.sishi.entity.Tag">
         <result property="tagId" column="TAG_ID" jdbcType="VARCHAR"/>
         <result property="tagName" column="TAG_NAME" jdbcType="VARCHAR"/>
+        <result property="property" column="PROPERTY" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <sql id="tagFields">
+        TAG_ID, TAG_NAME, PROPERTY
+    </sql>
+
     <select id="selectTags" resultType="cn.edu.zju.sishi.entity.Tag">
-        SELECT tag_id, tag_name
+        SELECT
+        <include refid="tagFields"></include>
         FROM tb_tag
         ORDER BY tag_name ASC
     </select>
 
     <select id="getTagByTagName" resultType="cn.edu.zju.sishi.entity.Tag">
-        SELECT tag_id, tag_name
+        SELECT
+        <include refid="tagFields"></include>
         FROM tb_tag
         WHERE tag_name = #{tagName}
         LIMIT 1
     </select>
 
     <select id="getTagsByPrefix" resultType="cn.edu.zju.sishi.entity.Tag">
-        SELECT tag_id, tag_name
+        SELECT
+        <include refid="tagFields"></include>
         FROM tb_tag
         WHERE tag_name LIKE #{prefixTagName} || '%'
     </select>

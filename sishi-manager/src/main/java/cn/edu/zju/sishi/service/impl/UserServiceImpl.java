@@ -1,13 +1,11 @@
 package cn.edu.zju.sishi.service.impl;
 
-import cn.edu.zju.sishi.commons.UserContext;
 import cn.edu.zju.sishi.dao.UserDao;
 import cn.edu.zju.sishi.entity.User;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.message.UserMessage.*;
 import cn.edu.zju.sishi.service.UserService;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -16,9 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.security.SecureRandom;
 import java.time.Instant;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author lemon

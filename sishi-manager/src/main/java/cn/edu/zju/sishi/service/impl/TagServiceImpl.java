@@ -13,12 +13,8 @@ import cn.edu.zju.sishi.service.MapInfoService;
 import cn.edu.zju.sishi.service.PictureService;
 import cn.edu.zju.sishi.service.TagResourceService;
 import cn.edu.zju.sishi.service.TagService;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,6 +23,8 @@ import java.util.*;
 
 @Service
 public class TagServiceImpl implements TagService {
+
+    private static String DEFAULT_PICTURE_URL = "http://47.100.24.69/media/picture/default_pic.jpg";
 
     @Autowired
     private TagDao tagDao;
@@ -159,14 +157,15 @@ public class TagServiceImpl implements TagService {
                     tagCompareTime.setTime(mapInfo.getMapTime());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
-
+                    tagCompareTime.setProperty(tag.getProperty());
                     // 添加图片 url
                     List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
                     if (!pictures.isEmpty()){
                         Picture picture = pictures.get(0);
                         tagCompareTime.setPicUrl(picture.getPictureContent());
+                    } else {
+                        tagCompareTime.setPicUrl(DEFAULT_PICTURE_URL);
                     }
-
                     results.add(tagCompareTime);
                 }
             }

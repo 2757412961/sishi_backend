@@ -2,7 +2,6 @@ package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.utils.BindResultUtils;
 import cn.edu.zju.sishi.commons.utils.LogicUtil;
-import cn.edu.zju.sishi.entity.Article;
 import cn.edu.zju.sishi.entity.MapInfo;
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.enums.ResourceTypeEnum;
@@ -23,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

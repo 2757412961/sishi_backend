@@ -6,7 +6,6 @@ import cn.edu.zju.sishi.entity.MapInfo;
 import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.MapInfoService;
-import cn.edu.zju.sishi.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;

@@ -4,14 +4,11 @@ import cn.edu.zju.sishi.dao.UserAnswerDao;
 import cn.edu.zju.sishi.dao.UserDao;
 import cn.edu.zju.sishi.entity.Question;
 import cn.edu.zju.sishi.entity.UserAnswer;
-import cn.edu.zju.sishi.exception.ResourceNotFoundException;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.service.UserAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

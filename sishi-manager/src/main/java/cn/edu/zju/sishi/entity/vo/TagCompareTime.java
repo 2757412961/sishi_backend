@@ -25,6 +25,8 @@ public class TagCompareTime implements Comparable<TagCompareTime>, Serializable 
 
     private String picUrl;
 
+    private String property;
+
     private List<Double> geoCoordinates;
 
     public TagCompareTime() {
@@ -34,6 +36,7 @@ public class TagCompareTime implements Comparable<TagCompareTime>, Serializable 
         this.tagId = "";
         this.time = "";
         this.picUrl = "";
+        this.property = "";
         this.geoCoordinates = new ArrayList<>();
     }
 

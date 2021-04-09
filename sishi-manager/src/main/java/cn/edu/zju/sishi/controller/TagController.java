@@ -6,8 +6,6 @@ import cn.edu.zju.sishi.entity.vo.TagTree;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.service.TagService;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @RestController
+@Validated
 @AuthController
 public class TagController {
 
@@ -29,7 +28,6 @@ public class TagController {
     private TagService tagService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
 
     @RequestMapping(value = "tags", method = RequestMethod.GET)
     @ResponseBody

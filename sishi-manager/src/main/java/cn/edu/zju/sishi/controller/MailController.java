@@ -1,10 +1,8 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.RedisKeys;
-import cn.edu.zju.sishi.entity.User;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.message.MailMessage.MailResponse;
-import cn.edu.zju.sishi.message.UserMessage.UpdatePasswordRequest;
 import cn.edu.zju.sishi.service.MailService;
 import cn.edu.zju.sishi.service.RedisService;
 import cn.edu.zju.sishi.service.UserService;
