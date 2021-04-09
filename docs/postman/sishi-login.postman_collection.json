@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "ca685ab4-2e3b-4c33-b63b-0e9145163a94",
+		"name": "sishi/login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:7666/v1.0/api/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"zjh007\",\r\n    \"password\": \"123456\",\r\n    \"mobile\": \"12345678913\",\r\n    \"email\": \"2757412961@qq.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/register?captcha=930261",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"register"
+					],
+					"query": [
+						{
+							"key": "captcha",
+							"value": "930261"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:7666/v1.0/api/login?userName=zjh001&password=123456",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/login?userName=zjh007&password=123456",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"login"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "zjh007"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/email/sendCaptcha?recipient=2757412961@qq.com",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/email/sendCaptcha?emailAddress=2757412961@qq.com",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"email",
+						"sendCaptcha"
+					],
+					"query": [
+						{
+							"key": "emailAddress",
+							"value": "2757412961@qq.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/email/resetPassword?emailAddress=2757412961@qq.com",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/email/resetPassword?emailAddress=2757412961@qq.com",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"email",
+						"resetPassword"
+					],
+					"query": [
+						{
+							"key": "emailAddress",
+							"value": "2757412961@qq.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{sishiServer}}/v1.0/api/email/updatePassword?emailAddress=2757412961@qq.com",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{sishiServer}}/v1.0/api/email/updatePassword?captcha=999305&emailAddress=2757412961@qq.com&newPassword=123456",
+					"host": [
+						"{{sishiServer}}"
+					],
+					"path": [
+						"v1.0",
+						"api",
+						"email",
+						"updatePassword"
+					],
+					"query": [
+						{
+							"key": "captcha",
+							"value": "999305"
+						},
+						{
+							"key": "emailAddress",
+							"value": "2757412961@qq.com"
+						},
+						{
+							"key": "newPassword",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
