@@ -109,13 +109,14 @@ public class MapInfoController {
                                        BindingResult bindingResult,
                                        @PathVariable("tagName")
                                        @NotNull(message = "tagName cannot be null")
-                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+                                       HttpServletRequest request) {
         BindResultUtils.validData(bindingResult);
         log.info("Start invoke addMapInfoByTagName()");
         // 先添加资源表的记录
         mapInfoService.addMapInfo(mapInfo);
         // 再添加资源关联表中的记录
-        TagResource tagResource = new TagResource("", tagName, mapInfo.getMapId(), ResourceTypeEnum.MAPINFO.getResourceType());
+        TagResource tagResource = new TagResource("", tagName, mapInfo.getMapId(), ResourceTypeEnum.MAPINFO.getResourceType(), authorityService.getUserId(request));
         tagResourceService.addTagResource(tagResource);
         return mapInfo;
     }

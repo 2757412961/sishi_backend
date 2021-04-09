@@ -71,14 +71,15 @@ public class ArticleController {
                                      BindingResult bindingResult,
                                      @PathVariable("tagName")
                                      @NotNull(message = "tagName cannot be null")
-                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                     @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+                                     HttpServletRequest request) {
     BindResultUtils.validData(bindingResult);
 
     logger.info("Start invoke addArticleByTagName()");
     // 先添加资源表的记录
     articleService.addArticle(article);
     // 再添加资源关联表中的记录
-    TagResource tagResource = new TagResource("", tagName, article.getArticleId(), ResourceTypeEnum.ARTICLE.getResourceType());
+    TagResource tagResource = new TagResource("", tagName, article.getArticleId(), ResourceTypeEnum.ARTICLE.getResourceType(), authorityService.getUserId(request));
     tagResourceService.addTagResource(tagResource);
 
     return article;

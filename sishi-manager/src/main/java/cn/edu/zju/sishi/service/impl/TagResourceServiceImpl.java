@@ -37,21 +37,18 @@ public class TagResourceServiceImpl implements TagResourceService {
     public void checkTagNameEmpty(String tagName) {
         if (StringUtils.isEmpty(tagName)) {
             throw new ValidationException(String.format("tagName '%s' is empty!", tagName));
-//            throw new javax.validation.ValidationException(String.format("tagName '%s' is empty!", tagName));
         }
     }
 
     public void checkResourceIDEmpty(String resourceId) {
         if (StringUtils.isEmpty(resourceId)) {
             throw new ValidationException(String.format("resourceId '%s' is empty!", resourceId));
-//            throw new javax.validation.ValidationException(String.format("resourceId '%s' is empty!", resourceId));
         }
     }
 
     public void checkResourceType(String resourceType) {
         if (!hasResource(resourceType)) {
             throw new ValidationException(String.format("resourceType '%s' is empty!", resourceType));
-//            throw new javax.validation.ValidationException(String.format("resourceType '%s' is empty!", resourceType));
         }
     }
 
@@ -64,6 +61,11 @@ public class TagResourceServiceImpl implements TagResourceService {
     @Override
     public List<TagResource> getTagResourcesByResourceId(String resourceId) {
         return tagResourceDao.getTagResourcesByResourceId(resourceId);
+    }
+
+    @Override
+    public List<TagResource> getTagResourcesByUserId(String userId) {
+        return tagResourceDao.getTagResourcesByUserId(userId);
     }
 
     @Override
@@ -148,13 +150,11 @@ public class TagResourceServiceImpl implements TagResourceService {
         Tag tag = tagDao.getTagByTagName(tagResource.getTagName());
         if (tag == null || StringUtils.isEmpty(tag.getTagId())) {
             throw new ValidationException(String.format("tagName '%s' does not exist!", tagResource.getTagName()));
-//            throw new javax.validation.ValidationException(String.format("tagName '%s' does not exist!", tagResource.getTagName()));
         }
         tagResource.setTagId(tag.getTagId());
 
         if (!StringUtils.isEmpty(tagResourceDao.getTagResourceType(tagResource.getTagName(), tagResource.getResourceId()))) {
             throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), (String.format("tagResource record already exist!")));
-//            throw new javax.validation.ValidationException((String.format("tagResource record already exist!")));
         }
 
         return tagResourceDao.addTagResource(tagResource);
@@ -167,7 +167,6 @@ public class TagResourceServiceImpl implements TagResourceService {
 
         if (StringUtils.isEmpty(tagResourceDao.getTagResourceType(tagName, resourceId))) {
             throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), (String.format("tagResource record does not exist!")));
-//            throw new javax.validation.ValidationException(String.format("tagResource record does not exist!"));
         }
 
         return tagResourceDao.deleteTagResource(tagName, resourceId);

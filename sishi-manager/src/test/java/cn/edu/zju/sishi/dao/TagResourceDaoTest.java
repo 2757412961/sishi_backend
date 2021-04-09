@@ -26,12 +26,12 @@ public class TagResourceDaoTest {
         System.out.println(tagResourceDao.getTagResourceIds("gero@iughi@gyi", "tb_test"));
     }
 
-    @Test
-    public void addTagResource() {
-        System.out.println(
-                tagResourceDao.addTagResource(
-                        new TagResource("fgsdfgsdfgdfsgs", "gero@iughi@gyi", "fgafg-fsa'as", "tb_test")));
-    }
+//    @Test
+//    public void addTagResource() {
+//        System.out.println(
+//                tagResourceDao.addTagResource(
+//                        , authorityService.getUserId(request), authorityService.getUserId(request)new TagResource("fgsdfgsdfgdfsgs", "gero@iughi@gyi", "fgafg-fsa'as", "tb_test")));
+//    }
 
     @Test
     public void deleteTagResource() {

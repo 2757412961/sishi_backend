@@ -28,7 +28,12 @@ public class TagResourceServiceImplTest {
     public void addTagResource() {
         System.out.println(
                 tagResourceService.addTagResource(
-                        new TagResource("fgsdfgsdfgdfsgs", "gero@iughi@gyi", "fgafg-fsa'as", "tb_test")));
+                        new TagResource(
+                                "fgsdfgsdfgdfsgs",
+                                "党史新学@中共一大",
+                                "fgafg-fsa'as234",
+                                "tb_picture",
+                                null)));
 
     }
 

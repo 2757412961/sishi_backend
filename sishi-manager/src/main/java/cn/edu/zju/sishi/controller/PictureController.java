@@ -121,14 +121,15 @@ public class PictureController {
                                        BindingResult bindingResult,
                                        @PathVariable("tagName")
                                        @NotNull(message = "tagName cannot be null")
-                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+                                       @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+                                       HttpServletRequest request) {
         BindResultUtils.validData(bindingResult);
 
         log.info("Start invoke addPictureByTagName()");
         // 先添加资源表的记录
         pictureService.addPicture(picture);
         // 再添加资源关联表中的记录
-        TagResource tagResource = new TagResource("", tagName, picture.getPictureId(), ResourceTypeEnum.PICTURE.getResourceType());
+        TagResource tagResource = new TagResource("", tagName, picture.getPictureId(), ResourceTypeEnum.PICTURE.getResourceType(), authorityService.getUserId(request));
         tagResourceService.addTagResource(tagResource);
 
         return picture;
@@ -184,7 +185,7 @@ public class PictureController {
             pictureService.addPicture(picture);
 
             // 保存 标签、资源 关联记录
-            TagResource tagResource = new TagResource("", tagName, picture.getPictureId(), ResourceTypeEnum.PICTURE.getResourceType());
+            TagResource tagResource = new TagResource("", tagName, picture.getPictureId(), ResourceTypeEnum.PICTURE.getResourceType(), authorityService.getUserId(request));
             tagResourceService.addTagResource(tagResource);
 
             // 保存到本地
