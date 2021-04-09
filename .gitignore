@@ -15,4 +15,4 @@ target
 *.log
 .*.swp
 .idea/**
-/docs/postman/sishi-login.postman_collection.json
+
