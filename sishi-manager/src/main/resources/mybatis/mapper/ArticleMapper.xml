@@ -10,13 +10,12 @@
         <result property="articlePublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="articleCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
         <result property="eventTime" column="EVENT_TIME" jdbcType="DATE"/>
-        <result property="eventEndTime" column="EVENT_END_TIME" jdbcType="DATE"/>
         <result property="isPublic" column="is_public"/>
         <result property="address" column="address"/>
     </resultMap>
 
     <sql id="columns">
-        article_id, article_title, article_content, article_author, publish_time, create_time, event_time, event_end_time, address, is_public
+        article_id, article_title, article_content, article_author, publish_time, create_time, event_time, address, is_public
     </sql>
 
     <select id="listArticles" resultMap="articleDaoResultMap">
@@ -36,7 +35,7 @@
         WHERE article_id = #{articleId}
     </select>
 
-    <select id="getArticlesByTagName" resultType="articleDaoResultMap">
+    <select id="getArticlesByTagName" resultMap="articleDaoResultMap">
         SELECT <include refid="columns"/>
         FROM tb_article a, tb_tag_resource_map m
         WHERE m.tag_name = #{tagName}
@@ -59,7 +58,7 @@
     <insert id="addArticle" parameterType="cn.edu.zju.sishi.entity.Article" flushCache="true">
         INSERT INTO tb_article
           (article_id, article_title, article_content, article_author,
-          publish_time, create_time, event_time, event_end_time, is_public, address)
+          publish_time, create_time, event_time, is_public, address)
         VALUES
         (#{article.articleId},
         #{article.articleTitle},
@@ -68,7 +67,6 @@
         #{article.articlePublishTime},
         #{article.articleCreateTime},
         to_date(#{article.eventTime}, 'YYYY-MM-DD'),
-        to_date(#{article.eventEndTime}, 'YYYY-MM-DD'),
         #{article.isPublic},
         #{article.address});
     </insert>
