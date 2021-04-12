@@ -16,7 +16,7 @@
         SELECT
         <include refid="tagFields"></include>
         FROM tb_tag
-        ORDER BY tag_name ASC
+        ORDER BY convert_to(tag_name,'GBK') ASC
     </select>
 
     <select id="getTagByTagName" resultType="cn.edu.zju.sishi.entity.Tag">
