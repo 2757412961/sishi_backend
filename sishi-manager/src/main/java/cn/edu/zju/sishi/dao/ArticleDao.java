@@ -25,15 +25,14 @@ public interface ArticleDao {
 
   Article getArticle(@Param("articleId") String articleId);
 
+  Article getArticleByTitle(@Param("title") String title);
+
   List<Article> getArticlesByTagName(@Param("tagName") String tagName,
                                      @Param("start") int start,
                                      @Param("length") int length,
                                      @Param("logicSymbol") String logicSymbol);
 
   void dropArticle(@Param("articleId") String articleId);
-
-
-  Article getArticleByTitle(@Param("title") String title);
 
   int updateIsPublicById(@Param("articleId") String articleId);
 }
