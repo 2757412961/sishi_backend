@@ -28,13 +28,11 @@ public class MapInfoServiceImpl implements MapInfoService {
     private TagDao tagDao;
 
     @Override
-//    @Cacheable(value = "GET_ALL_MAPINFO")
     public List<MapInfo> getAllMapInfos(String logicSymbol) {
         return mapInfoDao.getAllMapInfos(logicSymbol);
     }
 
     @Override
-//    @Cacheable(value = "GET_MAPINFO_BY_ID")
     public MapInfo getMapInfoById(String mapId) {
         MapInfo mapInfo = mapInfoDao.getMapInfoById(mapId);
         if (mapInfo == null) {
@@ -45,7 +43,6 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
-//    @Cacheable(value = "GET_MAPINFO_BY_IDS")
     public List<MapInfo> getMapInfosByIds(List<String> mapIds) {
         if (CollectionUtils.isEmpty(mapIds)) {
             return null;
@@ -65,7 +62,6 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
-//    @Cacheable(value = "GET_MAPINFO_BY_TAG")
     public List<MapInfo> getMapInfosByTag(String tagName, String logicSymbol) {
         if (tagDao.getTagByTagName(tagName) == null) {
             throw new ValidationException(String.format("TagName %s does not exist!", tagName));
@@ -75,7 +71,6 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public int addMapInfo(MapInfo mapInfoEntity) {
         String mapName = mapInfoEntity.getMapTitle();
         if (mapInfoDao.getMapInfoByTitle(mapName) != null) {
@@ -90,7 +85,6 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
-    @CacheEvict(value = {"SELECT_TAGS", "GET_TAG_BY_TAG_NAME", "GET_TAG_TREE", "GET_CHILD_TAG", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public int deleteMapInfoById(String mapId) {
         MapInfo mapInfoDelete = mapInfoDao.getMapInfoById(mapId);
         if (mapInfoDelete == null) {

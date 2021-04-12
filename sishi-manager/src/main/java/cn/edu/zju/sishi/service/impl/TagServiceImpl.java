@@ -99,7 +99,7 @@ public class TagServiceImpl implements TagService {
 
                         List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
                         if (!mapInfos.isEmpty()) {
-                            newTagTree.setTime(mapInfos.get(0).getMapTime());
+//                            newTagTree.setTime(mapInfos.get(0).getMapTime());
                             newTagTree.setGeoCoordinates(
                                     new ArrayList<>(Arrays.asList
                                             (mapInfos.get(0).getMapLon(), mapInfos.get(0).getMapLat())));
@@ -144,7 +144,8 @@ public class TagServiceImpl implements TagService {
             List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
             if (!mapInfos.isEmpty()) {
                 MapInfo mapInfo = mapInfos.get(0);
-                if (mapInfo.getMapTime() != null && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
+//                if (mapInfo.getMapTime() != null && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
+                if ( mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
                     TagCompareTime tagCompareTime = new TagCompareTime();
 
                     String[] split = tag.getTagName().substring(tagName.length()).split("@", 2);
@@ -154,7 +155,7 @@ public class TagServiceImpl implements TagService {
                     }
                     tagCompareTime.setTagId(tag.getTagId());
                     tagCompareTime.setTagName(tag.getTagName());
-                    tagCompareTime.setTime(mapInfo.getMapTime());
+//                    tagCompareTime.setTime(mapInfo.getMapTime());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
                     tagCompareTime.setProperty(tag.getProperty());

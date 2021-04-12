@@ -35,8 +35,6 @@ public class MapInfo implements Serializable {
 
     private Long mapCreateTime;
 
-    private String mapTime;
-
     @JsonProperty("isPublic")
     private Boolean isPublic;
 
