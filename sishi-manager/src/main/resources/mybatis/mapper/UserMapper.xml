@@ -102,9 +102,8 @@
     </select>
 
     <select id="getScore" resultMap="scoreMap">
-        SELECT user_name, score, party_branch, avatar,
-        RANK()OVER (ORDER BY score DESC) AS Rank
-        FROM tb_user
+        SELECT user_name, score, party_branch, avatar, rank
+        FROM (SELECT *, RANK() OVER (ORDER BY score DESC) rank FROM tb_user) as temp
         WHERE user_id = #{id}
     </select>
 
