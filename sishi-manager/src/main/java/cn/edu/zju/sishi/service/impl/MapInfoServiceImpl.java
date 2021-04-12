@@ -71,6 +71,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
+    @CacheEvict(value = {"GET_TAG_TREE", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public int addMapInfo(MapInfo mapInfoEntity) {
         String mapName = mapInfoEntity.getMapTitle();
         if (mapInfoDao.getMapInfoByTitle(mapName) != null) {
@@ -85,6 +86,7 @@ public class MapInfoServiceImpl implements MapInfoService {
     }
 
     @Override
+    @CacheEvict(value = {"GET_TAG_TREE", "GET_TAG_COMPARE_TIME"}, allEntries = true)
     public int deleteMapInfoById(String mapId) {
         MapInfo mapInfoDelete = mapInfoDao.getMapInfoById(mapId);
         if (mapInfoDelete == null) {

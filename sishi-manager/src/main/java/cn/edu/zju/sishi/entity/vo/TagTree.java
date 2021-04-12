@@ -17,9 +17,9 @@ public class TagTree implements Serializable {
 
     private String label;
 
-    private String tagName;
-
     private String tagId;
+
+    private String tagName;
 
     private String time;
 

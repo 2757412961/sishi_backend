@@ -20,4 +20,6 @@ public class Tag implements Serializable {
 
   @Size(max = 50, message = "property length should not larger than 50")
   private String property;
+
+  private String eventTime;
 }
