@@ -19,21 +19,24 @@
     </sql>
 
     <select id="listVideos" resultMap="videoDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_video
         WHERE (is_public = true ${logicSymbol} 1=1)
-            LIMIT #{length}
+        LIMIT #{length}
         OFFSET #{offset}
     </select>
 
     <select id="getVideo" resultMap="videoDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_video
         WHERE video_id = #{videoId}
     </select>
 
     <select id="getVideoByTitle" resultMap="videoDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_video
         WHERE video_title = #{title}
     </select>
@@ -51,13 +54,14 @@
     </select>
 
     <select id="getVideosByTagName" resultType="cn.edu.zju.sishi.entity.Video">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_video v,
-             tb_tag_resource_map m
+        tb_tag_resource_map m
         WHERE tag_name = #{tagName}
-          AND m.resource_id = v.video_id
-          AND m.resource_type = 'tb_video'
-          AND (is_public = true ${logicSymbol} 1=1)
+        AND m.resource_id = v.video_id
+        AND m.resource_type = 'tb_video'
+        AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
     <delete id="dropVideo" flushCache="true">
@@ -81,7 +85,7 @@
                 #{video.videoContent},
                 #{video.videoSource},
                 #{video.videoPublishTime},
-                #{video.videoCreateTime};
+                #{video.videoCreateTime});
     </insert>
 
     <update id="updateIsPublicById" parameterType="String" flushCache="true">

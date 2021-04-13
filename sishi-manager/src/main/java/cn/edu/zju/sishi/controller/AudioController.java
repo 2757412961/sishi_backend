@@ -120,7 +120,7 @@ public class AudioController {
             }
             String audioAuthor = request.getParameter("audioAuthor");
             if (audioAuthor == null) {
-                throw new ValidationException("未提交来源");
+                throw new ValidationException("未提交作者信息");
             }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {

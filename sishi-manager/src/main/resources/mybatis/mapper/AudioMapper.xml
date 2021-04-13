@@ -19,15 +19,17 @@
     </sql>
 
     <select id="listAudios" resultMap="audioDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_audio
         WHERE (is_public = true ${logicSymbol} 1=1)
-            LIMIT #{length}
+        LIMIT #{length}
         OFFSET #{offset}
     </select>
 
     <select id="getAudio" resultMap="audioDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_audio
         WHERE audio_id = #{audioId}
     </select>
@@ -46,19 +48,21 @@
     </select>
 
     <select id="getAudioByTitle" resultMap="audioDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_audio
         WHERE audio_title = #{title}
     </select>
 
     <select id="getAudiosByTagName" resultType="cn.edu.zju.sishi.entity.Audio">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_audio a,
-             tb_tag_resource_map m
+        tb_tag_resource_map m
         WHERE tag_name = #{tagName}
-          AND m.resource_id = a.audio_id
-          AND m.resource_type = 'tb_audio'
-          AND (is_public = true ${logicSymbol} 1=1)
+        AND m.resource_id = a.audio_id
+        AND m.resource_type = 'tb_audio'
+        AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
 
@@ -83,7 +87,7 @@
                 #{audio.audioContent},
                 #{audio.audioSource},
                 #{audio.audioPublishTime},
-                #{audio.audioCreateTime};
+                #{audio.audioCreateTime});
     </insert>
 
     <update id="updateIsPublicById" parameterType="String" flushCache="true">

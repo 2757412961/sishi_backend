@@ -156,7 +156,7 @@ public class PictureController {
             }
             String pictureAuthor = request.getParameter("pictureAuthor");
             if (pictureAuthor == null) {
-                throw new ValidationException("未提交来源");
+                throw new ValidationException("未提交作者信息");
             }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
