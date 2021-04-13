@@ -25,7 +25,7 @@ import java.util.*;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private static String DEFAULT_PICTURE_URL = "http://47.100.24.69/media/picture/default_pic.jpg";
+    private static String DEFAULT_PICTURE_URL = "http://10.13.42.137/media/picture/default_pic.jpg";
 
     @Autowired
     private TagDao tagDao;
