@@ -18,8 +18,6 @@ public interface ArticleDao {
 
   List<Article> listArticles(@Param("length") int length,
                              @Param("offset") int offset,
-                             @Param("startTime") String startTime,
-                             @Param("endTime") String endTime,
                              @Param("logicSymbol") String logicSymbol);
 
 

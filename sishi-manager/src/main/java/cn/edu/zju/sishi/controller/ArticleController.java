@@ -93,13 +93,11 @@ public class ArticleController {
     @RequestParam(value = "length", required = false, defaultValue = "10")
     @Min(value = 1, message = "length must be larger than 0")
     @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
-    @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-    @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
     HttpServletRequest request) {
     logger.info("start invoke listArticles()");
     JSONObject result = new JSONObject();
     boolean isAdministrator = authorityService.isAdamin(request);
-    List<Article> articles = articleService.listArticles(start, length, startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
+    List<Article> articles = articleService.listArticles(start, length, LogicUtil.getLogicByIsAdmins(isAdministrator));
 
 
     int count = articles.size();

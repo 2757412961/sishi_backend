@@ -11,7 +11,7 @@ import java.util.List;
 public interface ArticleService {
   void addArticle(Article articleEntity);
 
-  List<Article> listArticles(int start, int length, String startTime, String endTime, String logicSymbol);
+  List<Article> listArticles(int start, int length, String logicSymbol);
 
   List<Article> getArticlesByTagName(String tagName, int start, int length, String logicSymbol);
   

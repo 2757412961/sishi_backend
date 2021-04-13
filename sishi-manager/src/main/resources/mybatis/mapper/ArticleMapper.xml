@@ -7,19 +7,22 @@
         <result property="articleTitle" column="ARTICLE_TITLE" jdbcType="VARCHAR"/>
         <result property="articleAuthor" column="ARTICLE_AUTHOR" jdbcType="VARCHAR"/>
         <result property="articleContent" column="ARTICLE_CONTENT" jdbcType="VARCHAR"/>
+        <result property="articleSource" column="ARTICLE_SOURCE" jdbcType="VARCHAR"/>
+        <result property="articleEventTime" column="ARTICLE_EVENT_TIME" jdbcType="VARCHAR"/>
+        <result property="articleAddress" column="ARTICLE_ADDRESS" jdbcType="VARCHAR"/>
         <result property="articlePublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="articleCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
-        <result property="eventTime" column="EVENT_TIME" jdbcType="DATE"/>
         <result property="isPublic" column="is_public"/>
-        <result property="address" column="address"/>
     </resultMap>
 
     <sql id="columns">
-        article_id, article_title, article_content, article_author, publish_time, create_time, event_time, address, is_public
+        article_id
+        , article_title, article_author, article_content, article_source, article_event_time, article_address, publish_time, create_time, is_public
     </sql>
 
     <select id="listArticles" resultMap="articleDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_article
         WHERE
         to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
@@ -30,13 +33,15 @@
     </select>
 
     <select id="getArticle" resultMap="articleDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_article
         WHERE article_id = #{articleId}
     </select>
 
     <select id="getArticlesByTagName" resultMap="articleDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_article a, tb_tag_resource_map m
         WHERE m.tag_name = #{tagName}
         AND m.resource_id=a.article_id
@@ -45,30 +50,32 @@
     </select>
 
     <select id="getArticleByTitle" resultMap="articleDaoResultMap">
-        SELECT <include refid="columns"/>
+        SELECT
+        <include refid="columns"/>
         FROM tb_article
         WHERE article_title = #{title}
     </select>
 
 
     <delete id="dropArticle" flushCache="true">
-        DELETE FROM tb_article WHERE article_id = #{articleId};
+        DELETE
+        FROM tb_article
+        WHERE article_id = #{articleId};
     </delete>
 
     <insert id="addArticle" parameterType="cn.edu.zju.sishi.entity.Article" flushCache="true">
         INSERT INTO tb_article
-          (article_id, article_title, article_content, article_author,
-          publish_time, create_time, event_time, is_public, address)
-        VALUES
-        (#{article.articleId},
-        #{article.articleTitle},
-        #{article.articleContent},
-        #{article.articleAuthor},
-        #{article.articlePublishTime},
-        #{article.articleCreateTime},
-        to_date(#{article.eventTime}, 'YYYY-MM-DD'),
-        #{article.isPublic},
-        #{article.address});
+        (article_id, article_title, article_content, article_author,
+         publish_time, create_time, event_time, is_public, address)
+        VALUES (#{article.articleId},
+                #{article.articleTitle},
+                #{article.articleContent},
+                #{article.articleAuthor},
+                #{article.articlePublishTime},
+                #{article.articleCreateTime},
+                to_date(#{article.eventTime}, 'YYYY-MM-DD'),
+                #{article.isPublic},
+                #{article.address});
     </insert>
 
     <update id="updateIsPublicById" parameterType="String" flushCache="true">
