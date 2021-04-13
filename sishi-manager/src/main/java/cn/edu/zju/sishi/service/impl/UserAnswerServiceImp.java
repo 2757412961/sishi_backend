@@ -28,6 +28,11 @@ public class UserAnswerServiceImp implements UserAnswerService {
     private UserDao userDao;
 
     @Override
+    public List<UserAnswer> getUserAnswerByUser(String user_name) {
+        return userAnswerDao.getUserAnswerByUser(user_name);
+    }
+
+    @Override
     public UserAnswer getUserAnswerStatus(String tag_name, String user_name) {
         return  userAnswerDao.getUserAnswerStatus(tag_name, user_name);
 

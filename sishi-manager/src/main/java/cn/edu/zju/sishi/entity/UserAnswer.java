@@ -3,7 +3,6 @@ package cn.edu.zju.sishi.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 

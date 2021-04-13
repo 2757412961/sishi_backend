@@ -2,7 +2,6 @@ package cn.edu.zju.sishi.service;
 
 import cn.edu.zju.sishi.entity.Question;
 import cn.edu.zju.sishi.entity.UserAnswer;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +11,8 @@ import java.util.List;
  * @create 2021-03-10 14:25
  */
 public interface UserAnswerService {
+
+    List<UserAnswer> getUserAnswerByUser(String user_name);
 
     UserAnswer getUserAnswerStatus(String tag_name, String user_name);
 

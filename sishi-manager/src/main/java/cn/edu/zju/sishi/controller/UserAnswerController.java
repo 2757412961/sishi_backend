@@ -5,6 +5,7 @@ import cn.edu.zju.sishi.entity.Question;
 import cn.edu.zju.sishi.entity.UserAnswer;
 import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.UserAnswerService;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,24 @@ public class UserAnswerController {
     @Autowired
     private AuthorityService authorityService;
 
-    @RequestMapping(value="getuseranswer" , method = RequestMethod.GET)
+    @RequestMapping(value = "userAnswer/user", method = RequestMethod.GET)
     @ResponseBody
-    public UserAnswer getUserAnswerStatus(@RequestParam(value = "tag_name")String tag_name, @RequestParam(value = "user_name")String user_name) {
+    public JSONObject getUserAnswerByUser(@RequestParam(value = "user_name") String user_name) {
+        logger.info("Start invoke getUserAnswerByUser()");
+        List<UserAnswer> userAnswers = userAnswerService.getUserAnswerByUser(user_name);
+
+        JSONObject object = new JSONObject();
+        object.put("userAnswers", userAnswers);
+        object.put("totalSize", userAnswers.size());
+        return object;
+    }
+
+    @RequestMapping(value = "getuseranswer", method = RequestMethod.GET)
+    @ResponseBody
+    public UserAnswer getUserAnswerStatus(@RequestParam(value = "tag_name") String tag_name, @RequestParam(value = "user_name") String user_name) {
         logger.info("Start invoke getUserAnswerStatus()");
         return userAnswerService.getUserAnswerStatus(tag_name, user_name);
     }
-
 
     @RequestMapping(value = "questionsTag", method = RequestMethod.GET)
     @ResponseBody
@@ -54,7 +66,7 @@ public class UserAnswerController {
         logger.info("Start invoke updateUserAnswerStatusAndScore()");
 
         Date time = new Date();
-        List<Integer> count = userAnswerService.insertUserAnswerStatus(tag_name, user_name,time);
+        List<Integer> count = userAnswerService.insertUserAnswerStatus(tag_name, user_name, time);
         Map<String, String> result = new HashMap<>();
 
         int count1 = count.get(0).intValue();
