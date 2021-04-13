@@ -13,7 +13,7 @@ spring:
       max-file-size: 1000MB
       max-request-size: 1000MB
   redis:
-    host: 47.100.24.69
+    host: 192.168.137.1
     port: 6379
     password: Root123!@$
     timeout: 0
@@ -25,9 +25,9 @@ spring:
         max-wait: -1
         min-idle: 0
   datasource:
-    url: jdbc:postgresql://47.100.24.69:5432/sishi
+    url: jdbc:postgresql://192.168.137.1:5432/sishi
     username: postgres
-    password: Root123!@$
+    password: postgres
     driver-class-name: org.postgresql.Driver
   mail:
     host: smtp.qq.com
@@ -54,7 +54,7 @@ myconfig:
     host: 47.100.24.69
     port: 80
     httpHead: http://${myconfig.nginx.host}:${myconfig.nginx.port}/media/
-    winRoot: F:/SSNginx/webresource/
+    winRoot: F:/0temp/Nginx/webResource/
     linuxRoot: /home/sishi/static/
     picPath: picture/
     audioPath: audio/

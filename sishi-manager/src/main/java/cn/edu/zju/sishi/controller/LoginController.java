@@ -46,7 +46,7 @@ public class LoginController {
         String redisCaptcha = redisService.get(RedisKeys.REDIS_Captcha_PREFIX + user.getEmail());
         System.out.println(redisCaptcha);
         if (StringUtils.isEmpty(redisCaptcha)) {
-            throw new ValidationException("验证码失效");
+            throw new ValidationException("验证码失效，请重新发送！");
         }
         if (!captcha.equals(redisCaptcha)) {
             throw new ValidationException("验证码错误");
