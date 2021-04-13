@@ -17,11 +17,11 @@ public class Audio implements Serializable {
   @Size(min = 1, max = 500, message = "audio title length should be between 1 and 500")
   private String audioTitle;
 
+  private String audioAuthor;
 
   @NotNull(message = "audio source cannot be null")
   @Size(min = 1, max = 200, message = "audio source length should be between 1 and 200")
   private String audioSource;
-
 
   @NotNull(message = "audio content cannot be null")
   private String audioContent;
@@ -30,10 +30,16 @@ public class Audio implements Serializable {
 
   private long audioPublishTime;
 
-  private String eventTime;
-
   @JsonProperty("isPublic")
   private Boolean isPublic;
+
+  public String getAudioAuthor() {
+    return audioAuthor;
+  }
+
+  public void setAudioAuthor(String audioAuthor) {
+    this.audioAuthor = audioAuthor;
+  }
 
   public Boolean getPublic() {
     return isPublic;
@@ -42,10 +48,6 @@ public class Audio implements Serializable {
   public void setPublic(Boolean aPublic) {
     isPublic = aPublic;
   }
-
-  public String getEventTime() { return eventTime; }
-
-  public void setEventTime(String eventTime) { this.eventTime = eventTime; }
 
   public String getAudioId() {
     return audioId;

@@ -12,9 +12,7 @@ import java.util.List;
 @Component
 public interface PictureDao {
 
-    List<Picture> getPicturesAll(@Param("startTime") String startTime,
-                                 @Param("endTime") String endTime,
-                                 @Param("logicSymbol") String logicSymbol);
+    List<Picture> getPicturesAll(@Param("logicSymbol") String logicSymbol);
 
     Picture getPictureById(@Param("pictureId") String pictureId);
 

@@ -118,9 +118,9 @@ public class VideoController {
             if (videoSource == null) {
                 throw new ValidationException("未提交来源");
             }
-            String eventTime = request.getParameter("eventTime");
-            if (eventTime == null) {
-                throw new ValidationException("未提交事件时间");
+            String videoAuthor = request.getParameter("videoAuthor");
+            if (videoAuthor == null) {
+                throw new ValidationException("未提交来源");
             }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
@@ -136,8 +136,8 @@ public class VideoController {
 
             // 文件名称
             video.setVideoTitle(videoTitle);
+            video.setVideoAuthor(videoAuthor);
             video.setVideoSource(videoSource);
-            video.setEventTime(eventTime);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录
@@ -166,18 +166,16 @@ public class VideoController {
     @RequestMapping(value = "videos", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject listVideos(
-      @RequestParam(value = "start", required = false, defaultValue = "0")
-      @Min(value = 0, message = "start must not be negative") int start,
-      @RequestParam(value = "length", required = false, defaultValue = "10")
-      @Min(value = 1, message = "length must be larger than 0")
-      @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
-      @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-      @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
-      HttpServletRequest request) {
+            @RequestParam(value = "start", required = false, defaultValue = "0")
+            @Min(value = 0, message = "start must not be negative") int start,
+            @RequestParam(value = "length", required = false, defaultValue = "10")
+            @Min(value = 1, message = "length must be larger than 0")
+            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+            HttpServletRequest request) {
         logger.info("start invoke listVideos()");
         JSONObject result = new JSONObject();
         boolean isAdministrator = authorityService.isAdamin(request);
-        List<Video> videos = videoService.listVideos(start, length,startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
+        List<Video> videos = videoService.listVideos(start, length, LogicUtil.getLogicByIsAdmins(isAdministrator));
         result.put("videos", videos);
         int totalCount = videos.size();
         result.put("total", totalCount);
@@ -187,8 +185,8 @@ public class VideoController {
     @ResponseBody
     @RequestMapping(value = "video/{videoId}", method = RequestMethod.GET)
     public Video getVideo(
-      @Size(min = 36, max = 36, message = "videoId's length must be 36")
-      @PathVariable(value = "videoId") String videoId) {
+            @Size(min = 36, max = 36, message = "videoId's length must be 36")
+            @PathVariable(value = "videoId") String videoId) {
         logger.info("start invoke getVideo()");
         Video video = videoService.getVideo(videoId);
         if (video != null) {
@@ -202,13 +200,13 @@ public class VideoController {
     @RequestMapping(value = "videos/tagName/{tagName}", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject getVideosByTagName(
-      @PathVariable(value = "tagName") String tagName,
-      @RequestParam(value = "start", required = false, defaultValue = "0")
-      @Min(value = 0, message = "start must not be negative") int start,
-      @RequestParam(value = "length", required = false, defaultValue = "10")
-      @Min(value = 1, message = "length must be larger than 0")
-      @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
-      HttpServletRequest request) {
+            @PathVariable(value = "tagName") String tagName,
+            @RequestParam(value = "start", required = false, defaultValue = "0")
+            @Min(value = 0, message = "start must not be negative") int start,
+            @RequestParam(value = "length", required = false, defaultValue = "10")
+            @Min(value = 1, message = "length must be larger than 0")
+            @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
+            HttpServletRequest request) {
         logger.info("start invoke getVideoIdsByTagName()");
         JSONObject result = new JSONObject();
         boolean isAdministrator = authorityService.isAdamin(request);
@@ -221,8 +219,8 @@ public class VideoController {
 
     @RequestMapping(value = "video/{videoId}", method = RequestMethod.DELETE)
     public Map<String, String> dropVideo(
-      @Size(min = 36, max = 36, message = "videoId's length must be 36")
-      @PathVariable(value = "videoId") String videoId) {
+            @Size(min = 36, max = 36, message = "videoId's length must be 36")
+            @PathVariable(value = "videoId") String videoId) {
         logger.info("start invoke dropVideo()");
         Map<String, String> result = new HashMap<>();
         videoService.dropVideo(videoId);
@@ -245,9 +243,13 @@ public class VideoController {
         // 3. 再删除资源表的记录
         videoService.dropVideo(videoId);
         // 4. 删除本地资源
-        File localFile = new File(nginxConfig.getLinuxRoot() + video.getVideoContent().substring(nginxConfig.getHttpHead().length()));
-        if (localFile.exists()) {
-            localFile.delete();
+        try {
+            File localFile = new File(nginxConfig.getLinuxRoot() + video.getVideoContent().substring(nginxConfig.getHttpHead().length()));
+            if (localFile.exists()) {
+                localFile.delete();
+            }
+        } catch (Exception e) {
+            logger.error("deleteVideoByTagName Error", e);
         }
 
         Map<String, String> result = new HashMap<>();

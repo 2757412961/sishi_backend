@@ -25,19 +25,19 @@ public class Picture implements Serializable {
     @Size(min = 1, max = 500, message = "pictureTitle length should be between 1 and 500")
     private String pictureTitle;
 
+    private String pictureAuthor;
+
     @NotNull(message = "pictureSource can not be null")
-    @Size(min = 1, max = 200, message = "pictureSource length should be between 1 and 200")
+    @Size(min = 1, max = 500, message = "pictureSource length should be between 1 and 200")
     private String pictureSource;
 
     @NotNull(message = "pictureSource can not be null")
-    @Size(min = 1, max = 200, message = "pictureSource length should be between 1 and 200")
+    @Size(min = 1, max = 500, message = "pictureContent length should be between 1 and 200")
     private String pictureContent;
 
     private long picturePublishTime;
 
     private long pictureCreateTime;
-
-    private String eventTime;
 
     @JsonProperty("isPublic")
     private Boolean isPublic;

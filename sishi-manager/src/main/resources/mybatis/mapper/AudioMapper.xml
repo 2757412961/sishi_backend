@@ -5,29 +5,29 @@
     <resultMap id="audioDaoResultMap" type="cn.edu.zju.sishi.entity.Audio">
         <result property="audioId" column="AUDIO_ID" jdbcType="VARCHAR"/>
         <result property="audioTitle" column="AUDIO_TITLE" jdbcType="VARCHAR"/>
+        <result property="audioAuthor" column="AUDIO_AUTHOR" jdbcType="VARCHAR"/>
         <result property="audioSource" column="AUDIO_SOURCE" jdbcType="VARCHAR"/>
         <result property="audioContent" column="AUDIO_CONTENT" jdbcType="VARCHAR"/>
         <result property="audioPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="audioCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
-        <result property="eventTime" column="EVENT_TIME" jdbcType="DATE"/>
         <result property="isPublic" column="is_public"/>
     </resultMap>
 
+    <sql id="columns">
+        audio_id
+        , audio_title, audio_author, audio_content, audio_source, publish_time, create_time, is_public
+    </sql>
+
     <select id="listAudios" resultMap="audioDaoResultMap">
-        SELECT audio_id, audio_title, audio_content, audio_source,
-        publish_time, create_time, event_time, is_public
+        SELECT <include refid="columns"/>
         FROM tb_audio
-        WHERE
-        to_date(#{startTime}, 'YYYY-MM-DD')  <![CDATA[ < ]]> event_time
-        AND event_time  <![CDATA[ < ]]> to_date(#{endTime}, 'YYYY-MM-DD')
-        AND (is_public = true ${logicSymbol} 1=1)
-        LIMIT #{length}
+        WHERE (is_public = true ${logicSymbol} 1=1)
+            LIMIT #{length}
         OFFSET #{offset}
     </select>
 
     <select id="getAudio" resultMap="audioDaoResultMap">
-        SELECT audio_id, audio_title, audio_content, audio_source,
-        publish_time, create_time, event_time, is_public
+        SELECT <include refid="columns"/>
         FROM tb_audio
         WHERE audio_id = #{audioId}
     </select>
@@ -35,7 +35,8 @@
     <select id="countAudiosByTagName" resultType="java.lang.Integer">
         SELECT COUNT(RESOURCE_ID)
         FROM tb_tag_resource_map
-        WHERE tag_name = #{tagName} AND resource_type = 'tb_audio'
+        WHERE tag_name = #{tagName}
+          AND resource_type = 'tb_audio'
     </select>
 
     <select id="countAudios" resultType="java.lang.Integer">
@@ -45,40 +46,44 @@
     </select>
 
     <select id="getAudioByTitle" resultMap="audioDaoResultMap">
-        SELECT audio_id, audio_title, audio_content, audio_source,
-               publish_time, create_time, event_time, is_public
+        SELECT <include refid="columns"/>
         FROM tb_audio
         WHERE audio_title = #{title}
     </select>
 
     <select id="getAudiosByTagName" resultType="cn.edu.zju.sishi.entity.Audio">
-        SELECT audio_id, audio_title, audio_content, audio_source,
-          publish_time, create_time, event_time, is_public
-        FROM tb_audio a, tb_tag_resource_map m
+        SELECT <include refid="columns"/>
+        FROM tb_audio a,
+             tb_tag_resource_map m
         WHERE tag_name = #{tagName}
-        AND m.resource_id=a.audio_id
-        AND m.resource_type= 'tb_audio'
-        AND (is_public = true ${logicSymbol} 1=1)
+          AND m.resource_id = a.audio_id
+          AND m.resource_type = 'tb_audio'
+          AND (is_public = true ${logicSymbol} 1=1)
     </select>
 
 
     <delete id="dropAudio" flushCache="true">
-        DELETE FROM tb_audio WHERE audio_id = #{audioId};
+        DELETE
+        FROM tb_audio
+        WHERE audio_id = #{audioId};
     </delete>
 
     <insert id="addAudio" parameterType="cn.edu.zju.sishi.entity.Audio" flushCache="true">
         INSERT INTO tb_audio
-          (audio_id, audio_title, audio_content, audio_source,
-          publish_time, create_time, event_time, is_public)
-        VALUES
-        (#{audio.audioId},
-        #{audio.audioTitle},
-        #{audio.audioContent},
-        #{audio.audioSource},
-        #{audio.audioPublishTime},
-        #{audio.audioCreateTime},
-        to_date(#{audio.eventTime}, 'YYYY-MM-DD'),
-        #{audio.isPublic});
+        (audio_id,
+         audio_title,
+         audio_author,
+         audio_content,
+         audio_source,
+         publish_time,
+         create_time)
+        VALUES (#{audio.audioId},
+                #{audio.audioTitle},
+                #{audio.audioAuthor},
+                #{audio.audioContent},
+                #{audio.audioSource},
+                #{audio.audioPublishTime},
+                #{audio.audioCreateTime};
     </insert>
 
     <update id="updateIsPublicById" parameterType="String" flushCache="true">

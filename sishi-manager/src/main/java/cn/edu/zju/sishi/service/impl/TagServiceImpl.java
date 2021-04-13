@@ -137,7 +137,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-//    @Cacheable(value = "GET_TAG_COMPARE_TIME")
+    @Cacheable(value = "GET_TAG_COMPARE_TIME")
     public List<TagCompareTime> getTagCompareTime(String tagName) {
         List<TagCompareTime> results = new ArrayList<>();
         List<Tag> tagList = tagDao.getTagsByPrefix(tagName);
@@ -145,7 +145,7 @@ public class TagServiceImpl implements TagService {
             List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
             if (!mapInfos.isEmpty()) {
                 MapInfo mapInfo = mapInfos.get(0);
-                if (StringUtils.isEmpty(tag.getEventTime()) && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
+                if (!StringUtils.isEmpty(tag.getEventTime()) && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
                     TagCompareTime tagCompareTime = new TagCompareTime();
 
                     // 截取标签的剩余内容

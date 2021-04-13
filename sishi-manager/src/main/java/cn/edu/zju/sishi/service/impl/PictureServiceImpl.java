@@ -24,8 +24,8 @@ public class PictureServiceImpl implements PictureService {
     private TagDao tagDao;
 
     @Override
-    public List<Picture> getPicturesAll(String startTime, String endTime, String logicSymbol) {
-        return pictureDao.getPicturesAll(startTime, endTime, logicSymbol);
+    public List<Picture> getPicturesAll(String logicSymbol) {
+        return pictureDao.getPicturesAll(logicSymbol);
     }
 
     @Override
@@ -63,7 +63,6 @@ public class PictureServiceImpl implements PictureService {
         }
 
         picture.setPictureId(UUID.randomUUID().toString());
-        picture.setPictureContent(picture.getPictureContent());
         picture.setPicturePublishTime(Instant.now().toEpochMilli());
         picture.setPictureCreateTime(Instant.now().toEpochMilli());
 

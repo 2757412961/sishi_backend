@@ -76,13 +76,13 @@ public class AudioController {
     @Transactional
     @RequestMapping(value = "audio/tagName/{tagName}", method = RequestMethod.POST)
     public Audio addAudioByTagName(
-      @RequestBody
-      @Validated Audio audio,
-      BindingResult bindingResult,
-      @PathVariable("tagName")
-      @NotNull(message = "tagName cannot be null")
-      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
-      HttpServletRequest request) {
+            @RequestBody
+            @Validated Audio audio,
+            BindingResult bindingResult,
+            @PathVariable("tagName")
+            @NotNull(message = "tagName cannot be null")
+            @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName,
+            HttpServletRequest request) {
         BindResultUtils.validData(bindingResult);
 
         logger.info("Start invoke addAudioByTagName()");
@@ -118,9 +118,9 @@ public class AudioController {
             if (audioSource == null) {
                 throw new ValidationException("未提交来源");
             }
-            String eventTime = request.getParameter("eventTime");
-            if (eventTime == null) {
-                throw new ValidationException("未提交事件时间");
+            String audioAuthor = request.getParameter("audioAuthor");
+            if (audioAuthor == null) {
+                throw new ValidationException("未提交来源");
             }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
@@ -136,8 +136,8 @@ public class AudioController {
 
             // 文件名称
             audio.setAudioTitle(audioTitle);
+            audio.setAudioAuthor(audioAuthor);
             audio.setAudioSource(audioSource);
-            audio.setEventTime(eventTime);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录
@@ -171,13 +171,11 @@ public class AudioController {
             @RequestParam(value = "length", required = false, defaultValue = "10")
             @Min(value = 1, message = "length must be larger than 0")
             @Max(value = 1000, message = "the number of return size should be no more than 1000") int length,
-            @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-            @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
             HttpServletRequest request) {
         logger.info("start invoke listAudios()");
         JSONObject result = new JSONObject();
         boolean isAdministrator = authorityService.isAdamin(request);
-        List<Audio> audios = audioService.listAudios(start, length, startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
+        List<Audio> audios = audioService.listAudios(start, length, LogicUtil.getLogicByIsAdmins(isAdministrator));
         result.put("audios", audios);
         int totalCount = audios.size();
         result.put("total", totalCount);
@@ -235,11 +233,11 @@ public class AudioController {
     @Transactional
     @RequestMapping(value = "audio/{audioId}/tagName/{tagName}", method = RequestMethod.DELETE)
     public Map<String, String> deleteAudioByTagName(
-      @PathVariable("audioId")
-      @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
-      @PathVariable("tagName")
-      @NotNull(message = "tagName cannot be null")
-      @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
+            @PathVariable("audioId")
+            @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
+            @PathVariable("tagName")
+            @NotNull(message = "tagName cannot be null")
+            @Size(min = 1, max = 200, message = "tagName length should be between 1 and 200") String tagName) {
         logger.info("Start invoke deleteAudioByTagName()");
         // 1. 找到资源
         Audio audio = audioService.getAudio(audioId);
@@ -248,9 +246,13 @@ public class AudioController {
         // 3. 再删除资源表的记录
         audioService.dropAudio(audioId);
         // 4. 删除本地资源
-        File localFile = new File(nginxConfig.getLinuxRoot() + audio.getAudioContent().substring(nginxConfig.getHttpHead().length()));
-        if (localFile.exists()) {
-            localFile.delete();
+        try {
+            File localFile = new File(nginxConfig.getLinuxRoot() + audio.getAudioContent().substring(nginxConfig.getHttpHead().length()));
+            if (localFile.exists()) {
+                localFile.delete();
+            }
+        } catch (Exception e) {
+            logger.error("deleteAudioByTagName Error", e);
         }
 
 
@@ -263,9 +265,9 @@ public class AudioController {
     @Transactional
     @RequestMapping(value = "audio/public/{audioId}", method = RequestMethod.PUT)
     public Map<String, String> updateIsPublicById(
-      @PathVariable("audioId")
-      @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
-      HttpServletRequest request) {
+            @PathVariable("audioId")
+            @Size(min = 36, max = 36, message = "audioId length should be 36") String audioId,
+            HttpServletRequest request) {
         logger.info("Start invoke updateIsPublicById()");
         if (!authorityService.isAdamin(request)) {
             throw new ValidationException("No permission to perform this operation");
