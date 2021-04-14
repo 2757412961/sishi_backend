@@ -26,7 +26,6 @@ public class Article implements Serializable {
   @NotNull(message = "article Content cannot be null")
   private String articleContent;
 
-  @NotNull(message = "article Source cannot be null")
   private String articleSource;
 
   private String articleEventTime;

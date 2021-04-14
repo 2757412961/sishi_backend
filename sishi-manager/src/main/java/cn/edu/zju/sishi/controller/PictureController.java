@@ -155,9 +155,6 @@ public class PictureController {
                 throw new ValidationException("未提交来源");
             }
             String pictureAuthor = request.getParameter("pictureAuthor");
-            if (pictureAuthor == null) {
-                throw new ValidationException("未提交作者信息");
-            }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -186,7 +183,7 @@ public class PictureController {
             tagResourceService.addTagResource(tagResource);
 
             // 保存到本地
-            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getPicPath() + fileName);
+            File localFile = new File(nginxConfig.getWinRoot() + nginxConfig.getPicPath() + fileName);
             if (localFile.exists()) {
                 throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
             }

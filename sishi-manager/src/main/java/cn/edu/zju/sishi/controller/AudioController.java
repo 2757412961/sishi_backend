@@ -119,9 +119,6 @@ public class AudioController {
                 throw new ValidationException("未提交来源");
             }
             String audioAuthor = request.getParameter("audioAuthor");
-            if (audioAuthor == null) {
-                throw new ValidationException("未提交作者信息");
-            }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");

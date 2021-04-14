@@ -119,9 +119,6 @@ public class VideoController {
                 throw new ValidationException("未提交来源");
             }
             String videoAuthor = request.getParameter("videoAuthor");
-            if (videoAuthor == null) {
-                throw new ValidationException("未提交作者信息");
-            }
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
