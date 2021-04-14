@@ -62,6 +62,7 @@ public class LoginServiceImpl implements LoginService {
                 user.setCreateTime(Instant.now().toEpochMilli());
                 user.setUpdateTime(Instant.now().toEpochMilli());
                 user.setUserId(UUID.randomUUID().toString());
+                user.setAvatar("https://img.88icon.com/download/jpg/20200815/cacc4178c4846c91dc1bfa1540152f93_512_512.jpg!88con");
                 insertedCount = userDao.addUser(user);
                 String userId = user.getUserId();
                 if (insertedCount == 1) {
