@@ -1,17 +1,20 @@
 package cn.edu.zju.sishi.controller;
 
 import cn.edu.zju.sishi.commons.UserContext;
+import cn.edu.zju.sishi.commons.utils.FileUtils;
 import cn.edu.zju.sishi.commons.utils.HttpServletRequestUtil;
 import cn.edu.zju.sishi.config.NginxConfig;
 import cn.edu.zju.sishi.exception.ValidationException;
 import cn.edu.zju.sishi.message.UserMessage.*;
 import cn.edu.zju.sishi.passport.annotation.AuthController;
+import cn.edu.zju.sishi.service.AuthorityService;
 import cn.edu.zju.sishi.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,16 +44,55 @@ public class UserController {
     private NginxConfig nginxConfig;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private AuthorityService authorityService;
 
     @PostMapping("/user/file")
-    public JSONObject uploadFile(HttpServletRequest request){
+    public JSONObject uploadFile(HttpServletRequest request) {
         logger.info("start invoke uploadFile()");
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        MultipartFile file = multipartRequest.getFile("file");
+        MultipartFile multipartFile = multipartRequest.getFile("file");
+        // 判断空指针的情况
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            throw new ValidationException("请求不是表单格式，或者未上传文件对象");
+        }
 
-        return null;
+        // name
+        String filename = multipartFile.getOriginalFilename();
+        String userId = authorityService.getUserId(request);
+        // local file
+        File localFile = FileUtils.newFile(nginxConfig.getWinRoot() + nginxConfig.getWorkspacePath() + userId + File.separator + filename);
+        if (localFile.exists()){
+            throw new ValidationException("上传文件已经存在");
+        }
+        try {
+            multipartFile.transferTo(localFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ValidationException("上传失败：" + e.getMessage());
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("url", nginxConfig.getHttpHead() + nginxConfig.getWorkspacePath() + userId + File.separator + filename);
+
+        return jsonObject;
+    }
+
+    @PostMapping("/user/avatar")
+    public JSONObject updateUserAvatar(HttpServletRequest request) {
+        logger.info("start invoke updateUserAvatar()");
+
+        JSONObject jsonObject = uploadFile(request);
+
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+        updateUserRequest.setAvatar((String) jsonObject.get("url"));
+        String userId = authorityService.getUserId(request);
+        userService.updateUserInfo(userId, updateUserRequest);
+
+        return jsonObject;
     }
 
     @ResponseBody
