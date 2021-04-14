@@ -25,4 +25,6 @@ public class NginxConfig {
 
     private String videoPath;
 
+    private String workspacePath;
+
 }

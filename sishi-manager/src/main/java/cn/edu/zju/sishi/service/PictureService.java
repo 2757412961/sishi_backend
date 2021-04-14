@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PictureService {
 
-    List<Picture> getPicturesAll(String startTime, String endTime, String logicSymbol);
+    List<Picture> getPicturesAll(String logicSymbol);
 
     Picture getPictureById(String pictureId);
 

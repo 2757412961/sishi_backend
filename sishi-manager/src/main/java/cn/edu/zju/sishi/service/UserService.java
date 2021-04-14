@@ -1,6 +1,5 @@
 package cn.edu.zju.sishi.service;
 
-import cn.edu.zju.sishi.commons.UserContext;
 import cn.edu.zju.sishi.entity.User;
 import cn.edu.zju.sishi.message.UserMessage.*;
 

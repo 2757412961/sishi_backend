@@ -36,8 +36,8 @@ public class MailController {
     @Autowired
     private UserService userService;
 
-    /*
-     *  redis 相关
+    /**
+     * redis 相关
      */
     @Autowired
     private RedisService redisService;

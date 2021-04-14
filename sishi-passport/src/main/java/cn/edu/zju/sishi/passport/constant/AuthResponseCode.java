@@ -44,6 +44,9 @@ public class AuthResponseCode {
   public static final String USER_REPEAT = "400";
   public static final String USER_REPEAT_DESC = "此用户名已注册";
 
+  public static final String EMAIL_REPEAT = "400";
+  public static final String EMAIL_REPEAT_DESC = "此邮箱已注册";
+
   public static final String USER_REGISTER_FAILED = "400";
   public static final String USER_REGISTER_FAILED_DESC = "用户注册失败";
   

@@ -6,10 +6,12 @@
         <result property="tagId" column="TAG_ID" jdbcType="VARCHAR"/>
         <result property="tagName" column="TAG_NAME" jdbcType="VARCHAR"/>
         <result property="property" column="PROPERTY" jdbcType="VARCHAR"/>
+        <result property="eventTime" column="EVENT_TIME" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="tagFields">
-        TAG_ID, TAG_NAME, PROPERTY
+        TAG_ID
+        , TAG_NAME, PROPERTY, EVENT_TIME
     </sql>
 
     <select id="selectTags" resultType="cn.edu.zju.sishi.entity.Tag">
@@ -37,13 +39,15 @@
 
     <insert id="addTag" parameterType="cn.edu.zju.sishi.entity.Tag" flushCache="true">
         INSERT INTO tb_tag
-          (tag_id, tag_name)
-        VALUES (#{tag.tagId}, #{tag.tagName});
+            (tag_id, tag_name, property, event_time)
+        VALUES (#{tag.tagId}, #{tag.tagName}, #{tag.property}, #{tag.eventTime});
     </insert>
 
 
     <delete id="dropTag" flushCache="true">
-        DELETE FROM tb_tag WHERE tag_name = #{tagName};
+        DELETE
+        FROM tb_tag
+        WHERE tag_name = #{tagName};
     </delete>
-    
+
 </mapper>

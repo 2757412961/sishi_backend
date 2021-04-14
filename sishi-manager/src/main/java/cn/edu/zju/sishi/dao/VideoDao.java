@@ -18,8 +18,6 @@ public interface VideoDao {
 
   List<Video> listVideos(@Param("length") int length,
                          @Param("offset") int offset,
-                         @Param("startTime") String startTime,
-                         @Param("endTime") String endTime,
                          @Param("logicSymbol") String logicSymbol);
 
   int countVideos();
@@ -39,4 +37,5 @@ public interface VideoDao {
   void dropVideo(@Param("videoId") String videoId);
 
   int updateIsPublicById(@Param("videoId") String videoId);
+
 }

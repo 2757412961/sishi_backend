@@ -11,7 +11,7 @@ import java.util.List;
 public interface AudioService {
   void addAudio(Audio audio);
 
-  List<Audio> listAudios(int start, int length, String startTime, String endTime, String logicSymbol);
+  List<Audio> listAudios(int start, int length, String logicSymbol);
 
   Audio getAudioByTitle(String audioTitle);
 

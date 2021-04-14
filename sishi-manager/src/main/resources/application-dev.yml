@@ -54,8 +54,9 @@ myconfig:
     host: 10.13.42.137
     port: 80
     httpHead: http://${myconfig.nginx.host}:${myconfig.nginx.port}/media/
-    winRoot: F:/SSNginx/webresource/
+    winRoot: F:/0temp/Nginx/webResource/
     linuxRoot: /home/sishi/static/
     picPath: picture/
     audioPath: audio/
     videoPath: video/
+    workspacePath: workspace/

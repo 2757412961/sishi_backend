@@ -25,14 +25,13 @@ import java.util.Date;
 @Service
 public class MailServiceImpl implements MailService {
 
-    /*
-     * 邮件 相关
-     */
+    /** 邮件 相关 */
     @Autowired
     private JavaMailSender javaMailSender;
 
+    /** 邮件发送者 */
     @Value("${spring.mail.username}")
-    private String MAIL_SENDER; //邮件发送者
+    private String MAIL_SENDER;
 
     private final String MAIL_SUBJECT = "党史学习教育平台邮箱验证（浙江大学 地球科学学院）";
 

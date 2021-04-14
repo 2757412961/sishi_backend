@@ -52,13 +52,10 @@ public class PictureController {
     private AuthorityService authorityService;
 
     @RequestMapping(value = "pictures", method = RequestMethod.GET)
-    public JSONObject getPicturesAll(
-            @RequestParam(value = "startTime", required = false, defaultValue = "1890-1-1") String startTime,
-            @RequestParam(value = "endTime", required = false, defaultValue = "2056-1-1") String endTime,
-            HttpServletRequest request) {
+    public JSONObject getPicturesAll(HttpServletRequest request) {
         log.info("Start invoke getPicturesAll()");
         boolean isAdministrator = authorityService.isAdamin(request);
-        List<Picture> pictures = pictureService.getPicturesAll(startTime, endTime, LogicUtil.getLogicByIsAdmins(isAdministrator));
+        List<Picture> pictures = pictureService.getPicturesAll(LogicUtil.getLogicByIsAdmins(isAdministrator));
 
         JSONObject result = new JSONObject();
         result.put("totalCount", pictures.size());
@@ -157,10 +154,7 @@ public class PictureController {
             if (pictureSource == null) {
                 throw new ValidationException("未提交来源");
             }
-            String eventTime = request.getParameter("eventTime");
-            if (eventTime == null) {
-                throw new ValidationException("未提交事件时间");
-            }
+            String pictureAuthor = request.getParameter("pictureAuthor");
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -175,8 +169,8 @@ public class PictureController {
 
             // 文件名称
             picture.setPictureTitle(pictureTitle);
+            picture.setPictureAuthor(pictureAuthor);
             picture.setPictureSource(pictureSource);
-            picture.setEventTime(eventTime);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录
@@ -228,12 +222,16 @@ public class PictureController {
         // 3. 再删除资源表的记录
         pictureService.deletePictureById(pictureId);
         // 4. 删除本地资源
-        File localFile = new File(nginxConfig.getLinuxRoot() + picture.getPictureContent().substring(nginxConfig.getHttpHead().length()));
-        if (localFile.exists()) {
-            localFile.delete();
+        try {
+            File localFile = new File(nginxConfig.getLinuxRoot() + picture.getPictureContent().substring(nginxConfig.getHttpHead().length()));
+            if (localFile.exists()) {
+                localFile.delete();
+            }
+        } catch (Exception e) {
+            log.error("deletePictureByTagName Error", e);
         }
 
-        Map<String, String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<>(3);
         result.put(PICTURE_ID, pictureId);
 
         return result;

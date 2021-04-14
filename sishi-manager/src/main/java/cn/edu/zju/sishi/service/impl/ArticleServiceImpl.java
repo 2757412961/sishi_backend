@@ -23,6 +23,7 @@ public class ArticleServiceImpl implements ArticleService {
   @Autowired
   private ArticleDao articleDao;
 
+  @Override
   @Transactional
   public void addArticle(Article articleEntity) {
 
@@ -40,8 +41,8 @@ public class ArticleServiceImpl implements ArticleService {
   }
 
   @Override
-  public List<Article> listArticles(int start, int length, String startTime, String endTime, String logicSymbol) {
-    return articleDao.listArticles(length, length * start, startTime, endTime, logicSymbol );
+  public List<Article> listArticles(int start, int length, String logicSymbol) {
+    return articleDao.listArticles(length, length * start, logicSymbol );
   }
 
   @Override

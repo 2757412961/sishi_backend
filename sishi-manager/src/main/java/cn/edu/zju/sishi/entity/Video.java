@@ -17,11 +17,11 @@ public class Video implements Serializable {
   @Size(min = 1, max = 500, message = "video title length should be between 1 and 500")
   private String videoTitle;
 
+  private String videoAuthor;
 
   @NotNull(message = "video source cannot be null")
   @Size(min = 1, max = 200, message = "video source length should be between 1 and 200")
   private String videoSource;
-
 
   @NotNull(message = "video content cannot be null")
   private String videoContent;
@@ -30,10 +30,16 @@ public class Video implements Serializable {
 
   private long videoPublishTime;
 
-  private String eventTime;
-
   @JsonProperty("isPublic")
   private Boolean isPublic;
+
+  public String getVideoAuthor() {
+    return videoAuthor;
+  }
+
+  public void setVideoAuthor(String videoAuthor) {
+    this.videoAuthor = videoAuthor;
+  }
 
   public Boolean getPublic() {
     return isPublic;
@@ -42,10 +48,6 @@ public class Video implements Serializable {
   public void setPublic(Boolean aPublic) {
     isPublic = aPublic;
   }
-
-  public String getEventTime() { return eventTime; }
-
-  public void setEventTime(String eventTime) { this.eventTime = eventTime; }
 
   public String getVideoId() {
     return videoId;

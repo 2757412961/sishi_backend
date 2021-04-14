@@ -12,7 +12,7 @@ import java.util.List;
 public interface VideoService {
   void addVideo(Video video);
 
-  List<Video> listVideos(int start, int length, String startTime, String endTime, String logicSymbol);
+  List<Video> listVideos(int start, int length, String logicSymbol);
 
   Video getVideoByTitle(String videoTitle);
 

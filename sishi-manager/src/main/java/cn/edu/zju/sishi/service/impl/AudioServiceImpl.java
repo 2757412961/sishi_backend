@@ -39,8 +39,8 @@ public class AudioServiceImpl implements AudioService {
   }
 
   @Override
-  public List<Audio> listAudios(int start, int length, String startTime, String endTime, String logicSymbol) {
-    return audioDao.listAudios(length, length * start, startTime, endTime, logicSymbol);
+  public List<Audio> listAudios(int start, int length, String logicSymbol) {
+    return audioDao.listAudios(length, length * start, logicSymbol);
   }
 
   @Override
@@ -77,6 +77,7 @@ public class AudioServiceImpl implements AudioService {
     audioDao.dropAudio(audioId);
   }
 
+  @Override
   public int updateIsPublicById(String audioId) {
     return audioDao.updateIsPublicById(audioId);
   }

@@ -18,6 +18,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -96,10 +97,10 @@ public class TagServiceImpl implements TagService {
                     if (i == ts.length - 1) {
                         newTagTree.setTagId(tag.getTagId());
                         newTagTree.setTagName(tag.getTagName());
+                        newTagTree.setTime(tag.getEventTime());
 
                         List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
                         if (!mapInfos.isEmpty()) {
-                            newTagTree.setTime(mapInfos.get(0).getMapTime());
                             newTagTree.setGeoCoordinates(
                                     new ArrayList<>(Arrays.asList
                                             (mapInfos.get(0).getMapLon(), mapInfos.get(0).getMapLat())));
@@ -144,9 +145,10 @@ public class TagServiceImpl implements TagService {
             List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
             if (!mapInfos.isEmpty()) {
                 MapInfo mapInfo = mapInfos.get(0);
-                if (mapInfo.getMapTime() != null && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
+                if (!StringUtils.isEmpty(tag.getEventTime()) && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
                     TagCompareTime tagCompareTime = new TagCompareTime();
 
+                    // 截取标签的剩余内容
                     String[] split = tag.getTagName().substring(tagName.length()).split("@", 2);
                     if (split.length >= 2) {
                         tagCompareTime.setLabel(split[1]);
@@ -154,13 +156,13 @@ public class TagServiceImpl implements TagService {
                     }
                     tagCompareTime.setTagId(tag.getTagId());
                     tagCompareTime.setTagName(tag.getTagName());
-                    tagCompareTime.setTime(mapInfo.getMapTime());
+                    tagCompareTime.setTime(tag.getEventTime());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
                     tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
                     tagCompareTime.setProperty(tag.getProperty());
                     // 添加图片 url
                     List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
-                    if (!pictures.isEmpty()){
+                    if (!pictures.isEmpty()) {
                         Picture picture = pictures.get(0);
                         tagCompareTime.setPicUrl(picture.getPictureContent());
                     } else {

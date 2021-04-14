@@ -41,8 +41,8 @@ public class VideoServiceImpl implements VideoService {
 
   @Override
 //  @Cacheable(value = "LIST_VIDEOS")
-  public List<Video> listVideos(int start, int length, String startTime, String endTime, String logicSymbol) {
-    return videoDao.listVideos(length, length*start, startTime, endTime, logicSymbol);
+  public List<Video> listVideos(int start, int length, String logicSymbol) {
+    return videoDao.listVideos(length, length*start, logicSymbol);
   }
 
   @Override
