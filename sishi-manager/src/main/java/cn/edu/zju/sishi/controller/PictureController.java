@@ -183,7 +183,7 @@ public class PictureController {
             tagResourceService.addTagResource(tagResource);
 
             // 保存到本地
-            File localFile = new File(nginxConfig.getWinRoot() + nginxConfig.getPicPath() + fileName);
+            File localFile = new File(nginxConfig.getLinuxRoot() + nginxConfig.getPicPath() + fileName);
             if (localFile.exists()) {
                 throw new ValidationException(String.format("%s 文件已存在，请修改文件名！", fileName));
             }

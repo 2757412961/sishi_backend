@@ -64,7 +64,7 @@ public class UserController {
         String filename = multipartFile.getOriginalFilename();
         String userId = authorityService.getUserId(request);
         // local file
-        File localFile = FileUtils.newFile(nginxConfig.getWinRoot() + nginxConfig.getWorkspacePath() + userId + File.separator + filename);
+        File localFile = FileUtils.newFile(nginxConfig.getLinuxRoot() + nginxConfig.getWorkspacePath() + userId + File.separator + filename);
         if (localFile.exists()){
             throw new ValidationException("上传文件已经存在");
         }
