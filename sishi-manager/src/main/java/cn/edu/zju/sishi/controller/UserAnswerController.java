@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,9 @@ public class UserAnswerController {
     public JSONObject getUserAnswerByUser(HttpServletRequest request) {
         logger.info("Start invoke getUserAnswerByUser()");
         String userId = authorityService.getUserId(request);
+        if (userId == null) {
+            throw new ValidationException("userId length should be 36");
+        }
         List<UserAnswer> userAnswers = userAnswerService.getUserAnswerByUser(userId);
 
         JSONObject object = new JSONObject();

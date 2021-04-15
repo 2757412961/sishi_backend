@@ -9,7 +9,18 @@
 			"name": "localhost:7666/v1.0/api/articles",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{sishiServer}}/v1.0/api/articles?length=1000",
 					"host": [
@@ -47,7 +58,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/articles/tagName/党史新学@抗日战争@陕北延安",
+					"raw": "{{sishiServer}}/v1.0/api/articles/tagName/天下大事@保证这个标签没有关联资源",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -56,7 +67,7 @@
 						"api",
 						"articles",
 						"tagName",
-						"党史新学@抗日战争@陕北延安"
+						"天下大事@保证这个标签没有关联资源"
 					]
 				}
 			},
@@ -66,10 +77,21 @@
 			"name": "localhost:7666/v1.0/api/article/tagName/{tagName}",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"articleTitle\": \"飞行艇3\",\r\n    \"articleAuthor\": \"sss\",\r\n    \"articleContent\": \"nothing\",\r\n    \"eventTime\": \"2020-11-10\"\r\n}",
+					"raw": "{\r\n    \"articleTitle\": \"飞行艇4\",\r\n    \"articleAuthor\": \"sss\",\r\n    \"articleContent\": \"nothing\",\r\n    \"articleEventTime\": \"2020-11-10\",\r\n    \"articleAddress\": \"gaoxiao\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,7 +99,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/article/tagName/天下大事@中国@房价",
+					"raw": "{{sishiServer}}/v1.0/api/article/tagName/天下大事@保证这个标签没有关联资源",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -86,7 +108,7 @@
 						"api",
 						"article",
 						"tagName",
-						"天下大事@中国@房价"
+						"天下大事@保证这个标签没有关联资源"
 					]
 				}
 			},
@@ -96,9 +118,20 @@
 			"name": "localhost:7666/v1.0/api/article/{articleId}/tagName/{tagName}",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/article/518aad4f-408e-4365-8b91-63039ab45a12/tagName/天下大事@中国@房价",
+					"raw": "{{sishiServer}}/v1.0/api/article/518aad4f-408e-4365-8b91-63039ab45a12/tagName/天下大事@保证这个标签没有关联资源",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -108,7 +141,7 @@
 						"article",
 						"518aad4f-408e-4365-8b91-63039ab45a12",
 						"tagName",
-						"天下大事@中国@房价"
+						"天下大事@保证这个标签没有关联资源"
 					]
 				}
 			},
