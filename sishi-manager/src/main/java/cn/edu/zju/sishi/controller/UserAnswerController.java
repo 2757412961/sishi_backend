@@ -34,9 +34,10 @@ public class UserAnswerController {
 
     @RequestMapping(value = "userAnswer/user", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getUserAnswerByUser(@RequestParam(value = "user_name") String user_name) {
+    public JSONObject getUserAnswerByUser(HttpServletRequest request) {
         logger.info("Start invoke getUserAnswerByUser()");
-        List<UserAnswer> userAnswers = userAnswerService.getUserAnswerByUser(user_name);
+        String userId = authorityService.getUserId(request);
+        List<UserAnswer> userAnswers = userAnswerService.getUserAnswerByUser(userId);
 
         JSONObject object = new JSONObject();
         object.put("userAnswers", userAnswers);
