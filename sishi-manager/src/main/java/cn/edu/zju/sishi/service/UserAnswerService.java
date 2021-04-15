@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface UserAnswerService {
 
-    List<UserAnswer> getUserAnswerByUser(String user_name);
+    List<UserAnswer> getUserAnswerByUser(String userId);
 
     UserAnswer getUserAnswerStatus(String tag_name, String user_name);
 

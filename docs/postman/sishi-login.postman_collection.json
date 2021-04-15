@@ -12,7 +12,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userName\": \"zjh007\",\r\n    \"password\": \"123456\",\r\n    \"mobile\": \"12345678913\",\r\n    \"email\": \"2757412961@qq.com\"\r\n}",
+					"raw": "{\r\n    \"userName\": \"zjh007\",\r\n    \"password\": \"123456\",\r\n    \"mobile\": \"12345678913\",\r\n    \"email\": \"2757412961@qq.com\",\r\n    \"partyBranch\":\"研究生第一党支部\",\r\n    \"studentNumber\": \"22039039\",\r\n    \"idNumber\": \"330415199702226235\",\r\n    \"grade\": \"2020硕士一班\",\r\n    \"studentName\": \"许嵩\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,7 +20,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/register?captcha=930261",
+					"raw": "{{sishiServer}}/v1.0/api/register?captcha=336313",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -32,7 +32,7 @@
 					"query": [
 						{
 							"key": "captcha",
-							"value": "930261"
+							"value": "336313"
 						}
 					]
 				}
@@ -126,7 +126,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/email/updatePassword?captcha=999305&emailAddress=2757412961@qq.com&newPassword=123456",
+					"raw": "{{sishiServer}}/v1.0/api/email/updatePassword?captcha=336991&emailAddress=2757412961@qq.com&newPassword=123456",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -139,7 +139,7 @@
 					"query": [
 						{
 							"key": "captcha",
-							"value": "999305"
+							"value": "336991"
 						},
 						{
 							"key": "emailAddress",

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +35,13 @@ public class UserAnswerController {
 
     @RequestMapping(value = "userAnswer/user", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject getUserAnswerByUser(@RequestParam(value = "user_name") String user_name) {
+    public JSONObject getUserAnswerByUser(HttpServletRequest request) {
         logger.info("Start invoke getUserAnswerByUser()");
-        List<UserAnswer> userAnswers = userAnswerService.getUserAnswerByUser(user_name);
+        String userId = authorityService.getUserId(request);
+        if (userId == null) {
+            throw new ValidationException("userId length should be 36");
+        }
+        List<UserAnswer> userAnswers = userAnswerService.getUserAnswerByUser(userId);
 
         JSONObject object = new JSONObject();
         object.put("userAnswers", userAnswers);

@@ -17,8 +17,13 @@ import java.util.List;
 @Component
 public interface UserAnswerDao {
 
-    @Select("select * from tb_user_answer where user_name=#{user_name}")
-    List<UserAnswer> getUserAnswerByUser(@Param("user_name") String user_name);
+    @Select("SELECT us.user_name, rm.tag_name, us.user_answer_status, us.time \n" +
+            "FROM \n" +
+            "\t(select * from tb_user_answer where user_name in (select user_name from tb_user where user_id=#{userId})) us \n" +
+            "\t\tRIGHT JOIN \n" +
+            "\t(select distinct tag_name from tb_tag_resource_map where resource_type = 'tb_question') rm \n" +
+            "\t\tON us.tag_name = rm.tag_name \n")
+    List<UserAnswer> getUserAnswerByUser(@Param("userId") String userId);
 
     @Select("select * from tb_user_answer where tag_name=#{tag_name} and user_name=#{user_name}")
     UserAnswer getUserAnswerStatus(@Param("tag_name") String tag_name, @Param("user_name") String user_name);

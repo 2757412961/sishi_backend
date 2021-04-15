@@ -28,8 +28,8 @@ public class UserAnswerServiceImp implements UserAnswerService {
     private UserDao userDao;
 
     @Override
-    public List<UserAnswer> getUserAnswerByUser(String user_name) {
-        return userAnswerDao.getUserAnswerByUser(user_name);
+    public List<UserAnswer> getUserAnswerByUser(String userId) {
+        return userAnswerDao.getUserAnswerByUser(userId);
     }
 
     @Override
