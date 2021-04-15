@@ -3,7 +3,6 @@ package cn.edu.zju.sishi.message.UserMessage;
 import cn.edu.zju.sishi.commons.MobilePhoneConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**

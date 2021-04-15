@@ -4,7 +4,6 @@ import cn.edu.zju.sishi.commons.UserContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
-import java.util.Map;
 
 /**
  * @author lemon

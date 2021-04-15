@@ -3,9 +3,6 @@ package cn.edu.zju.sishi.entity.vo;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class TagCompareTimeTest extends TestCase {
 
     @Test
