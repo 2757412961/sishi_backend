@@ -9,7 +9,18 @@
 			"name": "localhost:7666/v1.0/api/audios",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{sishiServer}}/v1.0/api/audios",
 					"host": [
@@ -28,7 +39,18 @@
 			"name": "{{sishiServer}}/v1.0/api/audios/tagName/{tagName}",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{sishiServer}}/v1.0/api/audios/tagName/党史新学@中共一大",
 					"host": [
@@ -46,51 +68,37 @@
 			"response": []
 		},
 		{
-			"name": "localhost:7666/v1.0/api/audio/tagName/{tagName}",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"audioTitle\": \"飞行艇\",\r\n    \"audioSource\": \"sss\",\r\n    \"audioContent\": \"nothing\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/audio/tagName/党史新学@中共一大",
-					"host": [
-						"{{sishiServer}}"
-					],
-					"path": [
-						"v1.0",
-						"api",
-						"audio",
-						"tagName",
-						"党史新学@中共一大"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "localhost:7666/v1.0/api/audio/form",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "tagName",
-							"value": "党史新学@中共一大@杭州@西溪",
+							"value": "天下大事@保证这个标签没有关联资源",
 							"type": "text"
 						},
 						{
 							"key": "audioTitle",
-							"value": "你好西溪",
+							"value": "01你好西溪",
+							"type": "text"
+						},
+						{
+							"key": "audioAuthor",
+							"value": "erqdqw",
 							"type": "text"
 						},
 						{
@@ -101,7 +109,7 @@
 						{
 							"key": "audioFile",
 							"type": "file",
-							"src": "/D:/Music/Adam Lambert - Mad World.mp3"
+							"src": "/F:/CNKI E-Study/cellibrary/!!请勿删除该文件夹.txt"
 						}
 					]
 				},
@@ -124,9 +132,20 @@
 			"name": "localhost:7666/v1.0/api/audio/{articleId}/tagName/{tagName}",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/audio/b277177e-0c65-4d8d-aba1-996576c14910/tagName/天下大事@中国@房价",
+					"raw": "{{sishiServer}}/v1.0/api/audio/b277177e-0c65-4d8d-aba1-996576c14910/tagName/天下大事@保证这个标签没有关联资源",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -136,7 +155,7 @@
 						"audio",
 						"b277177e-0c65-4d8d-aba1-996576c14910",
 						"tagName",
-						"天下大事@中国@房价"
+						"天下大事@保证这个标签没有关联资源"
 					]
 				}
 			},

@@ -9,7 +9,18 @@
 			"name": "localhost:7666/v1.0/api/mapinfos",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{sishiServer}}/v1.0/api/mapinfos",
 					"host": [
@@ -28,9 +39,20 @@
 			"name": "localhost:7666/v1.0/api/mapinfo/{id}",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/mapinfo/c671c5ac-c7a7-485f-8129-82c09b7fe132",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/fd4ddc72-e866-45b7-b49f-efafb11a26d1",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -38,36 +60,7 @@
 						"v1.0",
 						"api",
 						"mapinfo",
-						"c671c5ac-c7a7-485f-8129-82c09b7fe132"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "localhost:7666/v1.0/api/mapinfos/ids",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "[\r\n    \"c671c5ac-c7a7-485f-8129-82c09b7fe132\",\r\n    \"1f554ae6-c683-42f8-9dec-215873bec0a0\",\r\n    \"bd01478d-510f-4f98-9cc2-0ebaf30a1da1\"\r\n]",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/mapinfos/ids",
-					"host": [
-						"{{sishiServer}}"
-					],
-					"path": [
-						"v1.0",
-						"api",
-						"mapinfos",
-						"ids"
+						"fd4ddc72-e866-45b7-b49f-efafb11a26d1"
 					]
 				}
 			},
@@ -77,7 +70,18 @@
 			"name": "localhost:7666/v1.0/api/mapinfos/tagName/{tagName}",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{sishiServer}}/v1.0/api/mapinfos/tagName/党史新学@中共一大@上海",
 					"host": [
@@ -98,7 +102,18 @@
 			"name": "localhost:7666/v1.0/api/mapinfo",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"mapTitle\": \"杭州\",\r\n    \"mapLon\": 120.2,\r\n    \"mapLat\": 29.9\r\n}",
@@ -140,7 +155,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"mapTitle\": \"理论学习\",\r\n    \"mapLon\": 116.38748691963224,\r\n    \"mapLat\": 39.90337460887406,\r\n    \"mapTime\": \"1973年8月24日至28日\"\r\n}",
+					"raw": "{\r\n    \"mapTitle\": \"杭州\",\r\n    \"mapLon\": 116.38748691963224,\r\n    \"mapLat\": 39.90337460887406,\r\n    \"mapTime\": \"1973年8月24日至28日\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -148,7 +163,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/mapinfo/tagName/理论学习",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/tagName/天下大事@保证这个标签没有关联资源",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -157,7 +172,7 @@
 						"api",
 						"mapinfo",
 						"tagName",
-						"理论学习"
+						"天下大事@保证这个标签没有关联资源"
 					]
 				}
 			},
@@ -167,7 +182,18 @@
 			"name": "localhost:7666/v1.0/api/mapinfo/{id}",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{sishiServer}}/v1.0/api/mapinfo/024ad43f-36c5-4ee7-b06e-47ccd48f4390",
 					"host": [
@@ -187,9 +213,20 @@
 			"name": "localhost:7666/v1.0/api/mapinfo/{mapId}/tagName/{tagName}",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "userId",
+						"value": "{{SSUID}}",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{SSToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{sishiServer}}/v1.0/api/mapinfo/74f95e94-ac46-48b4-808b-fe252cfd60ac/tagName/党史新学@中共一大@嘉兴",
+					"raw": "{{sishiServer}}/v1.0/api/mapinfo/280a980e-5a07-4976-be30-979be93d1bf7/tagName/天下大事@保证这个标签没有关联资源",
 					"host": [
 						"{{sishiServer}}"
 					],
@@ -197,9 +234,9 @@
 						"v1.0",
 						"api",
 						"mapinfo",
-						"74f95e94-ac46-48b4-808b-fe252cfd60ac",
+						"280a980e-5a07-4976-be30-979be93d1bf7",
 						"tagName",
-						"党史新学@中共一大@嘉兴"
+						"天下大事@保证这个标签没有关联资源"
 					]
 				}
 			},

@@ -1,7 +1,5 @@
 package cn.edu.zju.sishi.message.UserMessage;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * @author lemon
  * @date 2021/3/18
