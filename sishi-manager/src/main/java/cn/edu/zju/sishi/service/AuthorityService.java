@@ -6,6 +6,10 @@ public interface AuthorityService {
 
     boolean isAdamin(HttpServletRequest request);
 
+    boolean isGuest(HttpServletRequest request);
+
     String getUserId(HttpServletRequest request);
+
+    String getRoleType(HttpServletRequest request);
 
 }
