@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginIntercepterService {
   @Autowired
-  private TokenService tokenService;
+  private TokenRedisService tokenRedisService;
 
   public Passport getPassport(String userId) {
-    String token = tokenService.getToken(userId);
+    String token = tokenRedisService.getToken(userId);
     Passport passport = new Passport();
     passport.setUserId(userId);
     passport.setToken(token);
