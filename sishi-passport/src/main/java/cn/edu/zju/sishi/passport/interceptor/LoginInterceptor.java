@@ -30,9 +30,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
   @Autowired
   LoginIntercepterService loginIntercepterService;
 
-  @Autowired
-  private TokenService tokenService;
-
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
           throws Exception {

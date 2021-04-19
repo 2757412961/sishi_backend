@@ -65,14 +65,25 @@ public class UserAnswerController {
     }
 
 
-    @RequestMapping(value = "useranswer", method = RequestMethod.PUT)
+    @RequestMapping(value = "useranswer", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> updateUserAnswerStatusAndScore(@RequestParam(value = "tag_name") String tag_name, @RequestParam(value = "user_name") String user_name) {
+    public Map<String, String> updateUserAnswerStatusAndScore(
+            @RequestParam(value = "tag_name") String tag_name,
+            @RequestParam(value = "user_name") String user_name,
+            HttpServletRequest request) {
         logger.info("Start invoke updateUserAnswerStatusAndScore()");
+        Map<String, String> result = new HashMap<>();
+
+        // GUEST
+        boolean isGUEST = authorityService.isGuest(request);
+        if (isGUEST) {
+            result.put("message", "访客用户答题记录无效，请先注册并登录!");
+            return result;
+        }
+        // GUEST
 
         Date time = new Date();
         List<Integer> count = userAnswerService.insertUserAnswerStatus(tag_name, user_name, time);
-        Map<String, String> result = new HashMap<>();
 
         int count1 = count.get(0).intValue();
         int count2 = count.get(1).intValue();
