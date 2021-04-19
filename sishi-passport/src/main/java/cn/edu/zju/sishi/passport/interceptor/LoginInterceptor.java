@@ -99,7 +99,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
   }
 
   private void flushError(HttpServletResponse res, String code, String desc) throws IOException {
-    throw new RuntimeException("Auth 权限验证失败。请重新登录！");
+    throw new RuntimeException(desc);
 
 //    res.setCharacterEncoding("utf-8");
 //    res.setContentType("application/json;charset=UTF-8");

@@ -2,7 +2,6 @@ package cn.edu.zju.sishi.service;
 
 import cn.edu.zju.sishi.entity.TagResource;
 import cn.edu.zju.sishi.entity.vo.MediaItem;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
