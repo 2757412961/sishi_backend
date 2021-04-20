@@ -50,15 +50,19 @@ public class MailController {
      */
     @GetMapping("/sendCaptcha")
     public MailResponse sendCaptcha(@RequestParam("emailAddress") String emailAddress) {
-        MailResponse mailResponse = new MailResponse();
+        try{
+            MailResponse mailResponse = new MailResponse();
 
-        log.info("Start invoke sendCaptcha()");
-        Integer captcha = 100000 + new Random().nextInt(899999);
-        redisService.set(RedisKeys.REDIS_Captcha_PREFIX + emailAddress, captcha.toString(), REDIS_EXPIRE_TIME);
-        mailService.sendCaptcha(emailAddress, captcha);
+            log.info("Start invoke sendCaptcha()");
+            Integer captcha = 100000 + new Random().nextInt(899999);
+            redisService.set(RedisKeys.REDIS_Captcha_PREFIX + emailAddress, captcha.toString(), REDIS_EXPIRE_TIME);
+            mailService.sendCaptcha(emailAddress, captcha);
 
-        mailResponse.setMessage("发送成功，验证码将在5分钟后过期");
-        return mailResponse;
+            mailResponse.setMessage("发送成功，验证码将在5分钟后过期");
+            return mailResponse;
+        }catch (Exception e){
+            throw new ValidationException("邮箱发送失败");
+        }
     }
 
     /**
