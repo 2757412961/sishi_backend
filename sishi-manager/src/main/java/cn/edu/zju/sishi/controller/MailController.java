@@ -11,10 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
 
@@ -42,7 +39,7 @@ public class MailController {
     @Autowired
     private RedisService redisService;
 
-    public static final int REDIS_EXPIRE_TIME = 120;
+    public static final int REDIS_EXPIRE_TIME = 600;
 
     /**
      * @Description: 发送验证码
@@ -60,7 +57,7 @@ public class MailController {
         redisService.set(RedisKeys.REDIS_Captcha_PREFIX + emailAddress, captcha.toString(), REDIS_EXPIRE_TIME);
         mailService.sendCaptcha(emailAddress, captcha);
 
-        mailResponse.setMessage("发送成功，验证码将在120秒后过期");
+        mailResponse.setMessage("发送成功，验证码将在5分钟后过期");
         return mailResponse;
     }
 
@@ -72,7 +69,7 @@ public class MailController {
      * @Date: 2021/4/6
      */
     @Transactional
-    @GetMapping("/resetPassword")
+    @PutMapping("/resetPassword")
     public MailResponse resetPasswordByEmail(@RequestParam("emailAddress") String emailAddress) {
         MailResponse mailResponse = new MailResponse();
 
@@ -94,7 +91,7 @@ public class MailController {
      * @Date: 2021/4/6
      */
     @Transactional
-    @GetMapping("/updatePassword")
+    @PutMapping("/updatePassword")
     public MailResponse updatePasswordByEmail(@RequestParam("captcha") String captcha,
                                               @RequestParam("emailAddress") String emailAddress,
                                               @RequestParam("newPassword") String newPassword) {
@@ -115,5 +112,21 @@ public class MailController {
         return mailResponse;
     }
 
+    @PostMapping("/checkCaptcha")
+    public MailResponse checkCaptcha(@RequestParam("captcha") String captcha, @RequestParam("emailAddress") String emailAddress) {
+        MailResponse mailResponse = new MailResponse();
+
+        log.info("Start invoke updatePasswordByEmail()");
+        String redisCaptcha = redisService.get(RedisKeys.REDIS_Captcha_PREFIX + emailAddress);
+        if (StringUtils.isEmpty(redisCaptcha)) {
+            throw new ValidationException("验证码失效");
+        }
+        if (!captcha.equals(redisCaptcha)) {
+            throw new ValidationException("验证码错误");
+        }
+
+        mailResponse.setMessage("验证码正确");
+        return mailResponse;
+    }
 
 }
