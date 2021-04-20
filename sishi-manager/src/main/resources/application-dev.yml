@@ -37,6 +37,7 @@ spring:
     default-encoding: utf-8
     properties:
       mail:
+        debug: true
         stmp:
           timeout: 10000
           auth: true
