@@ -112,7 +112,8 @@ public class MailController {
         }
         mailService.sendResetPassword(emailAddress, newPassword);
 
-        mailResponse.setMessage("根据邮箱修改密码：1.发送验证码 2.填入验证码和新的密码 3.修改成功");
+        /** mailResponse.setMessage("根据邮箱修改密码：1.发送验证码 2.填入验证码和新的密码 3.修改成功"); */
+        mailResponse.setMessage("密码重置成功！");
         return mailResponse;
     }
 
