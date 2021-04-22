@@ -10,27 +10,31 @@ import redis.clients.jedis.JedisPool;
 
 @Service
 public class TokenRedisService {
-  private static final Logger logger = LoggerFactory.getLogger(TokenRedisService.class);
-  public static final int tokenExpire = 14400;
-  @Autowired
-  private JedisPool jedisPool;
+    private static final Logger logger = LoggerFactory.getLogger(TokenRedisService.class);
+    public static final int tokenExpire = 14400;
+    @Autowired
+    private JedisPool jedisPool;
 
-  public String getToken(String userId) {
-    Jedis jedis = jedisPool.getResource();
-    String key = CommonCacheKey.PASSPORT_PREFIX + userId;
-    String tokenInRedis = jedis.get(key);
-    jedis.close();
-    logger.info("TokenRedisService.getToken:key={},value={}", new Object[]{key, tokenInRedis});
-    return tokenInRedis;
-  }
+    public String getToken(String userId) {
+        Jedis jedis = jedisPool.getResource();
+        String key = CommonCacheKey.PASSPORT_PREFIX + userId;
+        String tokenInRedis = jedis.get(key);
+        jedis.close();
+        logger.info("TokenRedisService.getToken:key={},value={}", new Object[]{key, tokenInRedis});
+        return tokenInRedis;
+    }
 
-  public String setToken(String userId, String token) {
-    String key = CommonCacheKey.PASSPORT_PREFIX + userId;
-    Jedis jedis = jedisPool.getResource();
-    String result = jedis.set(key, token);
-    jedis.expire(key, tokenExpire);
-    jedis.close();
-    logger.info("TokenRedisService.setToken:key={},value={}", new Object[]{key, token});
-    return result;
-  }
+    public String setToken(String userId, String token) {
+        return setToken(userId, token, tokenExpire);
+    }
+
+    public String setToken(String userId, String token, int expireTime) {
+        String key = CommonCacheKey.PASSPORT_PREFIX + userId;
+        Jedis jedis = jedisPool.getResource();
+        String result = jedis.set(key, token);
+        jedis.expire(key, expireTime);
+        jedis.close();
+        logger.info("TokenRedisService.setToken:key={},value={}", new Object[]{key, token});
+        return result;
+    }
 }

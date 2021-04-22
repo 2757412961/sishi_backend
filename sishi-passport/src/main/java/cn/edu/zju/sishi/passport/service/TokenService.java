@@ -7,42 +7,43 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class TokenService {
-  @Autowired
-  private TokenDao tokenDao;
+    @Autowired
+    private TokenDao tokenDao;
 
-  @Autowired
-  private TokenRedisService tokenRedisService;
+    @Autowired
+    private TokenRedisService tokenRedisService;
 
-  public String getToken(String userId) {
-    String cachedToken = tokenRedisService.getToken(userId);
-    String token = "";
-    if (StringUtils.isEmpty(cachedToken)) {
-      token = tokenDao.getToken(userId);
-    } else {
-      token = cachedToken;
+    public String getToken(String userId) {
+        String cachedToken = tokenRedisService.getToken(userId);
+        String token = "";
+        if (StringUtils.isEmpty(cachedToken)) {
+            token = tokenDao.getToken(userId);
+        } else {
+            token = cachedToken;
+        }
+        return token;
     }
-    return token;
-  }
 
-  public String copyTokenToCache(String userId) {
-    String tokenInDB = tokenDao.getToken(userId);
-    tokenRedisService.setToken(userId, tokenInDB);
-    return tokenInDB;
-  }
-
-  public Integer insert(String userId, String token, Long expire, Long createTime, Long updateTime) {
-    Integer count = tokenDao.insert(userId, token, expire, createTime, updateTime);
-    if (count > 0) {
-      tokenRedisService.setToken(userId, token);
+    public String copyTokenToCache(String userId) {
+        String tokenInDB = tokenDao.getToken(userId);
+        Long expireTime = tokenDao.getExpireTimeByUserId(userId);
+        tokenRedisService.setToken(userId, tokenInDB, expireTime.intValue());
+        return tokenInDB;
     }
-    return count;
-  }
 
-  public Integer updateToken(String userId, String token) {
-    Integer count = tokenDao.updateToken(userId, token);
-    if (count > 0) {
-      tokenRedisService.setToken(userId, token);
+    public Integer insert(String userId, String token, Long expire, Long createTime, Long updateTime) {
+        Integer count = tokenDao.insert(userId, token, expire, createTime, updateTime);
+        if (count > 0) {
+            tokenRedisService.setToken(userId, token);
+        }
+        return count;
     }
-    return count;
-  }
+
+    public Integer updateToken(String userId, String token) {
+        Integer count = tokenDao.updateToken(userId, token);
+        if (count > 0) {
+            tokenRedisService.setToken(userId, token);
+        }
+        return count;
+    }
 }

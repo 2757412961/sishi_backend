@@ -6,6 +6,10 @@
         SELECT token FROM tb_token WHERE user_id=#{userId} LIMIT 1
     </select>
 
+    <select id="getExpireTimeByUserId" resultType="Long" parameterType="String">
+        SELECT expire FROM tb_token WHERE user_id=#{userId} LIMIT 1
+    </select>
+
     <insert id="insert" parameterType="Map">
         INSERT INTO tb_token( user_id, token, expire, create_time, update_time )
         VALUES (#{userId}, #{token}, #{expire}, #{createTime}, #{updateTime})

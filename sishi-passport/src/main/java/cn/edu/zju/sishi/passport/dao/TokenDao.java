@@ -12,4 +12,6 @@ public interface TokenDao {
 
   String getUserIdByToken(@Param("token") String token);
   // select user_id from tb_token where token = #{token}
+
+  Long getExpireTimeByUserId(@Param("userId") String userId);
 }
