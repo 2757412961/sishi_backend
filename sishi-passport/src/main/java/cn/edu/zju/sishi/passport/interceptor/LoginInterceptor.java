@@ -2,11 +2,8 @@ package cn.edu.zju.sishi.passport.interceptor;
 
 import cn.edu.zju.sishi.passport.annotation.AuthController;
 import cn.edu.zju.sishi.passport.constant.AuthResponseCode;
-import cn.edu.zju.sishi.passport.model.AuthResult;
 import cn.edu.zju.sishi.passport.model.Passport;
 import cn.edu.zju.sishi.passport.service.LoginIntercepterService;
-import cn.edu.zju.sishi.passport.service.TokenService;
-import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 
 @Component
