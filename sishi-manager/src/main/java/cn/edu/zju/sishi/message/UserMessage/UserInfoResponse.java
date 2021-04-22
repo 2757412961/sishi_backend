@@ -36,11 +36,15 @@ public class UserInfoResponse {
 
   private String studentNumber;
 
-  private String idNumber;
+  private String unit;
 
-  private String grade;
+//  private String grade;
 
   private String studentName;
+
+  public String getUnit() { return unit; }
+
+  public void setUnit(String unit) { this.unit = unit; }
 
   public String getStudentName() { return studentName; }
 
@@ -50,13 +54,9 @@ public class UserInfoResponse {
 
   public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
 
-  public String getIdNumber() { return idNumber; }
-
-  public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
-
-  public String getGrade() { return grade; }
-
-  public void setGrade(String grade) { this.grade = grade; }
+//  public String getGrade() { return grade; }
+//
+//  public void setGrade(String grade) { this.grade = grade; }
 
   public String getRoleType() { return roleType; }
 
