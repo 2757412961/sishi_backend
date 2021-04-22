@@ -27,13 +27,18 @@ public class UserListResponse {
 
   private String studentNumber;
 
-  private String grade;
+//  private String grade;
+  private String unit;
 
   private String studentName;
 
   private Long createTime;
 
   private Long updateTime;
+
+  public String getUnit() { return unit; }
+
+  public void setUnit(String unit) { this.unit = unit; }
 
   public String getStudentName() { return studentName; }
 
@@ -44,10 +49,10 @@ public class UserListResponse {
   public String getStudentNumber() { return studentNumber; }
 
   public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
-
-  public String getGrade() { return grade; }
-
-  public void setGrade(String grade) { this.grade = grade; }
+  //
+  //  public String getGrade() { return grade; }
+  //
+  //  public void setGrade(String grade) { this.grade = grade; }
 
   public String getUserId() { return userId; }
 

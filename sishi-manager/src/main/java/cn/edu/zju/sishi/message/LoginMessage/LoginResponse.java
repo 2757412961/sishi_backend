@@ -12,8 +12,14 @@ public class LoginResponse {
   private int score;
   private String honor;
   private String studentNumber;
-  private String idNumber;
-  private String grade;
+  private String unit;
+//  private String grade;
+
+
+  public String getUnit() { return unit; }
+
+  public void setUnit(String unit) { this.unit = unit; }
+
   private String studentName;
 
   public String getStudentName() { return studentName; }
@@ -24,13 +30,10 @@ public class LoginResponse {
 
   public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
 
-  public String getIdNumber() { return idNumber; }
-
-  public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
-
-  public String getGrade() { return grade; }
-
-  public void setGrade(String grade) { this.grade = grade; }
+//
+//  public String getGrade() { return grade; }
+//
+//  public void setGrade(String grade) { this.grade = grade; }
 
   public String getUserId() {
     return userId;

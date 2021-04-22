@@ -45,11 +45,12 @@ public class User implements Serializable {
   @NotNull(message = "studentNumber cannot be null")
   private String studentNumber;
 
-  @NotNull(message = "idNumber cannot be null")
-  private String idNumber;
+  @NotNull(message = "unit cannot be null")
+  private String unit;
 
-  @NotNull(message = "grade cannot be null")
-  private String grade;
+
+//  @NotNull(message = "grade cannot be null")
+//  private String grade;
 
   @NotNull(message = "studentName cannot be null")
   private String studentName;
@@ -58,18 +59,16 @@ public class User implements Serializable {
 
   public void setStudentName(String studentName) { this.studentName = studentName; }
 
-  public String getGrade() { return grade; }
+//  public String getGrade() { return grade; }
+//
+//  public void setGrade(String grade) { this.grade = grade; }
+  public String getUnit() { return unit; }
 
-  public void setGrade(String grade) { this.grade = grade; }
-
+  public void setUnit(String unit) { this.unit = unit; }
 
   public String getStudentNumber() { return studentNumber; }
 
   public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
-
-  public String getIdNumber() { return idNumber; }
-
-  public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
 
   public String getSalt() { return salt; }
 
