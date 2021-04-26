@@ -161,7 +161,7 @@ public class TagServiceImpl implements TagService {
                     tagCompareTime.setTagName(tag.getTagName());
                     tagCompareTime.setTime(tag.getEventTime());
                     tagCompareTime.setProperty(tag.getProperty());
-                    if (!mapInfo.isPoint() && null != mapInfo.getBoundary()) {
+                    if (!mapInfo.getIsPoint() && null != mapInfo.getBoundary()) {
                         tagCompareTime.setBoundry(convertString2List(mapInfo.getBoundary()));
                         tagCompareTime.setPoint(false);
                     } else {
