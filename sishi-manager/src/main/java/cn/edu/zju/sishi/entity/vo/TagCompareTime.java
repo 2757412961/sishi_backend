@@ -28,7 +28,7 @@ public class TagCompareTime implements Comparable<TagCompareTime>, Serializable 
 
     private String property;
 
-    private List<Double> geoCoordinates;
+    private List<List<Double>> geoCoordinates;
 
     private List<String> boundry;
 

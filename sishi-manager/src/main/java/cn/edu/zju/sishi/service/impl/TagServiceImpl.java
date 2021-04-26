@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -165,8 +166,13 @@ public class TagServiceImpl implements TagService {
                         tagCompareTime.setPoint(false);
                     } else {
                         tagCompareTime.setPoint(true);
-                        tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
-                        tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
+                      for(int i =0; i <mapInfos.size(); i++) {
+                        ArrayList arrayList = new ArrayList<Double>();
+                        arrayList.add(mapInfos.get(i).getMapLon());
+                        arrayList.add(mapInfos.get(i).getMapLat());
+                        tagCompareTime.getGeoCoordinates().add(arrayList);
+
+                      }
                     }
                     // 添加图片 url
                     List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
