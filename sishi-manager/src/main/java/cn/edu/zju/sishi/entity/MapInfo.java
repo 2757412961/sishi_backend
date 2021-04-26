@@ -25,10 +25,8 @@ public class MapInfo implements Serializable {
     @Size(min = 1, max = 50, message = "mapTitle length should be between 1 and 50")
     private String mapTitle;
 
-    @NotNull(message = "longitude can not be null")
     private Double mapLon;
 
-    @NotNull(message = "latitude can not be null")
     private Double mapLat;
 
     private Long mapPublishTime;
@@ -38,6 +36,7 @@ public class MapInfo implements Serializable {
     @JsonProperty("isPublic")
     private Boolean isPublic;
 
+    @JsonProperty("isPoint")
     private boolean isPoint;
 
     private String boundary;
