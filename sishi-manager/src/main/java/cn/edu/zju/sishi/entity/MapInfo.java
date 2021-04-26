@@ -38,4 +38,7 @@ public class MapInfo implements Serializable {
     @JsonProperty("isPublic")
     private Boolean isPublic;
 
+    private boolean isPoint;
+
+    private String boundary;
 }
