@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -154,12 +155,19 @@ public class TagServiceImpl implements TagService {
                         tagCompareTime.setLabel(split[1]);
                         tagCompareTime.setValue(split[1]);
                     }
+
                     tagCompareTime.setTagId(tag.getTagId());
                     tagCompareTime.setTagName(tag.getTagName());
                     tagCompareTime.setTime(tag.getEventTime());
-                    tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
-                    tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
                     tagCompareTime.setProperty(tag.getProperty());
+                    if(!mapInfo.isPoint() && null != mapInfo.getBoundary() ) {
+                        tagCompareTime.setBoundry(convertString2List(mapInfo.getBoundary()));
+                        tagCompareTime.setPoint(false);
+                    } else {
+                        tagCompareTime.setPoint(true);
+                        tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLon());
+                        tagCompareTime.getGeoCoordinates().add(mapInfo.getMapLat());
+                    }
                     // 添加图片 url
                     List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
                     if (!pictures.isEmpty()) {
@@ -177,6 +185,18 @@ public class TagServiceImpl implements TagService {
         Collections.sort(results);
 
         return results;
+    }
+
+    private List<String> convertString2List(String boundary) {
+        if(null == boundary) {
+            return Collections.emptyList();
+        }
+        boundary = boundary.trim();
+        if(boundary.equals("[]") || boundary.equals("")) {
+            return Collections.emptyList();
+        }
+        boundary = boundary.substring(1, boundary.length() - 1);
+        return Arrays.stream(boundary.split(",")).collect(Collectors.toList());
     }
 
     @Override
