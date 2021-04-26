@@ -19,7 +19,6 @@ public class Article implements Serializable {
   @Size(min = 1, max = 500, message = "article title length should be between 1 and 500")
   private String articleTitle;
 
-  @Size(min = 1, max = 200, message = "article Author length should be between 1 and 200")
   private String articleAuthor;
 
   @NotNull(message = "article Content cannot be null")
