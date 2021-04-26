@@ -119,7 +119,7 @@ public class LoginServiceImpl implements LoginService {
             loginResult.setStudentNumber(user.getStudentNumber());
             return loginResult;
         } else {
-            throw new ValidationException("Login Error: Password error!");
+            throw new ValidationException("登陆失败，密码错误!");
         }
     }
 
