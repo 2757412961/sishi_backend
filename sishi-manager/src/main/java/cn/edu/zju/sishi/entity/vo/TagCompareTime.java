@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -27,7 +28,11 @@ public class TagCompareTime implements Comparable<TagCompareTime>, Serializable 
 
     private String property;
 
-    private List<Double> geoCoordinates;
+    private List<List<Double>> geoCoordinates;
+
+    private List<String> boundry;
+
+    private boolean isPoint;
 
     public TagCompareTime() {
         this.value = "";
@@ -38,6 +43,8 @@ public class TagCompareTime implements Comparable<TagCompareTime>, Serializable 
         this.picUrl = "";
         this.property = "";
         this.geoCoordinates = new ArrayList<>();
+        this.isPoint = true;
+        this.boundry = Collections.EMPTY_LIST;
     }
 
     @Override
