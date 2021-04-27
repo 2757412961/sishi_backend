@@ -19,18 +19,19 @@ public class Article implements Serializable {
   @Size(min = 1, max = 500, message = "article title length should be between 1 and 500")
   private String articleTitle;
 
-  @NotNull(message = "article Author cannot be null")
-  @Size(min = 1, max = 200, message = "article Author length should be between 1 and 200")
   private String articleAuthor;
 
   @NotNull(message = "article Content cannot be null")
   private String articleContent;
 
+  @NotNull(message = "article Source cannot be null")
   private String articleSource;
 
   private String articleEventTime;
 
   private String articleAddress;
+
+  private String articleLink;
 
   private long articleCreateTime;
 

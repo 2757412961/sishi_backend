@@ -26,12 +26,22 @@ public class Audio implements Serializable {
   @NotNull(message = "audio content cannot be null")
   private String audioContent;
 
+  private String audioLink;
+
   private long audioCreateTime;
 
   private long audioPublishTime;
 
   @JsonProperty("isPublic")
   private Boolean isPublic;
+
+  public String getAudioLink() {
+    return audioLink;
+  }
+
+  public void setAudioLink(String audioLink) {
+    this.audioLink = audioLink;
+  }
 
   public String getAudioAuthor() {
     return audioAuthor;

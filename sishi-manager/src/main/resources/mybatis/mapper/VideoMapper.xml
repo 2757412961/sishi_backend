@@ -8,6 +8,7 @@
         <result property="videoAuthor" column="VIDEO_AUTHOR" jdbcType="VARCHAR"/>
         <result property="videoSource" column="VIDEO_SOURCE" jdbcType="VARCHAR"/>
         <result property="videoContent" column="VIDEO_CONTENT" jdbcType="VARCHAR"/>
+        <result property="videoLink" column="VIDEO_LINK" jdbcType="VARCHAR"/>
         <result property="videoPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="videoCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
         <result property="isPublic" column="is_public"/>
@@ -15,7 +16,7 @@
 
     <sql id="columns">
         video_id
-        , video_title, video_author, video_content, video_source, publish_time, create_time, is_public
+        , video_title, video_author, video_content, video_source, publish_time, create_time, is_public, video_link
     </sql>
 
     <select id="listVideos" resultMap="videoDaoResultMap">
@@ -77,6 +78,7 @@
          video_author,
          video_content,
          video_source,
+         video_link,
          publish_time,
          create_time)
         VALUES (#{video.videoId},
@@ -84,6 +86,7 @@
                 #{video.videoAuthor},
                 #{video.videoContent},
                 #{video.videoSource},
+                #{video.videoLink},
                 #{video.videoPublishTime},
                 #{video.videoCreateTime});
     </insert>

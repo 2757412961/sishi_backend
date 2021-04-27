@@ -10,6 +10,7 @@
         <result property="pictureAuthor" column="picture_author"/>
         <result property="pictureSource" column="picture_source"/>
         <result property="pictureContent" column="picture_content"/>
+        <result property="pictureLink" column="picture_link"/>
         <result property="picturePublishTime" column="picture_publish_time"/>
         <result property="pictureCreateTime" column="picture_create_time"/>
         <result property="isPublic" column="is_public"/>
@@ -22,6 +23,7 @@
             <if test="pictureAuthor != null and pictureAuthor != ''">picture_author,</if>
             <if test="pictureSource != null and pictureSource != ''">picture_source,</if>
             <if test="pictureContent != null and pictureContent != ''">picture_content,</if>
+            <if test="pictureLink != null and pictureLink != ''">picture_link,</if>
             <if test="picturePublishTime != null and picturePublishTime != ''">picture_publish_time,</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">picture_create_time,</if>
             <if test="isPublic != null and isPublic != ''">is_public,</if>
@@ -35,6 +37,7 @@
             <if test="pictureAuthor != null and pictureAuthor != ''">#{pictureAuthor},</if>
             <if test="pictureSource != null and pictureSource != ''">#{pictureSource},</if>
             <if test="pictureContent != null and pictureContent != ''">#{pictureContent},</if>
+            <if test="pictureLink != null and pictureLink != ''">#{pictureLink},</if>
             <if test="picturePublishTime != null and picturePublishTime != ''">#{picturePublishTime},</if>
             <if test="pictureCreateTime != null and pictureCreateTime != ''">#{pictureCreateTime},</if>
             <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
@@ -43,7 +46,7 @@
 
     <sql id="columns">
         picture_id
-        , picture_title,  picture_author, picture_source, picture_content, picture_publish_time, picture_create_time, is_public
+        , picture_title,  picture_author, picture_source, picture_content, picture_publish_time, picture_create_time, is_public, picture_link
     </sql>
 
     <select id="getPicturesAll" resultMap="PictureResultMap">

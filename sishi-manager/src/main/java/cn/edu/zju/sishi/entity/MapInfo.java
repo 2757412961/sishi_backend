@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,10 +27,8 @@ public class MapInfo implements Serializable {
     @Size(min = 1, max = 50, message = "mapTitle length should be between 1 and 50")
     private String mapTitle;
 
-    @NotNull(message = "longitude can not be null")
     private Double mapLon;
 
-    @NotNull(message = "latitude can not be null")
     private Double mapLat;
 
     private Long mapPublishTime;
@@ -38,7 +38,8 @@ public class MapInfo implements Serializable {
     @JsonProperty("isPublic")
     private Boolean isPublic;
 
-    private boolean isPoint;
+    @JsonProperty("isPoint")
+    private Boolean isPoint;
 
     private String boundary;
 }

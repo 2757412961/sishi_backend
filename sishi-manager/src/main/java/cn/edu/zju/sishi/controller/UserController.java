@@ -65,7 +65,7 @@ public class UserController {
         // local file
         File localFile = FileUtils.newFile(nginxConfig.getLinuxRoot() + nginxConfig.getWorkspacePath() + userId + File.separator + filename);
         if (localFile.exists()){
-            throw new ValidationException("上传文件已经存在");
+            throw new ValidationException("上传文件已经存在，请重命名文件");
         }
         try {
             multipartFile.transferTo(localFile);

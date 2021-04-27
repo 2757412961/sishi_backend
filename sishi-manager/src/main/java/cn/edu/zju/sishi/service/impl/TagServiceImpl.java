@@ -161,18 +161,17 @@ public class TagServiceImpl implements TagService {
                     tagCompareTime.setTagName(tag.getTagName());
                     tagCompareTime.setTime(tag.getEventTime());
                     tagCompareTime.setProperty(tag.getProperty());
-                    if(!mapInfo.isPoint() && null != mapInfo.getBoundary() ) {
+                    if (!mapInfo.getIsPoint() && null != mapInfo.getBoundary()) {
                         tagCompareTime.setBoundry(convertString2List(mapInfo.getBoundary()));
                         tagCompareTime.setPoint(false);
                     } else {
                         tagCompareTime.setPoint(true);
-                      for(int i =0; i <mapInfos.size(); i++) {
-                        ArrayList arrayList = new ArrayList<Double>();
-                        arrayList.add(mapInfos.get(i).getMapLon());
-                        arrayList.add(mapInfos.get(i).getMapLat());
-                        tagCompareTime.getGeoCoordinates().add(arrayList);
-
-                      }
+                        for (int i = 0; i < mapInfos.size(); i++) {
+                            ArrayList arrayList = new ArrayList<Double>();
+                            arrayList.add(mapInfos.get(i).getMapLon());
+                            arrayList.add(mapInfos.get(i).getMapLat());
+                            tagCompareTime.getGeoCoordinates().add(arrayList);
+                        }
                     }
                     // 添加图片 url
                     List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
@@ -194,11 +193,11 @@ public class TagServiceImpl implements TagService {
     }
 
     private List<String> convertString2List(String boundary) {
-        if(null == boundary) {
+        if (null == boundary) {
             return Collections.emptyList();
         }
         boundary = boundary.trim();
-        if(boundary.equals("[]") || boundary.equals("")) {
+        if (boundary.equals("[]") || boundary.equals("")) {
             return Collections.emptyList();
         }
         boundary = boundary.substring(1, boundary.length() - 1);

@@ -119,6 +119,7 @@ public class AudioController {
                 throw new ValidationException("未提交来源");
             }
             String audioAuthor = request.getParameter("audioAuthor");
+            String audioLink = request.getParameter("audioLink");
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -135,6 +136,7 @@ public class AudioController {
             audio.setAudioTitle(audioTitle);
             audio.setAudioAuthor(audioAuthor);
             audio.setAudioSource(audioSource);
+            audio.setAudioLink(audioLink);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录
