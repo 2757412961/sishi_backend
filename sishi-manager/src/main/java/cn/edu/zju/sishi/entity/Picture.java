@@ -35,6 +35,8 @@ public class Picture implements Serializable {
     @Size(min = 1, max = 500, message = "pictureContent length should be between 1 and 200")
     private String pictureContent;
 
+    private String pictureLink;
+
     private long picturePublishTime;
 
     private long pictureCreateTime;

@@ -119,6 +119,7 @@ public class VideoController {
                 throw new ValidationException("未提交来源");
             }
             String videoAuthor = request.getParameter("videoAuthor");
+            String videoLink = request.getParameter("videoLink");
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -135,6 +136,7 @@ public class VideoController {
             video.setVideoTitle(videoTitle);
             video.setVideoAuthor(videoAuthor);
             video.setVideoSource(videoSource);
+            video.setVideoLink(videoLink);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录

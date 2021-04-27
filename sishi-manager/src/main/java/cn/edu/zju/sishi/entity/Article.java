@@ -24,12 +24,14 @@ public class Article implements Serializable {
   @NotNull(message = "article Content cannot be null")
   private String articleContent;
 
-  @NotNull(message = "article Author cannot be null")
+  @NotNull(message = "article Source cannot be null")
   private String articleSource;
 
   private String articleEventTime;
 
   private String articleAddress;
+
+  private String articleLink;
 
   private long articleCreateTime;
 

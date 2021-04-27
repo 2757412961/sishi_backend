@@ -155,6 +155,7 @@ public class PictureController {
                 throw new ValidationException("未提交来源");
             }
             String pictureAuthor = request.getParameter("pictureAuthor");
+            String pictureLink = request.getParameter("pictureLink");
             String tagName = request.getParameter("tagName");
             if (tagName == null) {
                 throw new ValidationException("未提交标签名");
@@ -171,6 +172,7 @@ public class PictureController {
             picture.setPictureTitle(pictureTitle);
             picture.setPictureAuthor(pictureAuthor);
             picture.setPictureSource(pictureSource);
+            picture.setPictureLink(pictureLink);
             String fileName = multipartFile.getOriginalFilename();
 
             // 保存资源记录

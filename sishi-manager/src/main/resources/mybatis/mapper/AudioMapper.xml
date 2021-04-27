@@ -8,6 +8,7 @@
         <result property="audioAuthor" column="AUDIO_AUTHOR" jdbcType="VARCHAR"/>
         <result property="audioSource" column="AUDIO_SOURCE" jdbcType="VARCHAR"/>
         <result property="audioContent" column="AUDIO_CONTENT" jdbcType="VARCHAR"/>
+        <result property="audioLink" column="AUDIO_LINK" jdbcType="VARCHAR"/>
         <result property="audioPublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="audioCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
         <result property="isPublic" column="is_public"/>
@@ -15,7 +16,7 @@
 
     <sql id="columns">
         audio_id
-        , audio_title, audio_author, audio_content, audio_source, publish_time, create_time, is_public
+        , audio_title, audio_author, audio_content, audio_source, publish_time, create_time, is_public, audio_link
     </sql>
 
     <select id="listAudios" resultMap="audioDaoResultMap">
@@ -79,6 +80,7 @@
          audio_author,
          audio_content,
          audio_source,
+         audio_link,
          publish_time,
          create_time)
         VALUES (#{audio.audioId},
@@ -86,6 +88,7 @@
                 #{audio.audioAuthor},
                 #{audio.audioContent},
                 #{audio.audioSource},
+                #{audio.audioLink},
                 #{audio.audioPublishTime},
                 #{audio.audioCreateTime});
     </insert>

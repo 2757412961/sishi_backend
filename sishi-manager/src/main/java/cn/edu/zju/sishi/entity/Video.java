@@ -26,12 +26,22 @@ public class Video implements Serializable {
   @NotNull(message = "video content cannot be null")
   private String videoContent;
 
+  private String videoLink;
+
   private long videoCreateTime;
 
   private long videoPublishTime;
 
   @JsonProperty("isPublic")
   private Boolean isPublic;
+
+  public String getVideoLink() {
+    return videoLink;
+  }
+
+  public void setVideoLink(String videoLink) {
+    this.videoLink = videoLink;
+  }
 
   public String getVideoAuthor() {
     return videoAuthor;

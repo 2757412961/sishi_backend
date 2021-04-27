@@ -10,6 +10,7 @@
         <result property="articleContent" column="ARTICLE_CONTENT" jdbcType="VARCHAR"/>
         <result property="articleEventTime" column="ARTICLE_EVENT_TIME" jdbcType="VARCHAR"/>
         <result property="articleAddress" column="ARTICLE_ADDRESS" jdbcType="VARCHAR"/>
+        <result property="articleLink" column="ARTICLE_LINK" jdbcType="VARCHAR"/>
         <result property="articlePublishTime" column="PUBLISH_TIME" jdbcType="BIGINT"/>
         <result property="articleCreateTime" column="CREATE_TIME" jdbcType="BIGINT"/>
         <result property="isPublic" column="is_public"/>
@@ -17,7 +18,7 @@
 
     <sql id="columns">
         article_id
-        , article_title, article_author, article_source, article_content, article_event_time, article_address, publish_time, create_time, is_public
+        , article_title, article_author, article_source, article_content, article_event_time, article_address, publish_time, create_time, is_public, article_link
     </sql>
 
     <select id="listArticles" resultMap="articleDaoResultMap">
@@ -65,6 +66,7 @@
          article_source,
          article_event_time,
          article_address,
+         article_link,
          publish_time,
          create_time,
          is_public)
@@ -75,6 +77,7 @@
                 #{article.articleSource},
                 #{article.articleEventTime},
                 #{article.articleAddress},
+                #{article.articleLink},
                 #{article.articlePublishTime},
                 #{article.articleCreateTime},
                 #{article.isPublic});
