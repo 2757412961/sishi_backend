@@ -24,7 +24,7 @@
             <if test="mapPublishTime != null and mapPublishTime != ''">map_publish_time,</if>
             <if test="mapCreateTime != null and mapCreateTime != ''">map_create_time,</if>
             <if test="isPublic != null and isPublic != ''">is_public,</if>
-            <if test="isPoint != null and isPoint != ''">is_point,</if>
+            <if test="isPoint != null and isPoint != '' or isPoint == 0">is_point,</if>
             <if test="boundary != null and boundary != ''">boundary,</if>
         </trim>
     </sql>
@@ -38,7 +38,7 @@
             <if test="mapPublishTime != null and mapPublishTime != ''">#{mapPublishTime},</if>
             <if test="mapCreateTime != null and mapCreateTime != ''">#{mapCreateTime},</if>
             <if test="isPublic != null and isPublic != ''">#{isPublic},</if>
-            <if test="isPoint != null and isPoint != ''">#{isPoint},</if>
+            <if test="isPoint != null and isPoint != '' or isPoint == 0">#{isPoint},</if>
             <if test="boundary != null and boundary != ''">#{boundary},</if>
         </trim>
     </sql>

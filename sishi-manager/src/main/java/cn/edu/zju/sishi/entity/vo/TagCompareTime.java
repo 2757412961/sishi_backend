@@ -32,8 +32,6 @@ public class TagCompareTime implements Comparable<TagCompareTime>, Serializable 
 
     private List<String> boundry;
 
-    private boolean isPoint;
-
     public TagCompareTime() {
         this.value = "";
         this.label = "";
@@ -43,7 +41,6 @@ public class TagCompareTime implements Comparable<TagCompareTime>, Serializable 
         this.picUrl = "";
         this.property = "";
         this.geoCoordinates = new ArrayList<>();
-        this.isPoint = true;
         this.boundry = Collections.EMPTY_LIST;
     }
 
