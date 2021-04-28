@@ -1,5 +1,6 @@
 package cn.edu.zju.sishi.service.impl;
 
+import cn.edu.zju.sishi.config.NginxConfig;
 import cn.edu.zju.sishi.dao.*;
 import cn.edu.zju.sishi.entity.*;
 import cn.edu.zju.sishi.entity.vo.MediaItem;
@@ -10,8 +11,10 @@ import cn.edu.zju.sishi.service.TagResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +31,20 @@ public class TagResourceServiceImpl implements TagResourceService {
     private TagDao tagDao;
 
     @Autowired
-    private VideoDao videoDao;
+    private ArticleDao articleDao;
+    @Autowired
+    private MapInfoDao mapInfoDao;
+    @Autowired
+    private QuestionDao questionDao;
     @Autowired
     private AudioDao audioDao;
     @Autowired
+    private VideoDao videoDao;
+    @Autowired
     private PictureDao pictureDao;
+
+    @Autowired
+    private NginxConfig nginxConfig;
 
     public void checkTagNameEmpty(String tagName) {
         if (StringUtils.isEmpty(tagName)) {
@@ -51,7 +63,6 @@ public class TagResourceServiceImpl implements TagResourceService {
             throw new ValidationException(String.format("resourceType '%s' is empty!", resourceType));
         }
     }
-
 
     @Override
     public List<TagResource> getTagResourcesAll() {
@@ -173,8 +184,63 @@ public class TagResourceServiceImpl implements TagResourceService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteByTagName(String tagName) {
         checkTagNameEmpty(tagName);
+        List<TagResource> resources = tagResourceDao.getTagResourcesByTagName(tagName);
+
+        for (TagResource resource : resources) {
+            try {
+                String resourceId = resource.getResourceId();
+                String resourceType = resource.getResourceType();
+                ResourceTypeEnum resourceEnum = getTypeByValue(resourceType);
+                switch (resourceEnum) {
+                    default:
+                        break;
+                    case ARTICLE:
+                        articleDao.dropArticle(resourceId);
+                        break;
+                    case AUDIO:
+                        Audio audio = audioDao.getAudio(resourceId);
+                        if (audio != null) {
+                            File localFile = new File(nginxConfig.getLinuxRoot() + audio.getAudioContent().substring(nginxConfig.getHttpHead().length()));
+                            if (localFile.exists()) {
+                                localFile.delete();
+                            }
+                        }
+                        audioDao.dropAudio(resourceId);
+                        break;
+                    case PICTURE:
+                        Picture picture = pictureDao.getPictureById(resourceId);
+                        if (picture != null) {
+                            File localFile = new File(nginxConfig.getLinuxRoot() + picture.getPictureContent().substring(nginxConfig.getHttpHead().length()));
+                            if (localFile.exists()) {
+                                localFile.delete();
+                            }
+                        }
+                        pictureDao.deletePictureById(resourceId);
+                        break;
+                    case VIDEO:
+                        Video video = videoDao.getVideo(resourceId);
+                        if (video != null) {
+                            File localFile = new File(nginxConfig.getLinuxRoot() + video.getVideoContent().substring(nginxConfig.getHttpHead().length()));
+                            if (localFile.exists()) {
+                                localFile.delete();
+                            }
+                        }
+                        videoDao.dropVideo(resourceId);
+                        break;
+                    case MAPINFO:
+                        mapInfoDao.deleteMapInfoById(resourceId);
+                        break;
+                    case QUESTION:
+                        questionDao.deleteQuesByID(resourceId);
+                        break;
+                }
+            } catch (Exception e) {
+                throw new ValidationException(String.format("删除标签失败!" + e.getMessage()));
+            }
+        }
 
         return tagResourceDao.deleteByTagName(tagName);
     }

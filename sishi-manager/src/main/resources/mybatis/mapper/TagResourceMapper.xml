@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zju.sishi.dao.TagResourceDao">
 
-    <cache/>
-
     <select id="getTagResourcesAll" resultType="TagResource">
         SELECT tag_id, tag_name, resource_id, resource_type, user_id
         FROM tb_tag_resource_map

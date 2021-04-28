@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zju.sishi.dao.PictureDao">
 
-    <cache/>
-
     <resultMap id="PictureResultMap" type="Picture">
         <result property="pictureId" column="picture_id"/>
         <result property="pictureTitle" column="picture_title"/>

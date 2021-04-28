@@ -142,52 +142,50 @@ public class TagServiceImpl implements TagService {
     @Cacheable(value = "GET_TAG_COMPARE_TIME")
     public List<TagCompareTime> getTagCompareTime(String tagName) {
         List<TagCompareTime> results = new ArrayList<>();
-        List<Tag> tagList = tagDao.getTagsByPrefix(tagName);
-        for (Tag tag : tagList) {
-            List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
-            if (!mapInfos.isEmpty()) {
-                MapInfo mapInfo = mapInfos.get(0);
-                if (!StringUtils.isEmpty(tag.getEventTime()) && mapInfo.getMapLat() != null && mapInfo.getMapLon() != null) {
-                    TagCompareTime tagCompareTime = new TagCompareTime();
-
-                    // 截取标签的剩余内容
-                    String[] split = tag.getTagName().substring(tagName.length()).split("@", 2);
-                    if (split.length >= 2) {
-                        tagCompareTime.setLabel(split[1]);
-                        tagCompareTime.setValue(split[1]);
-                    }
-
-                    tagCompareTime.setTagId(tag.getTagId());
-                    tagCompareTime.setTagName(tag.getTagName());
-                    tagCompareTime.setTime(tag.getEventTime());
-                    tagCompareTime.setProperty(tag.getProperty());
-                    if (!mapInfo.getIsPoint() && null != mapInfo.getBoundary()) {
-                        tagCompareTime.setBoundry(convertString2List(mapInfo.getBoundary()));
-                        tagCompareTime.setPoint(false);
-                    } else {
-                        tagCompareTime.setPoint(true);
-                        for (int i = 0; i < mapInfos.size(); i++) {
-                            ArrayList arrayList = new ArrayList<Double>();
-                            arrayList.add(mapInfos.get(i).getMapLon());
-                            arrayList.add(mapInfos.get(i).getMapLat());
-                            tagCompareTime.getGeoCoordinates().add(arrayList);
-                        }
-                    }
-                    // 添加图片 url
-                    List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
-                    if (!pictures.isEmpty()) {
-                        Picture picture = pictures.get(0);
-                        tagCompareTime.setPicUrl(picture.getPictureContent());
-                    } else {
-                        tagCompareTime.setPicUrl(DEFAULT_PICTURE_URL);
-                    }
-                    results.add(tagCompareTime);
-                }
-            }
-        }
-
-        // 按照时间排顺序
-        Collections.sort(results);
+//        List<Tag> tagList = tagDao.getTagsByPrefix(tagName);
+//        // 遍历 Tag
+//        for (Tag tag : tagList) {
+//            List<MapInfo> mapInfos = mapInfoService.getMapInfosByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
+//            if (!mapInfos.isEmpty() && !StringUtils.isEmpty(tag.getEventTime())) {
+//                TagCompareTime tagCompareTime = new TagCompareTime();
+//
+//                // 截取标签的剩余内容
+//                String[] split = tag.getTagName().substring(tagName.length()).split("@", 2);
+//                if (split.length >= 2) {
+//                    tagCompareTime.setLabel(split[1]);
+//                    tagCompareTime.setValue(split[1]);
+//                }
+//
+//                tagCompareTime.setTagId(tag.getTagId());
+//                tagCompareTime.setTagName(tag.getTagName());
+//                tagCompareTime.setTime(tag.getEventTime());
+//                tagCompareTime.setProperty(tag.getProperty());
+//                if (!mapInfo.getIsPoint() && null != mapInfo.getBoundary()) {
+//                    tagCompareTime.setBoundry(convertString2List(mapInfo.getBoundary()));
+//                    tagCompareTime.setPoint(false);
+//                } else {
+//                    tagCompareTime.setPoint(true);
+//                    for (int i = 0; i < mapInfos.size(); i++) {
+//                        ArrayList arrayList = new ArrayList<Double>();
+//                        arrayList.add(mapInfos.get(i).getMapLon());
+//                        arrayList.add(mapInfos.get(i).getMapLat());
+//                        tagCompareTime.getGeoCoordinates().add(arrayList);
+//                    }
+//                }
+//                // 添加图片 url
+//                List<Picture> pictures = pictureService.getPicturesByTag(tag.getTagName(), LogicUtil.getLogicByIsAdmins(true));
+//                if (!pictures.isEmpty()) {
+//                    Picture picture = pictures.get(0);
+//                    tagCompareTime.setPicUrl(picture.getPictureContent());
+//                } else {
+//                    tagCompareTime.setPicUrl(DEFAULT_PICTURE_URL);
+//                }
+//                results.add(tagCompareTime);
+//            }
+//        }
+//
+//        // 按照时间排顺序
+//        Collections.sort(results);
 
         return results;
     }
@@ -238,7 +236,7 @@ public class TagServiceImpl implements TagService {
         if (tagDao.getTagByTagName(tagName) == null) {
             throw new ResourceNotFoundException(HttpStatus.NOT_FOUND.value(), String.format("Tag %s does not exist!", tagName));
         }
-        tagDao.dropTag(tagName);
         tagResourceService.deleteByTagName(tagName);
+        tagDao.dropTag(tagName);
     }
 }
